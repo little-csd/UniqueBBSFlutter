@@ -1,6 +1,7 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/widget/home_body.dart';
 import 'package:UniqueBBSFlutter/widget/home_me.dart';
+import 'package:UniqueBBSFlutter/widget/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -39,7 +40,12 @@ class _HomeState extends State<HomeWidget> {
       body: _pages[_index],
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => print('hello'),
+        onPressed: () {
+          Navigator.push(context, 
+              MaterialPageRoute(builder: (context) {
+                return LoginWidget();
+              }));
+        }
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
