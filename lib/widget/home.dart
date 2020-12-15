@@ -2,10 +2,28 @@ import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/widget/home_body.dart';
 import 'package:UniqueBBSFlutter/widget/home_me.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomeWidget extends StatefulWidget {
   @override
   State createState() => _HomeState();
+}
+
+BottomNavigationBarItem _getBottomBarItem(
+    String src, int index, int selectedIndex) {
+  var color;
+  if (index == selectedIndex) {
+    color = ColorConstant.primaryColor;
+  } else {
+    color = ColorConstant.textGray;
+  }
+  return BottomNavigationBarItem(
+    icon: SvgPicture.asset(
+      src,
+      color: color,
+    ),
+    label: '',
+  );
 }
 
 class _HomeState extends State<HomeWidget> {
@@ -25,6 +43,8 @@ class _HomeState extends State<HomeWidget> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         onTap: (index) {
           if (index == _index) return;
           _index = index;
@@ -33,14 +53,8 @@ class _HomeState extends State<HomeWidget> {
         currentIndex: _index,
         type: BottomNavigationBarType.fixed,
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: StringConstant.home,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: StringConstant.me,
-          ),
+          _getBottomBarItem(SvgIcon.message, 0, _index),
+          _getBottomBarItem(SvgIcon.person, 1, _index),
         ],
       ),
     );

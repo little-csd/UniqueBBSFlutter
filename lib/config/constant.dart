@@ -21,3 +21,16 @@ class StringConstant {
   static final delete = '删除';
   static final newComment = '最新评论';
 }
+
+class SvgIcon {
+  static final _base = 'images/';
+
+  static final notification = _base + 'notification.svg';
+  static final message = _base + 'message.svg';
+  static final person = _base + 'person.svg';
+  static final search = _base + 'search.svg';
+  static final file = _base + 'file.svg';
+  static final freshmanTask = _base + 'freshman_task.svg';
+  static final projectTask = _base + 'project_task.svg';
+  static final share = _base + 'share.svg';
+}

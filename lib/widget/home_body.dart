@@ -2,6 +2,7 @@ import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/widget/home_forum.dart';
 import 'package:UniqueBBSFlutter/widget/home_info.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeBodyWidget extends StatefulWidget {
   @override
@@ -55,11 +56,11 @@ class _HomeBodyState extends State<HomeBodyWidget>
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.search),
+                      icon: SvgPicture.asset(SvgIcon.search),
                       onPressed: () => print('search'),
                     ),
                     IconButton(
-                      icon: Icon(Icons.notifications),
+                      icon: SvgPicture.asset(SvgIcon.notification),
                       onPressed: () => print('notification'),
                     )
                   ],
