@@ -19,13 +19,13 @@ const _subtitleStyle = TextStyle(fontSize: 12, color: ColorConstant.textGray);
 // 查看 report 部分的常量
 const _showReportRadius = 28.0;
 const _showReportTextStyle =
-    TextStyle(fontSize: 16, color: ColorConstant.textWhite);
+    TextStyle(fontSize: 18, color: ColorConstant.textWhite);
 final gradients = transAngle2Alignments(28);
 
 // 下方 gridView 部分常量
 const _gridSpacing = 15.0;
 const _gridBorderRadius = 26.0;
-final _gridTextStyle = TextStyle(fontSize: 15, color: ColorConstant.textBlack);
+final _gridTextStyle = TextStyle(fontSize: 18, color: ColorConstant.textBlack);
 final _gridBoxDecoration = BoxDecoration(
     borderRadius: BorderRadius.all(Radius.circular(_gridBorderRadius)),
     color: ColorConstant.backgroundWhite,

@@ -21,6 +21,5 @@ List<Alignment> transAngle2Alignments(double angle) {
     start = Alignment(-1, -y);
     end = Alignment(1, y);
   }
-  print(end);
   return [start, end];
 }
