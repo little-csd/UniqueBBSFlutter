@@ -9,6 +9,9 @@ class ColorConstant {
   static const primaryColor = Color(0xff7966FF);
   static const primaryColorLight = Color(0xFFFFDFFD);
   static const accentColor = Color(0xff555555);
+  static const skyButtonGray = Color(0xff707070);
+  static const skyInputPurple = Color(0xfff0f0f0);
+
 }
 
 // 字符串相关的资源常量
