@@ -1,5 +1,6 @@
 import 'package:UniqueBBSFlutter/widget/home.dart';
 import 'package:UniqueBBSFlutter/widget/home_select.dart';
+import 'package:UniqueBBSFlutter/widget/login/login.dart';
 import 'package:flutter/material.dart';
 
 class BBSRoute {
@@ -27,6 +28,7 @@ class BBSRoute {
   static final routes = {
     home: (context) => HomeWidget(),
     selectPlate: (context) => HomeSelectWidget(),
+    login: (context) => LoginWidget(),
   };
 
   static Route buildPage(String path, dynamic arg) {

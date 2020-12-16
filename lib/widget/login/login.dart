@@ -1,10 +1,9 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBSFlutter/tool/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:UniqueBBSFlutter/widget/common/FilledTextField.dart';
 
-
-// todo: refactor
 class LoginWidget extends StatefulWidget {
   @override
   State createState() => _LoginState();
@@ -14,67 +13,34 @@ class _LoginState extends State<LoginWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        padding:EdgeInsets.only(
+            left: 20,
+            right: 20
+        ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 116, 0, 0),
-              child: SvgPicture.asset(
-                "images/login_logo.svg",
-              ),
+            SvgPicture.asset(
+              "images/login_logo.svg",
             ),
-            _LogoText("UNIQUE"),
-            _LogoText("STUDIO"),
-            Padding(
-                padding: EdgeInsets.fromLTRB(20, 68, 20, 0),
-                child: _buildLoginTextField("登陆")
-                ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: _buildLoginTextField("密码"),
-            ),
-            Padding(
-                padding: EdgeInsets.fromLTRB(20, 63, 20, 0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FlatButton(
-                    height: 44,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    color: ColorConstant.primaryColor,
-                    child: Text(
-                      "登陆",
-                      style: TextStyle(color: Colors.white, letterSpacing: 22),
-                    ),
-                    onPressed: () {
-                      // todo: login internal
-                    },
-                  ),
-                )),
-            Padding(
-                padding: EdgeInsets.fromLTRB(20, 15, 20, 0),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FlatButton(
-                    height: 44,
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(color: ColorConstant.skyButtonGray),
-                        borderRadius: BorderRadius.circular(20.0)),
-                    child: Text("使用企业微信扫码登录"),
-                    onPressed: () {
-                      // fixme: test code
-                      textBottomSheet(context);
-                      // todo: route to WeCom Page
-                    },
-                  ),
-                ))
+            _LogoText("UNIQUE\nSTUDIO"),
+            Container(height: 67,),
+            _buildLoginTextField("用户名"),
+            Container(height: 20,),
+            _buildLoginTextField("密码"),
+            Container(height: 63,),
+            _buildLoginButton(),
+            Container(height: 15,),
+            _buildWeComLoginButton(),
           ],
         ),
       ),
     );
   }
 
+  // todo : delete test code
   void textBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
@@ -96,16 +62,38 @@ class _LoginState extends State<LoginWidget> {
   }
 }
 
-class _LogoText extends Text {
-  _LogoText(String data) : super(data);
+_buildLoginButton() =>
+    SizedBox(
+      width: double.infinity,
+      child: FlatButton(
+        height: 44,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0)),
+        color: ColorConstant.primaryColor,
+        child: Text(
+          "登陆",
+          style: TextStyle(color: Colors.white, letterSpacing: 22),
+        ),
+        onPressed: () {
+          // todo: login internal
+        },
+      ),
+    );
 
-  @override
-  TextStyle get style => TextStyle(
-    color: Color(0xff727272),
-    fontSize: 18,
-    letterSpacing: 4
-  );
-}
+_buildWeComLoginButton() =>
+    SizedBox(
+      width: double.infinity,
+      child: FlatButton(
+        height: 44,
+        shape: RoundedRectangleBorder(
+            side: BorderSide(color: ColorConstant.skyButtonGray),
+            borderRadius: BorderRadius.circular(20.0)),
+        child: Text("使用企业微信扫码登录"),
+        onPressed: () {
+          // todo: route to WeCom Page
+        },
+      ),
+    );
 
 _buildLoginTextField(String hint) =>
     buildFilledTextField(
@@ -114,3 +102,13 @@ _buildLoginTextField(String hint) =>
         ColorConstant.skyInputPurple,
         ColorConstant.skyInputHintPurple
     );
+
+class _LogoText extends Text {
+  _LogoText(String data) : super(data);
+  @override
+  TextStyle get style => TextStyle(
+      color: Color(0xff727272),
+      fontSize: 18,
+      letterSpacing: 4
+  );
+}
