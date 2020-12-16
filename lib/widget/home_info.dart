@@ -20,24 +20,13 @@ const _subtitleStyle = TextStyle(fontSize: 12, color: ColorConstant.textGrey);
 const _showReportRadius = 28.0;
 const _showReportTextStyle =
     TextStyle(fontSize: 18, color: ColorConstant.textWhite);
-const _reportButtonHeight = 40.0;
+const _reportButtonHeight = 45.0;
 // final gradients = transAngle2Alignments(28);
 
 // 下方 gridView 部分常量
 const _gridSpacing = 15.0;
 const _gridBorderRadius = 26.0;
 final _gridTextStyle = TextStyle(fontSize: 18, color: ColorConstant.textBlack);
-final _gridBoxDecoration = BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(_gridBorderRadius)),
-    color: ColorConstant.backgroundWhite,
-    boxShadow: [
-      BoxShadow(
-        color: ColorConstant.lightBorderPink,
-        spreadRadius: 10,
-        blurRadius: 7,
-        offset: Offset(0, 6), // changes position of shadow
-      ),
-    ]);
 
 class HomeInfoWidget extends StatefulWidget {
   @override
@@ -125,8 +114,11 @@ Widget _buildReport() {
 }
 
 Widget _buildGridBlock(List<String> contents) {
-  return Container(
-    decoration: _gridBoxDecoration,
+  return MaterialButton(
+    onPressed: () => print(contents),
+    color: ColorConstant.backgroundWhite,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(_gridBorderRadius)),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,

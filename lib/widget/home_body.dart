@@ -50,11 +50,10 @@ class _HomeBodyState extends State<HomeBodyWidget>
                 ),
                 width: 140,
               ),
-              Container(
-                width: 110,
+              Expanded(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
                     IconButton(
                       icon: SvgPicture.asset(SvgIcon.search),
                       onPressed: () => print('search'),
@@ -62,10 +61,11 @@ class _HomeBodyState extends State<HomeBodyWidget>
                     IconButton(
                       icon: SvgPicture.asset(SvgIcon.notification),
                       onPressed: () => print('notification'),
-                    )
+                    ),
                   ],
                 ),
-              )
+                flex: 1,
+              ),
             ],
           ),
         ),

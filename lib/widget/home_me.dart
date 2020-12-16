@@ -19,8 +19,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 // 整体
 const _mainHorizontalPadding = 15.0;
-// 通知部分
-const _notificationTopPadding = 40.0;
 // 头像部分
 const _portraitRadius = 40.0;
 // 名字部分
@@ -55,8 +53,8 @@ final _buttonRoundedBorder =
 
 Widget _buildNotification() {
   return Container(
-    padding: EdgeInsets.only(top: _notificationTopPadding),
-    alignment: Alignment.centerRight,
+    height: 90,
+    alignment: Alignment.bottomRight,
     child: IconButton(
       icon: SvgPicture.asset(SvgIcon.notification),
       onPressed: () => print('hello mike'),
@@ -168,16 +166,27 @@ final personalData = [
   '2000.05.10'
 ];
 
-Widget _getWidgetByShow(int show) {
+String _replaceWithStar(String data, int show) {
+  if (show >= 0 || data.length <= 4) return data;
+  return data.replaceRange(2, data.length - 2, '*****');
+}
+
+Widget _getWidgetByShow(int show, int index, ShowStateCallback callback) {
   if (show > 0) {
-    return Icon(
-      Icons.remove_red_eye_outlined,
-      size: _iconSize,
+    return GestureDetector(
+      onTap: () => callback(index, -1),
+      child: Icon(
+        Icons.remove_red_eye_outlined,
+        size: _iconSize,
+      ),
     );
   } else if (show < 0) {
-    return Icon(
-      Icons.panorama_fish_eye,
-      size: _iconSize,
+    return GestureDetector(
+      onTap: () => callback(index, 1),
+      child: Icon(
+        Icons.panorama_fish_eye,
+        size: _iconSize,
+      ),
     );
   } else {
     return Container(
@@ -188,7 +197,8 @@ Widget _getWidgetByShow(int show) {
 }
 
 Widget _wrapPersonalDataLine(
-    String iconSrc, String itemType, String data, int show) {
+    List<String> itemData, int isShow, int index, ShowStateCallback callback) {
+  // 每一行第一个数据是 Icon 名字, 第二个是提示信息, 第三个是实际数据
   return Container(
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -198,38 +208,41 @@ Widget _wrapPersonalDataLine(
           height: _iconSize,
           alignment: Alignment.center,
           margin: EdgeInsets.only(right: _iconTextOffset),
-          child: SvgPicture.asset(iconSrc),
+          child: SvgPicture.asset(itemData[0]),
         ),
-        Text(itemType),
+        Text(itemData[1]),
         Expanded(
           child: Text(
-            data,
+            _replaceWithStar(itemData[2], isShow),
             textAlign: TextAlign.end,
             style: const TextStyle(color: ColorConstant.textGrey),
           ),
           flex: 1,
         ),
-        _getWidgetByShow(show),
+        _getWidgetByShow(isShow, index, callback),
       ],
     ),
   );
 }
 
-Widget _buildPersonalData() {
+Widget _buildPersonalData(ShowStateCallback callback, List<int> showState) {
+  // 这里将构建一行 UI 所需要的字符串都封装在一起, 后面直接传递给 _wrapPersonalDataLine
+  final itemData = [
+    [SvgIcon.phoneNumber, StringConstant.phoneNumber, personalData[0]],
+    [SvgIcon.wechat, StringConstant.wechat, personalData[1]],
+    [SvgIcon.mailbox, StringConstant.mailbox, personalData[2]],
+    [SvgIcon.birthday, StringConstant.birthday, personalData[3]],
+  ];
   return _wrapBoxShadow(
     Column(
       children: [
-        _wrapPersonalDataLine(SvgIcon.phoneNumber, StringConstant.phoneNumber,
-            personalData[0], 1),
+        _wrapPersonalDataLine(itemData[0], showState[0], 0, callback),
         divider,
-        _wrapPersonalDataLine(
-            SvgIcon.wechat, StringConstant.wechat, personalData[1], -1),
+        _wrapPersonalDataLine(itemData[1], showState[1], 1, callback),
         divider,
-        _wrapPersonalDataLine(
-            SvgIcon.mailbox, StringConstant.mailbox, personalData[2], 0),
+        _wrapPersonalDataLine(itemData[2], showState[2], 2, callback),
         divider,
-        _wrapPersonalDataLine(
-            SvgIcon.birthday, StringConstant.birthday, personalData[3], 0),
+        _wrapPersonalDataLine(itemData[3], showState[3], 3, callback),
       ],
     ),
     _personalVerticalPadding,
@@ -297,27 +310,48 @@ class HomeMeWidget extends StatefulWidget {
   State createState() => _HomeMeState();
 }
 
+typedef ShowStateCallback = void Function(int, int);
+
 class _HomeMeState extends State<HomeMeWidget> {
+  // 是否展示: 1 表示全部展示, -1 表示部分隐藏, 0 表示不显示图标
+  var _showState = [1, -1, 0, 0];
+
   @override
   Widget build(BuildContext context) {
+    final _showStateCallback = (int index, int state) {
+      setState(() {
+        _showState[index] = state;
+      });
+    };
     final children = [
-      _buildNotification(),
       _buildHeadPortrait(),
       _buildName(),
       _buildActivePoint(),
       _buildCards(),
       _buildSignature(),
-      _buildPersonalData(),
+      _buildPersonalData(_showStateCallback, _showState),
       _buildShowMyPost(),
       _buildChangPwd(),
       _buildLogout(),
     ];
-    final offset = [0.0, 7.0, 5.0, 5.0, 15.0, 15.0, 20.0, 10.0, 10.0, 10.0];
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: _mainHorizontalPadding),
-      itemBuilder: (context, index) => children[index],
-      separatorBuilder: (context, index) => Container(height: offset[index]),
-      itemCount: children.length,
+    final offset = [7.0, 5.0, 5.0, 15.0, 15.0, 20.0, 10.0, 10.0, 10.0];
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        _buildNotification(),
+        Expanded(
+          child: ListView.separated(
+            padding:
+                const EdgeInsets.symmetric(horizontal: _mainHorizontalPadding),
+            itemBuilder: (context, index) => children[index],
+            separatorBuilder: (context, index) =>
+                Container(height: offset[index]),
+            itemCount: children.length,
+          ),
+          flex: 1,
+        ),
+      ],
     );
   }
 }
