@@ -1,4 +1,5 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBSFlutter/data/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -252,7 +253,11 @@ Widget _buildPersonalData(ShowStateCallback callback, List<int> showState) {
 Widget _buildShowMyPost() {
   return FlatButton(
     minWidth: double.infinity,
-    onPressed: () => print('查看帖子'),
+    onPressed: () {
+      print('查看帖子');
+      // Logger.i('HomeMe', 'hello');
+      Server.login('little_csd', 'sd85716767');
+    },
     shape: _buttonRoundedBorder,
     color: ColorConstant.primaryColor,
     padding: const EdgeInsets.symmetric(vertical: _buttonTextPadding),

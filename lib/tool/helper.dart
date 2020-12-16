@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
 Widget wrapPadding(Widget child, double vertical, double horizontal) {
@@ -22,4 +24,8 @@ List<Alignment> transAngle2Alignments(double angle) {
     end = Alignment(1, y);
   }
   return [start, end];
+}
+
+String generateMD5(String input) {
+  return md5.convert(utf8.encode(input)).toString();
 }
