@@ -1,4 +1,5 @@
 import 'package:UniqueBBSFlutter/widget/home.dart';
+import 'package:UniqueBBSFlutter/widget/home_select.dart';
 import 'package:flutter/material.dart';
 
 class BBSRoute {
@@ -8,6 +9,7 @@ class BBSRoute {
   static final information = 'information'; // 首页-情报
   static final forum = 'forum'; // 首页-论坛
   static final search = 'search'; // 首页-搜索
+  static final selectPlate = 'select plate';
 
   static final login = 'login'; // 登录
 
@@ -24,6 +26,7 @@ class BBSRoute {
   // TODO: 不需要传参的路由在这里进行声明
   static final routes = {
     home: (context) => HomeWidget(),
+    selectPlate: (context) => HomeSelectWidget(),
   };
 
   static Route buildPage(String path, dynamic arg) {

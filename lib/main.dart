@@ -21,9 +21,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           elevation: 0,
-          color: ColorConstant.backgroundGray,
+          color: ColorConstant.backgroundLightGrey,
           iconTheme: IconThemeData(
-            color: ColorConstant.textGray,
+            color: ColorConstant.textGrey,
           ),
         ),
         accentColor: ColorConstant.accentColor,
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
             TextTheme(bodyText2: TextStyle(color: ColorConstant.primaryColor)),
         primaryColor: ColorConstant.primaryColor,
         primaryColorLight: ColorConstant.primaryColorLight,
-        unselectedWidgetColor: ColorConstant.textGray,
+        unselectedWidgetColor: ColorConstant.textGrey,
         fontFamily: 'PingFang SC',
       ),
       home: HomeWidget(),

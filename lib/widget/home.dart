@@ -1,4 +1,5 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBSFlutter/config/route.dart';
 import 'package:UniqueBBSFlutter/widget/home_body.dart';
 import 'package:UniqueBBSFlutter/widget/home_me.dart';
 import 'package:flutter/material.dart';
@@ -9,20 +10,25 @@ class HomeWidget extends StatefulWidget {
   State createState() => _HomeState();
 }
 
+void _clickHomeSelect(BuildContext context) async {
+  var data = await Navigator.pushNamed(context, BBSRoute.selectPlate);
+  print(data);
+}
+
 BottomNavigationBarItem _getBottomBarItem(
-    String src, int index, int selectedIndex) {
+    String src, int index, int selectedIndex, String hint) {
   var color;
   if (index == selectedIndex) {
     color = ColorConstant.primaryColor;
   } else {
-    color = ColorConstant.textGray;
+    color = ColorConstant.textGrey;
   }
   return BottomNavigationBarItem(
     icon: SvgPicture.asset(
       src,
       color: color,
     ),
-    label: '',
+    label: hint,
   );
 }
 
@@ -39,7 +45,7 @@ class _HomeState extends State<HomeWidget> {
       body: _pages[_index],
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => print('hello'),
+        onPressed: () => _clickHomeSelect(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
@@ -53,8 +59,8 @@ class _HomeState extends State<HomeWidget> {
         currentIndex: _index,
         type: BottomNavigationBarType.fixed,
         items: [
-          _getBottomBarItem(SvgIcon.message, 0, _index),
-          _getBottomBarItem(SvgIcon.person, 1, _index),
+          _getBottomBarItem(SvgIcon.message, 0, _index, StringConstant.home),
+          _getBottomBarItem(SvgIcon.person, 1, _index, StringConstant.me),
         ],
       ),
     );

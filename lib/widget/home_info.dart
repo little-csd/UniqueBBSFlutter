@@ -14,13 +14,14 @@ const _innerVerticalPadding = 10.0;
 const _smallIconSize = 18.0;
 const _broadcastRadius = 25.0;
 const _titleStyle = TextStyle(fontSize: 18, color: ColorConstant.textBlack);
-const _subtitleStyle = TextStyle(fontSize: 12, color: ColorConstant.textGray);
+const _subtitleStyle = TextStyle(fontSize: 12, color: ColorConstant.textGrey);
 
 // 查看 report 部分的常量
 const _showReportRadius = 28.0;
 const _showReportTextStyle =
     TextStyle(fontSize: 18, color: ColorConstant.textWhite);
-final gradients = transAngle2Alignments(28);
+const _reportButtonHeight = 40.0;
+// final gradients = transAngle2Alignments(28);
 
 // 下方 gridView 部分常量
 const _gridSpacing = 15.0;
@@ -108,23 +109,18 @@ Widget _buildBroadcast() {
 }
 
 Widget _buildReport() {
-  Widget button = FlatButton(
-    minWidth: double.infinity,
-    onPressed: () => print('report!'),
-    child: Text(StringConstant.showReport, style: _showReportTextStyle),
-  );
   return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(_showReportRadius)),
-      gradient: LinearGradient(
-        begin: gradients[0],
-        end: gradients[1],
-        colors: [ColorConstant.purpleColor, ColorConstant.primaryColorLight],
-      ),
-    ),
     margin: EdgeInsets.symmetric(
-        horizontal: _mainHorizontalPadding, vertical: _mainVerticalPadding),
-    child: button,
+        vertical: _mainVerticalPadding, horizontal: _mainHorizontalPadding),
+    child: MaterialButton(
+      minWidth: double.infinity,
+      height: _reportButtonHeight,
+      onPressed: () => print('report!'),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_showReportRadius)),
+      color: ColorConstant.primaryColor,
+      child: Text(StringConstant.showReport, style: _showReportTextStyle),
+    ),
   );
 }
 
