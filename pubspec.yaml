@@ -1,5 +1,5 @@
 name: UniqueBBSFlutter
-description: A new Flutter project.
+description: BBS developed by Unique Studio
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -59,6 +59,11 @@ flutter:
 
   assets:
     - images/
+
+  fonts:
+    - family: PingFang SC
+      fonts:
+        - asset: fonts/PingFang SC-Regular.ttf
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

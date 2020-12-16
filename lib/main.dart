@@ -19,21 +19,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          appBarTheme: AppBarTheme(
-            elevation: 0,
-            color: ColorConstant.backgroundGray,
-            iconTheme: IconThemeData(
-              color: ColorConstant.textGray,
-            ),
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+          color: ColorConstant.backgroundLightGrey,
+          iconTheme: IconThemeData(
+            color: ColorConstant.textGrey,
           ),
-          accentColor: ColorConstant.accentColor,
-          indicatorColor: ColorConstant.primaryColor,
-          iconTheme: IconThemeData(color: ColorConstant.primaryColor),
-          primaryTextTheme: TextTheme(
-              bodyText2: TextStyle(color: ColorConstant.primaryColor)),
-          primaryColor: ColorConstant.primaryColor,
-          primaryColorLight: ColorConstant.primaryColorLight,
-          unselectedWidgetColor: ColorConstant.textGray),
+        ),
+        accentColor: ColorConstant.accentColor,
+        indicatorColor: ColorConstant.primaryColor,
+        iconTheme: IconThemeData(color: ColorConstant.primaryColor),
+        primaryTextTheme:
+            TextTheme(bodyText2: TextStyle(color: ColorConstant.primaryColor)),
+        primaryColor: ColorConstant.primaryColor,
+        primaryColorLight: ColorConstant.primaryColorLight,
+        unselectedWidgetColor: ColorConstant.textGrey,
+        fontFamily: 'PingFang SC',
+      ),
       home: HomeWidget(),
       onGenerateRoute: (setting) =>
           BBSRoute.buildPage(setting.name, setting.arguments),

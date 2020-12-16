@@ -87,7 +87,7 @@ class _ForumItemState extends State<ForumItem> {
                       Text(
                         "2020.01.19 肖宇轩 发布",
                         style: TextStyle(
-                          color: ColorConstant.textGray,
+                          color: ColorConstant.textGrey,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                         ),
