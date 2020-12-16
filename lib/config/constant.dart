@@ -10,7 +10,8 @@ class ColorConstant {
   static const primaryColorLight = Color(0xFFFFDFFD);
   static const accentColor = Color(0xff555555);
   static const skyButtonGray = Color(0xff707070);
-  static const skyInputPurple = Color(0xfff0f0f0);
+  static const skyInputPurple = Color(0xfff0f0f6);
+  static const skyInputHintPurple = Color(0xffcecae7);
 
 }
 

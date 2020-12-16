@@ -40,12 +40,6 @@ class _HomeState extends State<HomeWidget> {
       body: _pages[_index],
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(context, 
-              MaterialPageRoute(builder: (context) {
-                return LoginWidget();
-              }));
-        }
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(

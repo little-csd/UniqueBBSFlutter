@@ -1,6 +1,7 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:UniqueBBSFlutter/widget/common/FilledTextField.dart';
 
 
 // todo: refactor
@@ -27,10 +28,11 @@ class _LoginState extends State<LoginWidget> {
             _LogoText("STUDIO"),
             Padding(
                 padding: EdgeInsets.fromLTRB(20, 68, 20, 0),
-                child: _LoginTextField("手机号")),
+                child: _buildLoginTextField("登陆")
+                ),
             Padding(
               padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: _LoginTextField("密码"),
+              child: _buildLoginTextField("密码"),
             ),
             Padding(
                 padding: EdgeInsets.fromLTRB(20, 63, 20, 0),
@@ -61,6 +63,8 @@ class _LoginState extends State<LoginWidget> {
                         borderRadius: BorderRadius.circular(20.0)),
                     child: Text("使用企业微信扫码登录"),
                     onPressed: () {
+                      // fixme: test code
+                      textBottomSheet(context);
                       // todo: route to WeCom Page
                     },
                   ),
@@ -68,6 +72,26 @@ class _LoginState extends State<LoginWidget> {
           ],
         ),
       ),
+    );
+  }
+
+  void textBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return Container(
+            height: 330,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(30),
+                topRight: const Radius.circular(30),
+              ),
+            ),
+            child: Text("circle"),
+          );
+        }
     );
   }
 }
@@ -81,40 +105,12 @@ class _LogoText extends Text {
     fontSize: 18,
     letterSpacing: 4
   );
-
 }
 
-class _LoginTextField extends TextField {
-
-  String fint;
-
-  _LoginTextField(String fint) {
-    this.fint = fint;
-  }
-
-  @override
-  TextStyle get style => TextStyle(
-        fontSize: 14,
-        letterSpacing: 2,
-      );
-
-  @override
-  InputDecoration get decoration => InputDecoration(
-        enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xffffffff)),
-            borderRadius: BorderRadius.all(Radius.circular(50))),
-        focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xffffffff)),
-            borderRadius: BorderRadius.all(Radius.circular(50))),
-        filled: true,
-        fillColor: ColorConstant.skyInputPurple,
-        hintText: fint,
-        hintStyle: TextStyle(
-            color: Color(0xffb5b5b5),
-        ),
-        isDense: true,
-      contentPadding: EdgeInsets.all(10),
-      );
-}
-
-
+_buildLoginTextField(String hint) =>
+    buildFilledTextField(
+        hint,
+        Radius.circular(50),
+        ColorConstant.skyInputPurple,
+        ColorConstant.skyInputHintPurple
+    );
