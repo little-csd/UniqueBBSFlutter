@@ -93,6 +93,7 @@ class _HomeSelectState extends State<HomeSelectWidget> {
           emptyContainer,
           FlatButton(
             onPressed: () => Navigator.pop(context, ''),
+            shape: const CircleBorder(),
             child: SvgPicture.asset(
               SvgIcon.selectPlateCancel,
               width: _cancelIconSize,

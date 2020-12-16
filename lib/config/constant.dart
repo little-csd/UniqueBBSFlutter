@@ -8,6 +8,7 @@ class ColorConstant {
   static const textGrey = Color(0xFF999999);
   static const textBlack = Colors.black;
   static const textWhite = Colors.white;
+  static const textRed = Color(0xFFFF7A7A);
 
   // 前景色/背景色颜色常量
   static const primaryColor = Color(0xFF7966FF);
@@ -17,6 +18,7 @@ class ColorConstant {
   static const backgroundLightGrey = Color(0xFFFaFaFa);
   static const backgroundGrey = Color(0xFFCCCBD8);
   static const backgroundWhite = Colors.white;
+  static const backgroundBlack = Colors.black;
 
   // 阴影相关颜色常量
   static const borderGray = Color(0xFFE6E6E6);
@@ -38,6 +40,16 @@ class StringConstant {
   static const share = '交流分享';
 
   static const selectBlockHint = '请先选择发帖板块';
+  // '我的'界面的常量
+  static const activePoint = '活跃积分';
+  static const signature = '签名';
+  static const phoneNumber = '手机号';
+  static const wechat = '微信';
+  static const mailbox = '邮箱';
+  static const birthday = '生日';
+  static const showMyPost = '查看我的帖子';
+  static const changePassword = '修改密码';
+  static const logout = '退出登录';
 
   static const edit = '编辑';
   static const delete = '删除';
@@ -59,4 +71,9 @@ class SvgIcon {
 
   static const selectPlateIcon = _base + 'select_plate_icon.svg';
   static const selectPlateCancel = _base + 'select_plate_cancel.svg';
+
+  static const phoneNumber = _base + 'phone_icon.svg';
+  static const wechat = _base + 'wechat_icon.svg';
+  static const mailbox = _base + 'mailbox_icon.svg';
+  static const birthday = _base + 'birthday_icon.svg';
 }
