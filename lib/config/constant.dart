@@ -13,6 +13,7 @@ class ColorConstant {
   // 前景色/背景色颜色常量
   static const primaryColor = Color(0xFF7966FF);
   static const primaryColorLight = Color(0xFFFFDFFD);
+  static const primaryColorTransparent = Color(0x1F7966FF);
   static const purpleColor = Color(0xFF7966FF);
   static const accentColor = Color(0xff555555);
   static const backgroundLightGrey = Color(0xFFFaFaFa);
@@ -38,7 +39,7 @@ class StringConstant {
   static const freshmanTask = '新人任务';
   static const fileData = '文件留存';
   static const share = '交流分享';
-
+  // 选择发帖板块界面常量
   static const selectBlockHint = '请先选择发帖板块';
   // '我的'界面的常量
   static const activePoint = '活跃积分';
@@ -50,6 +51,8 @@ class StringConstant {
   static const showMyPost = '查看我的帖子';
   static const changePassword = '修改密码';
   static const logout = '退出登录';
+  // toast 常量
+  static const LoginSuccess = '登录成功!';
 
   static const edit = '编辑';
   static const delete = '删除';
@@ -76,4 +79,6 @@ class SvgIcon {
   static const wechat = _base + 'wechat_icon.svg';
   static const mailbox = _base + 'mailbox_icon.svg';
   static const birthday = _base + 'birthday_icon.svg';
+
+  static const logo = _base + 'logo.svg';
 }

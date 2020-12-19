@@ -1,7 +1,12 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/dio.dart';
+import 'package:UniqueBBSFlutter/data/bean/groupinfo.dart';
+import 'package:UniqueBBSFlutter/data/bean/user.dart';
+import 'package:UniqueBBSFlutter/data/bean/userinfo.dart';
+import 'package:UniqueBBSFlutter/data/model/user_model.dart';
+import 'package:UniqueBBSFlutter/data/repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 /// '我的'界面从上到下依次是:
 /// notification 图标
@@ -35,6 +40,7 @@ const _cardTextVerticalPadding = 5.0;
 const _cardTextHorizontalPadding = 10.0;
 final _cardTextStyle = TextStyle(fontSize: 14, color: ColorConstant.textWhite);
 // 中间信息部分
+const _shadowBlueRadius = 1.0;
 const _iconSize = 20.0;
 const _iconTextOffset = 5.0;
 const _personalVerticalPadding = 14.0;
@@ -63,7 +69,7 @@ Widget _buildNotification() {
   );
 }
 
-Widget _buildHeadPortrait() {
+Widget _buildHeadPortrait(String path) {
   return Container(
     alignment: Alignment.center,
     child: CircleAvatar(
@@ -75,11 +81,11 @@ Widget _buildHeadPortrait() {
   );
 }
 
-Widget _buildName() {
+Widget _buildName(String name) {
   return Container(
     alignment: Alignment.center,
     child: Text(
-      'CheN',
+      name,
       style: _nameTextStyle,
     ),
   );
@@ -98,15 +104,15 @@ Widget _buildActivePoint() {
   );
 }
 
-final cardData = [
-  'DESIGN',
-  'BBS',
-];
-
-Widget _buildCards() {
+// final cardData = [
+//   'DESIGN',
+//   'BBS',
+// ];
+/// 此处如果一个人同时位于很多个组，有可能会溢出
+Widget _buildCards(List<GroupInfo> groups) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
-    children: cardData.map((e) {
+    children: groups.map((e) {
       return Card(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(_cardRadius)),
@@ -116,7 +122,7 @@ Widget _buildCards() {
               vertical: _cardTextVerticalPadding,
               horizontal: _cardTextHorizontalPadding),
           child: Text(
-            e,
+            e.name,
             style: _cardTextStyle,
           ),
         ),
@@ -135,7 +141,7 @@ Widget _wrapBoxShadow(Widget child, double verticalPadding) {
       boxShadow: [
         BoxShadow(
           color: Colors.grey,
-          blurRadius: 1.0,
+          blurRadius: _shadowBlueRadius,
         ),
       ],
       color: ColorConstant.backgroundLightGrey,
@@ -144,7 +150,8 @@ Widget _wrapBoxShadow(Widget child, double verticalPadding) {
   );
 }
 
-Widget _buildSignature() {
+/// 此处注意 signature 过长的情况，可能发生 ui 问题
+Widget _buildSignature(String signature) {
   final text = Text.rich(TextSpan(children: [
     TextSpan(
       text: StringConstant.signature,
@@ -152,7 +159,7 @@ Widget _buildSignature() {
           color: ColorConstant.textBlack, fontSize: _buttonTextFontSize),
     ),
     TextSpan(
-      text: '   Hi~',
+      text: '   $signature',
       style: const TextStyle(
           color: ColorConstant.textGrey, fontSize: _buttonTextFontSize),
     ),
@@ -226,13 +233,15 @@ Widget _wrapPersonalDataLine(
   );
 }
 
-Widget _buildPersonalData(ShowStateCallback callback, List<int> showState) {
+/// TODO: 此处后台没有生日信息, 先放个学号
+Widget _buildPersonalData(
+    UserInfo info, ShowStateCallback callback, List<int> showState) {
   // 这里将构建一行 UI 所需要的字符串都封装在一起, 后面直接传递给 _wrapPersonalDataLine
   final itemData = [
-    [SvgIcon.phoneNumber, StringConstant.phoneNumber, personalData[0]],
-    [SvgIcon.wechat, StringConstant.wechat, personalData[1]],
-    [SvgIcon.mailbox, StringConstant.mailbox, personalData[2]],
-    [SvgIcon.birthday, StringConstant.birthday, personalData[3]],
+    [SvgIcon.phoneNumber, StringConstant.phoneNumber, info.mobile],
+    [SvgIcon.wechat, StringConstant.wechat, info.wechat],
+    [SvgIcon.mailbox, StringConstant.mailbox, info.email],
+    [SvgIcon.birthday, StringConstant.birthday, info.studentID],
   ];
   return _wrapBoxShadow(
     Column(
@@ -250,13 +259,12 @@ Widget _buildPersonalData(ShowStateCallback callback, List<int> showState) {
   );
 }
 
-Widget _buildShowMyPost() {
+Widget _buildShowMyPost(BuildContext context) {
   return FlatButton(
     minWidth: double.infinity,
     onPressed: () {
       print('查看帖子');
       // Logger.i('HomeMe', 'hello');
-      Server.login('little_csd', 'sd85716767');
     },
     shape: _buttonRoundedBorder,
     color: ColorConstant.primaryColor,
@@ -272,7 +280,7 @@ Widget _buildShowMyPost() {
   );
 }
 
-Widget _buildChangPwd() {
+Widget _buildChangPwd(BuildContext context) {
   return Container(
     width: double.infinity,
     child: OutlineButton(
@@ -294,10 +302,11 @@ Widget _buildChangPwd() {
   );
 }
 
-Widget _buildLogout() {
+Widget _buildLogout(BuildContext context) {
   return MaterialButton(
     padding: EdgeInsets.symmetric(vertical: _buttonTextPadding),
     onPressed: () => print('退出登录'),
+    minWidth: double.infinity,
     shape: _buttonRoundedBorder,
     child: Text(
       StringConstant.logout,
@@ -317,6 +326,7 @@ class HomeMeWidget extends StatefulWidget {
 
 typedef ShowStateCallback = void Function(int, int);
 
+/// 进入 me 界面前要保证自己的 user 信息必须存在
 class _HomeMeState extends State<HomeMeWidget> {
   // 是否展示: 1 表示全部展示, -1 表示部分隐藏, 0 表示不显示图标
   var _showState = [1, -1, 0, 0];
@@ -328,35 +338,41 @@ class _HomeMeState extends State<HomeMeWidget> {
         _showState[index] = state;
       });
     };
-    final children = [
-      _buildHeadPortrait(),
-      _buildName(),
-      _buildActivePoint(),
-      _buildCards(),
-      _buildSignature(),
-      _buildPersonalData(_showStateCallback, _showState),
-      _buildShowMyPost(),
-      _buildChangPwd(),
-      _buildLogout(),
-    ];
-    final offset = [7.0, 5.0, 5.0, 15.0, 15.0, 20.0, 10.0, 10.0, 10.0];
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _buildNotification(),
-        Expanded(
-          child: ListView.separated(
-            padding:
-                const EdgeInsets.symmetric(horizontal: _mainHorizontalPadding),
-            itemBuilder: (context, index) => children[index],
-            separatorBuilder: (context, index) =>
-                Container(height: offset[index]),
-            itemCount: children.length,
-          ),
-          flex: 1,
-        ),
-      ],
+    return Consumer<UserModel>(
+      builder: (context, userModel, child) {
+        User me = userModel.find(Repo.instance.uid);
+        final info = me.user;
+        return Column(
+          children: [
+            _buildNotification(),
+            SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: _mainHorizontalPadding),
+              child: Column(
+                children: [
+                  _buildHeadPortrait(info.avatar),
+                  Container(height: 7),
+                  _buildName(info.username),
+                  Container(height: 5),
+                  _buildActivePoint(),
+                  Container(height: 5),
+                  _buildCards(me.groups),
+                  Container(height: 15),
+                  _buildSignature(info.signature),
+                  Container(height: 20),
+                  _buildPersonalData(info, _showStateCallback, _showState),
+                  Container(height: 30),
+                  _buildShowMyPost(context),
+                  Container(height: 10),
+                  _buildChangPwd(context),
+                  Container(height: 10),
+                  _buildLogout(context),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

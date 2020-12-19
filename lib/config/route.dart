@@ -17,8 +17,6 @@ class BBSRoute {
   static final postDetail = 'postDetail'; // 帖子详情
   static final posting = 'postReport'; // 发帖
 
-  static final me = 'me'; // 我的
-  static final userDetail = 'userDetail'; // 用户信息
   static final pwUpdate = 'pwUpdate'; // 修改密码
 
   static final message = 'message'; // 消息页面
