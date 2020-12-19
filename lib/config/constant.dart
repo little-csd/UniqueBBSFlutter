@@ -40,6 +40,35 @@ class StringConstant {
   static const freshmanTask = '新人任务';
   static const fileData = '文件留存';
   static const share = '交流分享';
+  static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
+  // 登陆页
+  static const logo2Line = "UNIQUE\nSTUDIO";
+  static const phoneNumber = "手机号";
+  static const password = "密码";
+  static const noPhoneNumber = "手机号未注册，\n用企业微信登录试试吧？";
+  static const login = "登陆";
+  static const iKnow = "我知道了";
+  static const useWeComLogin = "使用企业微信扫码登录";
+  // 完善信息页
+  static const userInfoLabel = "请完善你的个人信息\n让我们更了解你吧";
+  static const qq = "QQ";
+  static const weChat = "微信";
+  static const birthday = "生日";
+  static const year = "年份";
+  static const mouth = "月份";
+  static const day = "日";
+  static const nextStep = "继续";
+  static const jumpOver = "跳过";
+  // 完善密码页
+  static const completePasswordLabel = "请你设置你的登陆密码\n方便你以后的登陆噢";
+  static const passwordTips = "6-10位数，支持大小写英文字符和数字";
+  static const confirmPassword = "确认密码";
+  static const complete = "完成";
+  // 修改密码页
+  static const changePassword = "修改密码";
+  static const confirm = "确认";
+  static const inputPassword = "输入密码";
+  static const confirmPasswordAgain = "再次确认密码";
 
   static const selectBlockHint = '请先选择发帖板块';
 
@@ -60,7 +89,9 @@ class SvgIcon {
   static const projectTask = _base + 'project_task.svg';
   static const share = _base + 'share.svg';
   static const broadcast = _base + 'broadcast.svg';
+  static const logo = _base + "login_logo.svg";
+  static const error = _base + "no_phone_number.svg";
 
-  static const selectPlateIcon = _base + 'select_plate_icon.svg';
+      static const selectPlateIcon = _base + 'select_plate_icon.svg';
   static const selectPlateCancel = _base + 'select_plate_cancel.svg';
 }
