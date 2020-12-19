@@ -1,3 +1,4 @@
+import 'package:UniqueBBSFlutter/data/model/avatar_model.dart';
 import 'package:UniqueBBSFlutter/data/model/forum_model.dart';
 import 'package:UniqueBBSFlutter/tool/logger.dart';
 
@@ -24,4 +25,5 @@ class Repo {
   String uid = ''; // 当前用户的 uid
   final UserModel userModel = UserModel();
   final ForumModel threadModel = ForumModel();
+  final AvatarModel avatarModel = AvatarModel();
 }

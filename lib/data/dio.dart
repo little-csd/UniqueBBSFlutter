@@ -1,6 +1,7 @@
 import 'dart:async';
+import 'dart:collection';
+import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:UniqueBBSFlutter/tool/helper.dart';
@@ -31,6 +32,7 @@ class NetRsp<T> {
 
 typedef AppInitCallback = void Function(bool, String);
 
+/// token 错误返回信息： {code: -1, msg: jwt malformed}
 class Server {
   static const _TAG = "Server";
   static const LoginUrl = '/api/user/login/pwd';
@@ -77,7 +79,7 @@ class Server {
       'nickname': nickname,
       'pwd': generateMD5(password),
     };
-    Map<String, dynamic> json;
+    Map<String, dynamic> json = HashMap();
     String errno = await _post(LoginUrl, data, json);
     if (errno != null) {
       return NetRsp(false, msg: errno);
@@ -86,7 +88,7 @@ class Server {
     if (msg == null) {
       return NetRsp(false, msg: EmptyMsg);
     }
-    String token = json['token'], uid = json['uid'];
+    String token = msg['token'], uid = msg['uid'];
     dio.options.headers[HttpHeaders.authorizationHeader] = token;
     Repo.instance.uid = uid;
     Logger.d(_TAG, 'token = $token, uid = $uid');
@@ -103,7 +105,7 @@ class Server {
 
   Future<NetRsp<User>> user(String uid) async {
     final url = '$UserUrl/$uid';
-    Map<String, dynamic> json;
+    Map<String, dynamic> json = HashMap();
     String errno = await _get(url, json);
     if (errno != null) {
       return NetRsp(false, msg: errno);
@@ -125,18 +127,16 @@ class Server {
     return user(uid);
   }
 
-  // Future<NetRsp<bool>> userUpdate() async {
-  //
-  // }
-
   Future<NetRsp<Image>> avatar(String path) async {
     try {
-      Response<Uint8List> response = await dio.get(path);
+      path = path.replaceAll(_baseUrl, '');
+      Response<String> response = await dio.get(path,
+          options: Options(contentType: 'application/octet-stream'));
       final data = response.data;
       if (data == null) {
         return NetRsp(false, msg: UnknownError);
       }
-      final img = Image.memory(data);
+      final img = Image.memory(utf8.encoder.convert(data));
       if (img == null) {
         return NetRsp(false, msg: UnknownError);
       }

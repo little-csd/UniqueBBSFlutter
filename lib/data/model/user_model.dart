@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:UniqueBBSFlutter/data/bean/user.dart';
 import 'package:UniqueBBSFlutter/tool/logger.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,7 @@ import 'package:flutter/material.dart';
 /// 使用 dio.dart 中的接口 user(uid) 获取
 class UserModel extends ChangeNotifier {
   static const _TAG = "UserModel";
-  Map<String, User> _userMap;
+  Map<String, User> _userMap = HashMap();
 
   void put(String uid, User user) {
     if (user == null) {

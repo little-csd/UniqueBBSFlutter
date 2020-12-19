@@ -15,7 +15,7 @@ class AppSplashWidget extends StatelessWidget {
     final initCallback = (bool ok, String msg) {
       if (ok) {
         Navigator.pushNamed(context, BBSRoute.home);
-        Fluttertoast.showToast(msg: StringConstant.LoginSuccess);
+        Fluttertoast.showToast(msg: StringConstant.loginSuccess);
       } else {
         Navigator.pushNamed(context, BBSRoute.login);
         Fluttertoast.showToast(msg: msg);
@@ -55,34 +55,17 @@ class AppSplashWidget extends StatelessWidget {
                 width: size,
                 height: size,
                 child: SvgPicture.asset(
-                  SvgIcon.logo,
+                  SvgIcon.splashLogo,
                   color: ColorConstant.primaryColorTransparent,
                   alignment: Alignment.center,
                 ),
               ),
-              Text('UNIQUE\nSTUDIO', style: uniqueStudioTextStyle),
+              Text(StringConstant.logo2Line, style: uniqueStudioTextStyle),
             ],
           ),
-          Text('联创团队', style: bottomTextStyle),
+          Text(StringConstant.uniqueStudio, style: bottomTextStyle),
         ],
       ),
-    );
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Container(height: 20),
-        Text('联创团队'),
-        // Stack(
-        //   alignment: Alignment.bottomCenter,
-        //   children: [
-        //     Text('UNIQUE\nSTUDIO'),
-        //     SvgPicture.asset(
-        //       SvgIcon.logo,
-        //       fit: BoxFit.cover,
-        //     ),
-        //   ],
-        // ),
-      ],
     );
   }
 }

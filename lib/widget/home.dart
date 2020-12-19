@@ -2,6 +2,7 @@ import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/config/route.dart';
 import 'package:UniqueBBSFlutter/widget/home_body.dart';
 import 'package:UniqueBBSFlutter/widget/home_me.dart';
+import 'package:UniqueBBSFlutter/widget/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -11,7 +12,7 @@ class HomeWidget extends StatefulWidget {
 }
 
 void _clickHomeSelect(BuildContext context) async {
-  var data = await Navigator.pushNamed(context, BBSRoute.selectPlate);
+  var data = await Navigator.pushNamed(context, BBSRoute.login);
   print(data);
 }
 

@@ -12,6 +12,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => Repo.instance.userModel),
         ChangeNotifierProvider(create: (context) => Repo.instance.threadModel),
+        ChangeNotifierProvider(create: (context) => Repo.instance.avatarModel),
       ],
       child: UniqueStudioApp(),
     ),

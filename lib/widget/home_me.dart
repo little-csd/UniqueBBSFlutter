@@ -2,6 +2,7 @@ import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/data/bean/groupinfo.dart';
 import 'package:UniqueBBSFlutter/data/bean/user.dart';
 import 'package:UniqueBBSFlutter/data/bean/userinfo.dart';
+import 'package:UniqueBBSFlutter/data/model/avatar_model.dart';
 import 'package:UniqueBBSFlutter/data/model/user_model.dart';
 import 'package:UniqueBBSFlutter/data/repo.dart';
 import 'package:flutter/material.dart';
@@ -70,14 +71,33 @@ Widget _buildNotification() {
 }
 
 Widget _buildHeadPortrait(String path) {
-  return Container(
-    alignment: Alignment.center,
-    child: CircleAvatar(
-      radius: _portraitRadius,
-      backgroundImage:
-          NetworkImage('https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/'
+  return Consumer<AvatarModel>(
+    builder: (context, model, child) {
+      // var image = model.find(path);
+      // if (image == null) {
+      //   Server.instance.avatar(path).then((rsp) {
+      //     if (rsp.success) {
+      //       model.put(path, rsp.data);
+      //     }
+      //   });
+      return Container(
+        alignment: Alignment.center,
+        child: CircleAvatar(
+          radius: _portraitRadius,
+          backgroundImage: NetworkImage(
+              'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/'
               'it/u=1336318030,2258820972&fm=26&gp=0.jpg'),
-    ),
+        ),
+      );
+      // }
+      // return Container(
+      //   alignment: Alignment.center,
+      //   child: CircleAvatar(
+      //     radius: _portraitRadius,
+      //     child: image,
+      //   ),
+      // );
+    },
   );
 }
 
@@ -239,7 +259,7 @@ Widget _buildPersonalData(
   // 这里将构建一行 UI 所需要的字符串都封装在一起, 后面直接传递给 _wrapPersonalDataLine
   final itemData = [
     [SvgIcon.phoneNumber, StringConstant.phoneNumber, info.mobile],
-    [SvgIcon.wechat, StringConstant.wechat, info.wechat],
+    [SvgIcon.weChat, StringConstant.weChat, info.wechat],
     [SvgIcon.mailbox, StringConstant.mailbox, info.email],
     [SvgIcon.birthday, StringConstant.birthday, info.studentID],
   ];
