@@ -8,6 +8,17 @@ class ChangePasswordWidget extends StatefulWidget {
 class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.only(
+          left: 20,
+          right: 20
+        ),
+        child: Column(
 
+        ),
+      ),
+    );
   }
+
 }

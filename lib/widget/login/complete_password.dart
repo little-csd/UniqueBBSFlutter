@@ -8,5 +8,20 @@ class CompletePasswordWidget extends StatefulWidget {
 class _CompletePasswordWidget extends State<CompletePasswordWidget> {
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.only(
+            left: 20,
+            right: 20
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+
+          ],
+        ),
+      ),
+    );
   }
 }
