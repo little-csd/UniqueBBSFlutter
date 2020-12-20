@@ -1,5 +1,5 @@
-import 'package:UniqueBBSFlutter/data/bean/groupinfo.dart';
-import 'package:UniqueBBSFlutter/data/bean/userinfo.dart';
+import 'package:UniqueBBSFlutter/data/bean/group/group_info.dart';
+import 'package:UniqueBBSFlutter/data/bean/user/user_info.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
