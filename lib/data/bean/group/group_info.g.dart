@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'groupinfo.dart';
+part of 'group_info.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
