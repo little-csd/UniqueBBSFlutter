@@ -371,30 +371,33 @@ class _HomeMeState extends State<HomeMeWidget> {
         return Column(
           children: [
             _buildNotification(),
-            SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: _mainHorizontalPadding),
-              child: Column(
-                children: [
-                  _buildHeadPortrait(me),
-                  Container(height: 7),
-                  _buildName(me),
-                  Container(height: 5),
-                  _buildActivePoint(),
-                  Container(height: 5),
-                  _buildCards(me),
-                  Container(height: 15),
-                  _buildSignature(me),
-                  Container(height: 20),
-                  _buildPersonalData(me, _showStateCallback, _showState),
-                  Container(height: 30),
-                  _buildShowMyPost(context),
-                  Container(height: 10),
-                  _buildChangPwd(context),
-                  Container(height: 10),
-                  _buildLogout(context),
-                ],
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: _mainHorizontalPadding),
+                child: Column(
+                  children: [
+                    _buildHeadPortrait(me),
+                    Container(height: 7),
+                    _buildName(me),
+                    Container(height: 5),
+                    _buildActivePoint(),
+                    Container(height: 5),
+                    _buildCards(me),
+                    Container(height: 15),
+                    _buildSignature(me),
+                    Container(height: 20),
+                    _buildPersonalData(me, _showStateCallback, _showState),
+                    Container(height: 30),
+                    _buildShowMyPost(context),
+                    Container(height: 10),
+                    _buildChangPwd(context),
+                    Container(height: 10),
+                    _buildLogout(context),
+                  ],
+                ),
               ),
+              flex: 1,
             ),
           ],
         );

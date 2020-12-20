@@ -9,6 +9,7 @@ class ColorConstant {
   static const textBlack = Colors.black;
   static const textWhite = Colors.white;
   static const textRed = Color(0xFFFF7A7A);
+  static const textLightPurPle = Color(0xff9b84fe);
 
   // 前景色/背景色颜色常量
   static const primaryColor = Color(0xFF7966FF);
@@ -65,7 +66,7 @@ class StringConstant {
   static const nextStep = "继续";
   static const jumpOver = "跳过";
   // 完善密码页
-  static const completePasswordLabel = "请你设置你的登陆密码\n方便你以后的登陆噢";
+  static const completePasswordLabel = "请设置你的登陆密码\n方便你以后的登陆噢";
   static const passwordTips = "6-10位数，支持大小写英文字符和数字";
   static const confirmPassword = "确认密码";
   static const complete = "完成";
@@ -100,6 +101,8 @@ class SvgIcon {
   static const share = _base + 'share.svg';
   static const broadcast = _base + 'broadcast.svg';
   static const loginLogo = _base + "login_logo.svg";
+  static const doubt = _base + "jyr_doubt.svg";
+  static const setInfo = _base + "set_info.svg";
   static const error = _base + "no_phone_number.svg";
 
   static const selectPlateIcon = _base + 'select_plate_icon.svg';

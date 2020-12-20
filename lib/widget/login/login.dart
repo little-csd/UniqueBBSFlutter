@@ -118,8 +118,7 @@ _buildWeComLoginButton(BuildContext context) => SizedBox(
             borderRadius: BorderRadius.circular(20.0)),
         child: Text(StringConstant.useWeComLogin),
         onPressed: () {
-          // todo: route to WeCom Page
-          _buildNoNumberBottomSheet(context);
+          Navigator.pushNamed(context, BBSRoute.pwSet);
         },
       ),
     );

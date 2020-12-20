@@ -1,4 +1,5 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBSFlutter/config/route.dart';
 import 'package:UniqueBBSFlutter/tool/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -97,14 +98,16 @@ Widget _buildBroadcast() {
   );
 }
 
-Widget _buildReport() {
+Widget _buildReport(BuildContext context) {
   return Container(
     margin: EdgeInsets.symmetric(
         vertical: _mainVerticalPadding, horizontal: _mainHorizontalPadding),
     child: MaterialButton(
       minWidth: double.infinity,
       height: _reportButtonHeight,
-      onPressed: () => print('report!'),
+      onPressed: () {
+        Navigator.pushNamed(context, BBSRoute.login);
+      },
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(_showReportRadius)),
       color: ColorConstant.primaryColor,
@@ -166,7 +169,7 @@ class _HomeInfoState extends State<HomeInfoWidget> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildBroadcast(),
-        _buildReport(),
+        _buildReport(context),
         _buildGrid(),
       ],
     );
