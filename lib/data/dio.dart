@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:UniqueBBSFlutter/data/bean/user/mentor.dart';
 import 'package:UniqueBBSFlutter/tool/helper.dart';
 import 'package:UniqueBBSFlutter/tool/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'bean/user.dart';
+import 'bean/user/user.dart';
 import 'repo.dart';
 
 const _baseUrl = 'https://hustunique.com:7010';
@@ -30,13 +30,12 @@ class NetRsp<T> {
   NetRsp(this.success, {this.msg, this.data});
 }
 
-typedef AppInitCallback = void Function(bool, String);
-
 /// token 错误返回信息： {code: -1, msg: jwt malformed}
 class Server {
   static const _TAG = "Server";
   static const LoginUrl = '/api/user/login/pwd';
   static const UserUrl = '/api/user/info';
+  static const MentorUrl = '/api/user/mentor/info';
 
   static const NetworkError = '网络错误!';
   static const UidError = '找不到用户信息!';
@@ -50,7 +49,7 @@ class Server {
 
   VoidCallback tokenErrCallback;
 
-  void init(AppInitCallback callback, VoidCallback tokenErrCallback) async {
+  Future<String> init(VoidCallback tokenErrCallback) async {
     // token 过期统一在 _get 和 _post 方法中处理
     this.tokenErrCallback = tokenErrCallback;
     final sp = await SharedPreferences.getInstance();
@@ -58,20 +57,11 @@ class Server {
     final token = sp.getString(TokenKeyInSp);
     Logger.d(_TAG, 'token = $token, uid = $uid');
     if (uid == null || token == null) {
-      callback(false, UidError);
-      return;
+      return UidError;
     }
     dio.options.headers[HttpHeaders.authorizationHeader] = token;
     Repo.instance.uid = uid;
-    me().then((rsp) {
-      if (!rsp.success) {
-        callback(false, NetworkError);
-        return;
-      }
-      Repo.instance.userModel.put(uid, rsp.data);
-      callback(true, '');
-    });
-    return;
+    return NoError;
   }
 
   Future<NetRsp<String>> login(String nickname, String password) async {
@@ -127,16 +117,14 @@ class Server {
     return user(uid);
   }
 
-  Future<NetRsp<Image>> avatar(String path) async {
+  Future<NetRsp<Image>> avatar(String path, String savePath) async {
     try {
       path = path.replaceAll(_baseUrl, '');
-      Response<String> response = await dio.get(path,
-          options: Options(contentType: 'application/octet-stream'));
-      final data = response.data;
-      if (data == null) {
-        return NetRsp(false, msg: UnknownError);
+      Response response = await dio.download(path, savePath);
+      if (response.statusCode != HttpStatus.ok) {
+        return NetRsp(false, msg: NetworkError);
       }
-      final img = Image.memory(utf8.encoder.convert(data));
+      final img = Image.file(File(savePath));
       if (img == null) {
         return NetRsp(false, msg: UnknownError);
       }
@@ -146,6 +134,21 @@ class Server {
       Logger.w(_TAG, msg);
       return NetRsp(false, msg: NetworkError);
     }
+  }
+
+  Future<NetRsp<Mentor>> mentor(String uid) async {
+    final url = '$MentorUrl/$uid';
+    Map<String, dynamic> json = HashMap();
+    String errno = await _get(url, json);
+    if (errno != null) {
+      return NetRsp(false, msg: errno);
+    }
+    Map<String, dynamic> msg = json['msg'];
+    if (msg == null) {
+      return NetRsp(false, msg: EmptyMsg);
+    }
+    Mentor mentor = Mentor.fromJson(json);
+    return NetRsp(true, data: mentor);
   }
 
   // 发送 Post 请求, 没有错误则返回 null, 并将数据填充到 json 这个 map 中

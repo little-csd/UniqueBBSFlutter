@@ -3,6 +3,9 @@ import 'dart:collection';
 import 'package:UniqueBBSFlutter/tool/logger.dart';
 import 'package:flutter/material.dart';
 
+import '../dio.dart';
+import '../repo.dart';
+
 class AvatarModel extends ChangeNotifier {
   static const _TAG = "AvatarModel";
   Map<String, Image> _avatarMap = HashMap();
@@ -16,7 +19,16 @@ class AvatarModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Image find(String name) {
-    return _avatarMap[name];
+  Image find(String path) {
+    final image = _avatarMap[path];
+    if (image == null) {
+      final savePath = Repo.instance.localPath + path.split('/').last;
+      Server.instance.avatar(path, savePath).then((rsp) {
+        if (rsp.success) {
+          put(path, rsp.data);
+        }
+      });
+    }
+    return image;
   }
 }

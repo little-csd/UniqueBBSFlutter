@@ -22,6 +22,14 @@ class Repo {
     return _instance;
   }
 
+  String _localPath;
+  set localPath(String path) {
+    _localPath = path;
+    Logger.d(_TAG, 'save local path $path');
+  }
+
+  get localPath => _localPath;
+
   String uid = ''; // 当前用户的 uid
   final UserModel userModel = UserModel();
   final ForumModel threadModel = ForumModel();

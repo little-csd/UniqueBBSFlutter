@@ -1,7 +1,5 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/bean/groupinfo.dart';
-import 'package:UniqueBBSFlutter/data/bean/user.dart';
-import 'package:UniqueBBSFlutter/data/bean/userinfo.dart';
+import 'package:UniqueBBSFlutter/data/bean/user/user.dart';
 import 'package:UniqueBBSFlutter/data/model/avatar_model.dart';
 import 'package:UniqueBBSFlutter/data/model/user_model.dart';
 import 'package:UniqueBBSFlutter/data/repo.dart';
@@ -70,38 +68,39 @@ Widget _buildNotification() {
   );
 }
 
-Widget _buildHeadPortrait(String path) {
+final notFound = Container(
+  alignment: Alignment.center,
+  child: CircleAvatar(
+    radius: _portraitRadius,
+    backgroundImage:
+        NetworkImage('https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/'
+            'it/u=1336318030,2258820972&fm=26&gp=0.jpg'),
+  ),
+);
+
+Widget _buildHeadPortrait(User user) {
   return Consumer<AvatarModel>(
     builder: (context, model, child) {
-      // var image = model.find(path);
-      // if (image == null) {
-      //   Server.instance.avatar(path).then((rsp) {
-      //     if (rsp.success) {
-      //       model.put(path, rsp.data);
-      //     }
-      //   });
+      if (user == null) {
+        return notFound;
+      }
+      final image = model.find(user.user.avatar);
+      if (image == null) {
+        return notFound;
+      }
       return Container(
         alignment: Alignment.center,
         child: CircleAvatar(
           radius: _portraitRadius,
-          backgroundImage: NetworkImage(
-              'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/'
-              'it/u=1336318030,2258820972&fm=26&gp=0.jpg'),
+          backgroundImage: image.image,
         ),
       );
-      // }
-      // return Container(
-      //   alignment: Alignment.center,
-      //   child: CircleAvatar(
-      //     radius: _portraitRadius,
-      //     child: image,
-      //   ),
-      // );
     },
   );
 }
 
-Widget _buildName(String name) {
+Widget _buildName(User me) {
+  final name = me == null ? StringConstant.noData : me.user.username;
   return Container(
     alignment: Alignment.center,
     child: Text(
@@ -129,10 +128,13 @@ Widget _buildActivePoint() {
 //   'BBS',
 // ];
 /// 此处如果一个人同时位于很多个组，有可能会溢出
-Widget _buildCards(List<GroupInfo> groups) {
+Widget _buildCards(User me) {
+  if (me == null) {
+    return Container();
+  }
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
-    children: groups.map((e) {
+    children: me.groups.map((e) {
       return Card(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(_cardRadius)),
@@ -171,7 +173,8 @@ Widget _wrapBoxShadow(Widget child, double verticalPadding) {
 }
 
 /// 此处注意 signature 过长的情况，可能发生 ui 问题
-Widget _buildSignature(String signature) {
+Widget _buildSignature(User me) {
+  final signature = me == null ? StringConstant.noData : me.user.signature;
   final text = Text.rich(TextSpan(children: [
     TextSpan(
       text: StringConstant.signature,
@@ -255,13 +258,17 @@ Widget _wrapPersonalDataLine(
 
 /// TODO: 此处后台没有生日信息, 先放个学号
 Widget _buildPersonalData(
-    UserInfo info, ShowStateCallback callback, List<int> showState) {
+    User me, ShowStateCallback callback, List<int> showState) {
   // 这里将构建一行 UI 所需要的字符串都封装在一起, 后面直接传递给 _wrapPersonalDataLine
+  final mobile = me == null ? StringConstant.noData : me.user.mobile;
+  final weChat = me == null ? StringConstant.noData : me.user.wechat;
+  final email = me == null ? StringConstant.noData : me.user.email;
+  final studentID = me == null ? StringConstant.noData : me.user.studentID;
   final itemData = [
-    [SvgIcon.phoneNumber, StringConstant.phoneNumber, info.mobile],
-    [SvgIcon.weChat, StringConstant.weChat, info.wechat],
-    [SvgIcon.mailbox, StringConstant.mailbox, info.email],
-    [SvgIcon.birthday, StringConstant.birthday, info.studentID],
+    [SvgIcon.phoneNumber, StringConstant.phoneNumber, mobile],
+    [SvgIcon.weChat, StringConstant.weChat, weChat],
+    [SvgIcon.mailbox, StringConstant.mailbox, email],
+    [SvgIcon.birthday, StringConstant.birthday, studentID],
   ];
   return _wrapBoxShadow(
     Column(
@@ -349,7 +356,7 @@ typedef ShowStateCallback = void Function(int, int);
 /// 进入 me 界面前要保证自己的 user 信息必须存在
 class _HomeMeState extends State<HomeMeWidget> {
   // 是否展示: 1 表示全部展示, -1 表示部分隐藏, 0 表示不显示图标
-  var _showState = [1, -1, 0, 0];
+  var _showState = [1, 1, 0, 0];
 
   @override
   Widget build(BuildContext context) {
@@ -361,7 +368,6 @@ class _HomeMeState extends State<HomeMeWidget> {
     return Consumer<UserModel>(
       builder: (context, userModel, child) {
         User me = userModel.find(Repo.instance.uid);
-        final info = me.user;
         return Column(
           children: [
             _buildNotification(),
@@ -370,17 +376,17 @@ class _HomeMeState extends State<HomeMeWidget> {
                   horizontal: _mainHorizontalPadding),
               child: Column(
                 children: [
-                  _buildHeadPortrait(info.avatar),
+                  _buildHeadPortrait(me),
                   Container(height: 7),
-                  _buildName(info.username),
+                  _buildName(me),
                   Container(height: 5),
                   _buildActivePoint(),
                   Container(height: 5),
-                  _buildCards(me.groups),
+                  _buildCards(me),
                   Container(height: 15),
-                  _buildSignature(info.signature),
+                  _buildSignature(me),
                   Container(height: 20),
-                  _buildPersonalData(info, _showStateCallback, _showState),
+                  _buildPersonalData(me, _showStateCallback, _showState),
                   Container(height: 30),
                   _buildShowMyPost(context),
                   Container(height: 10),

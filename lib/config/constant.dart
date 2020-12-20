@@ -82,6 +82,7 @@ class StringConstant {
   static const mailbox = '邮箱';
   static const showMyPost = '查看我的帖子';
   static const logout = '退出登录';
+  static const noData = '无';
   // toast 常量
   static const loginSuccess = '登录成功!';
 }

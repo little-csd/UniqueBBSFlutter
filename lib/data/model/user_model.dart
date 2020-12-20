@@ -1,8 +1,12 @@
 import 'dart:collection';
 
-import 'package:UniqueBBSFlutter/data/bean/user.dart';
+import 'package:UniqueBBSFlutter/data/bean/user/user.dart';
 import 'package:UniqueBBSFlutter/tool/logger.dart';
 import 'package:flutter/material.dart';
+
+import '../dio.dart';
+
+const _reqInterval = 5;
 
 /// 管理 user 的所有信息
 /// 使用 dio.dart 中的接口 user(uid) 获取
@@ -25,7 +29,25 @@ class UserModel extends ChangeNotifier {
   }
 
   User find(String uid) {
-    return _userMap[uid];
+    final User user = _userMap[uid];
+    if (user == null) {
+      pull(uid);
+    }
+    return user;
+  }
+
+  void pull(String uid) {
+    if (_userMap[uid] != null) {
+      return;
+    }
+    Server.instance.user(uid).then((rsp) {
+      if (rsp.success) {
+        put(uid, rsp.data);
+      } else {
+        Future.delayed(Duration(seconds: _reqInterval))
+            .then((value) => pull(uid));
+      }
+    });
   }
 
   void clearAll() {
