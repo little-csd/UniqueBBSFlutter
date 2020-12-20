@@ -12,7 +12,7 @@ class HomeWidget extends StatefulWidget {
 }
 
 void _clickHomeSelect(BuildContext context) async {
-  var data = await Navigator.pushNamed(context, BBSRoute.login);
+  var data = await Navigator.pushNamed(context, BBSRoute.selectPlate);
   print(data);
 }
 

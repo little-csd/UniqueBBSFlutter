@@ -16,7 +16,7 @@ class AppSplashWidget extends StatelessWidget {
         context, BBSRoute.login, (route) => false);
     Server.instance.init(tokenErrCallback).then((errno) {
       if (errno == '') {
-        Navigator.pushNamed(context, BBSRoute.home);
+        Navigator.popAndPushNamed(context, BBSRoute.home);
         Fluttertoast.showToast(msg: StringConstant.loginSuccess);
       } else {
         Navigator.pushNamed(context, BBSRoute.login);
