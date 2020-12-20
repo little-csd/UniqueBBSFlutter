@@ -1,5 +1,7 @@
 import 'package:UniqueBBSFlutter/widget/home.dart';
 import 'package:UniqueBBSFlutter/widget/home_select.dart';
+import 'package:UniqueBBSFlutter/widget/login/info_set.dart';
+import 'package:UniqueBBSFlutter/widget/login/pw_set.dart';
 import 'package:UniqueBBSFlutter/widget/login/login.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +21,8 @@ class BBSRoute {
   static final posting = 'postReport'; // 发帖
 
   static final pwUpdate = 'pwUpdate'; // 修改密码
+  static final pwSet = 'pwSet'; // 设置密码
+  static final infoSet = 'infoSet'; // 用户信息设置
 
   static final message = 'message'; // 消息页面
 
@@ -27,6 +31,8 @@ class BBSRoute {
     home: (context) => HomeWidget(),
     selectPlate: (context) => HomeSelectWidget(),
     login: (context) => LoginWidget(),
+    pwSet: (context) => PasswordSetWidget(),
+    infoSet: (context) => InfoSetWidget(),
   };
 
   static Route buildPage(String path, dynamic arg) {
