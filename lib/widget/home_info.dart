@@ -104,7 +104,9 @@ Widget _buildReport() {
     child: MaterialButton(
       minWidth: double.infinity,
       height: _reportButtonHeight,
-      onPressed: () => print('report!'),
+      onPressed: () {
+        print('report!');
+      },
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(_showReportRadius)),
       color: ColorConstant.primaryColor,

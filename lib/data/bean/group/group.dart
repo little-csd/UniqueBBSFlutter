@@ -6,12 +6,12 @@ part 'group.g.dart';
 
 @JsonSerializable()
 class Group {
-  GroupInfo info;
+  GroupInfo group;
   UserInfo master;
   int count;
 
   factory Group.fromJson(Map<String, dynamic> json) => _$GroupFromJson(json);
   Map<String, dynamic> toJson() => _$GroupToJson(this);
 
-  Group(this.info, this.master, this.count);
+  Group(this.group, this.master, this.count);
 }

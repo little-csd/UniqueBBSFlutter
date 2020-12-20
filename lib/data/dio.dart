@@ -3,17 +3,28 @@ import 'dart:collection';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:UniqueBBSFlutter/data/bean/forum/basic_forum.dart';
+import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
+import 'package:UniqueBBSFlutter/data/bean/group/group.dart';
+import 'package:UniqueBBSFlutter/data/bean/group/group_users.dart';
+import 'package:UniqueBBSFlutter/data/bean/user/mentee.dart';
 import 'package:UniqueBBSFlutter/data/bean/user/mentor.dart';
+import 'package:UniqueBBSFlutter/data/converter.dart';
 import 'package:UniqueBBSFlutter/tool/helper.dart';
 import 'package:UniqueBBSFlutter/tool/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'bean/forum/posts.dart';
+import 'bean/forum/threads.dart';
+import 'bean/group/group_info.dart';
+import 'bean/report/reports.dart';
 import 'bean/user/user.dart';
+import 'bean/user/user_info.dart';
 import 'repo.dart';
 
-const _baseUrl = 'https://hustunique.com:7010';
+const _baseUrl = 'https://hustunique.com:7010/api';
 Dio dio = Dio(BaseOptions(baseUrl: _baseUrl))
   ..interceptors.add(_LoggingInterceptors());
 
@@ -33,9 +44,30 @@ class NetRsp<T> {
 /// token 错误返回信息： {code: -1, msg: jwt malformed}
 class Server {
   static const _TAG = "Server";
-  static const LoginUrl = '/api/user/login/pwd';
-  static const UserUrl = '/api/user/info';
-  static const MentorUrl = '/api/user/mentor/info';
+  static const LoginUrl = '/user/login/pwd';
+
+  static const UserUrl = '/user/info';
+  static const MentorUrl = '/user/mentor/info';
+  static const MyMentor = '/user/mentor/my';
+  static const MyMentee = '/user/mentor/students';
+  static const UpdateUser = '/user/update/normal';
+  static const UpdatePwd = '/user/update/pwd';
+
+  static const UserThread = '/user/threads';
+  static const UserPost = '/user/posts';
+
+  static const ForumList = '/forum/list';
+  static const MiniForumList = '/forum/listSimple';
+
+  static const GroupList = '/group/list';
+  static const GroupUserList = '/group/users';
+  static const UserGroupInfo = '/group/user';
+
+  static const CanPostReport = '/report/can';
+  static const ReportInfo = '/report/info';
+  static const ReportList = '/report/list';
+  static const ReportCreate = '/report/create';
+  static const ReportUpdate = '/report/update';
 
   static const NetworkError = '网络错误!';
   static const UidError = '找不到用户信息!';
@@ -93,19 +125,9 @@ class Server {
     return NetRsp(true, data: NoError);
   }
 
-  Future<NetRsp<User>> user(String uid) async {
+  Future<NetRsp<User>> user(String uid) {
     final url = '$UserUrl/$uid';
-    Map<String, dynamic> json = HashMap();
-    String errno = await _get(url, json);
-    if (errno != null) {
-      return NetRsp(false, msg: errno);
-    }
-    Map<String, dynamic> msg = json['msg'];
-    if (msg == null) {
-      return NetRsp(false, msg: EmptyMsg);
-    }
-    User user = User.fromJson(msg);
-    return NetRsp(true, data: user);
+    return process(url, User);
   }
 
   Future<NetRsp<User>> me() async {
@@ -136,10 +158,100 @@ class Server {
     }
   }
 
-  Future<NetRsp<Mentor>> mentor(String uid) async {
+  Future<NetRsp<Mentor>> mentor(String uid) {
     final url = '$MentorUrl/$uid';
+    return process(url, Mentor);
+  }
+
+  Future<NetRsp<Mentor>> myMentor() async {
+    String uid = Repo.instance.uid;
+    if (uid.isEmpty) {
+      return NetRsp(false, msg: UidError);
+    }
+    return mentor(uid);
+  }
+
+  Future<NetRsp<Mentee>> myMentee() {
+    return process(MyMentee, Mentee);
+  }
+
+  Future<NetRsp<bool>> updateUser(UserInfo user) async {
+    final req = {
+      'studentId': user.studentID,
+      'dormitory': user.dormitory,
+      'qq': user.qq,
+      'wechat': user.wechat,
+      'major': user.major,
+      'className': user.className,
+      'nickname': user.username,
+      'signature': user.signature
+    };
     Map<String, dynamic> json = HashMap();
-    String errno = await _get(url, json);
+    final errno = await _post(UpdateUser, req, json);
+    if (errno != null) {
+      return NetRsp(false, msg: errno);
+    }
+    return NetRsp(true, data: json['code'] == 1);
+  }
+
+  Future<NetRsp<bool>> updatePwd(String oldPwd, String newPwd) async {
+    final req = {
+      'previousPwd': generateMD5(oldPwd),
+      'newPwd': generateMD5(newPwd),
+    };
+    Map<String, dynamic> json = HashMap();
+    final errno = await _post(UpdatePwd, req, json);
+    if (errno != null) {
+      return NetRsp(false, msg: errno);
+    }
+    return NetRsp(true, data: json['code'] == 1);
+  }
+
+  Future<NetRsp<Threads>> threadsForUser(String uid, int page) {
+    final url = '$UserThread/$uid/$page';
+    return process(url, Threads);
+  }
+
+  Future<NetRsp<Posts>> postForUser(String uid, int page) {
+    final url = '$UserPost/$uid/$page';
+    return process(url, Posts);
+  }
+
+  // Future<NetRsp<Threads>> threadsForForum(String fid, int page) {
+  //   final url = '$UserThread/$fid/$page';
+  //   return process(url, Threads);
+  // }
+  //
+  // Future<NetRsp<Threads>> postsForForum(String tid, int page) {
+  //   final url = '$UserThread/$tid/$page';
+  //   return process(url, Threads);
+  // }
+
+  Future<NetRsp<List<FullForum>>> forums() {
+    return processArray(ForumList, FullForum);
+  }
+
+  Future<NetRsp<List<BasicForum>>> basicForums() {
+    return processArray(MiniForumList, BasicForum);
+  }
+
+  Future<NetRsp<List<Group>>> groups() {
+    return processArray(GroupList, Group);
+  }
+
+  Future<NetRsp<GroupUsers>> groupUsers(String gid) {
+    final url = '$GroupUserList/$gid';
+    return process(url, GroupUsers);
+  }
+
+  Future<NetRsp<List<GroupInfo>>> groupInfo(String uid) {
+    final url = '$UserGroupInfo/$uid';
+    return processArray(url, GroupInfo);
+  }
+
+  Future<NetRsp<List<bool>>> canReport() async {
+    Map<String, dynamic> json = HashMap();
+    final errno = await _get(CanPostReport, json);
     if (errno != null) {
       return NetRsp(false, msg: errno);
     }
@@ -147,8 +259,88 @@ class Server {
     if (msg == null) {
       return NetRsp(false, msg: EmptyMsg);
     }
-    Mentor mentor = Mentor.fromJson(json);
-    return NetRsp(true, data: mentor);
+    return NetRsp(true, data: [msg['weekly'] as bool, msg['daily'] as bool]);
+  }
+
+  Future<NetRsp<String>> reportInfo(String rid) async {
+    final url = '$ReportInfo/$rid';
+    Map<String, dynamic> json = HashMap();
+    final errno = await _get(url, json);
+    if (errno != null) {
+      return NetRsp(false, msg: errno);
+    }
+    String msg = json['msg'];
+    if (msg == null) {
+      return NetRsp(false, msg: EmptyMsg);
+    }
+    return NetRsp(true, data: msg);
+  }
+
+  Future<NetRsp<Reports>> reports(String uid, int page) {
+    final url = '$ReportList/$uid/$page';
+    return process(url, Reports);
+  }
+
+  Future<NetRsp<String>> createReport(bool weekly, String msg) async {
+    final req = {
+      'isWeeklyReport': weekly ? "1" : "0",
+      'message': msg,
+    };
+    Map<String, dynamic> json = HashMap();
+    final errno = await _post(ReportCreate, req, json);
+    if (errno != null) {
+      return NetRsp(false, msg: errno);
+    }
+    return NetRsp(true, data: json["msg"] as String);
+  }
+
+  Future<NetRsp<bool>> updateReport(String rid, String msg) async {
+    final req = {
+      'message': msg,
+    };
+    Map<String, dynamic> json = HashMap();
+    final url = '$ReportUpdate/$rid';
+    final errno = await _post(url, req, json);
+    if (errno != null) {
+      return NetRsp(false, msg: errno);
+    }
+    int code = json["code"];
+    return NetRsp(true, data: code == 1);
+  }
+
+  Future<NetRsp<T>> process<T>(String url, Type type) async {
+    Map<String, dynamic> json = HashMap();
+    final errno = await _get(url, json);
+    if (errno != null) {
+      return NetRsp(false, msg: errno);
+    }
+    Map<String, dynamic> msg = json['msg'];
+    if (msg == null) {
+      return NetRsp(false, msg: EmptyMsg);
+    }
+    final data = Converter.getFromJson(type, msg);
+    return NetRsp(true, data: data);
+  }
+
+  Future<NetRsp<List<T>>> processArray<T>(String url, Type type) async {
+    Map<String, dynamic> json = HashMap();
+    final errno = await _get(url, json);
+    if (errno != null) {
+      return NetRsp(false, msg: errno);
+    }
+    List msg = json['msg'];
+    if (msg == null) {
+      return NetRsp(false, msg: EmptyMsg);
+    }
+    if (msg.length == 0) {
+      return NetRsp(true, data: []);
+    } else {
+      final data = List<T>();
+      for (var value in msg) {
+        data.add(Converter.getFromJson(type, value as Map));
+      }
+      return NetRsp(true, data: data);
+    }
   }
 
   // 发送 Post 请求, 没有错误则返回 null, 并将数据填充到 json 这个 map 中

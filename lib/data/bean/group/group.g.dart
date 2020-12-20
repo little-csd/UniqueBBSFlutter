@@ -8,9 +8,9 @@ part of 'group.dart';
 
 Group _$GroupFromJson(Map<String, dynamic> json) {
   return Group(
-    json['info'] == null
+    json['group'] == null
         ? null
-        : GroupInfo.fromJson(json['info'] as Map<String, dynamic>),
+        : GroupInfo.fromJson(json['group'] as Map<String, dynamic>),
     json['master'] == null
         ? null
         : UserInfo.fromJson(json['master'] as Map<String, dynamic>),
@@ -19,7 +19,7 @@ Group _$GroupFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$GroupToJson(Group instance) => <String, dynamic>{
-      'info': instance.info,
+      'group': instance.group,
       'master': instance.master,
       'count': instance.count,
     };
