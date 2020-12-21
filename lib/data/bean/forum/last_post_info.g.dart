@@ -1,23 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'post.dart';
+part of 'last_post_info.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Post _$PostFromJson(Map<String, dynamic> json) {
-  return Post(
-    json['post'] == null
+LastPostInfo _$LastPostInfoFromJson(Map<String, dynamic> json) {
+  return LastPostInfo(
+    json['user'] == null
         ? null
-        : PostInfo.fromJson(json['post'] as Map<String, dynamic>),
+        : UserInfo.fromJson(json['user'] as Map<String, dynamic>),
     json['thread'] == null
         ? null
         : ThreadInfo.fromJson(json['thread'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
-      'post': instance.post,
+Map<String, dynamic> _$LastPostInfoToJson(LastPostInfo instance) =>
+    <String, dynamic>{
+      'user': instance.user,
       'thread': instance.thread,
     };

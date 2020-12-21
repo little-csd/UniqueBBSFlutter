@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'posts.dart';
+part of 'user_post.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Posts _$PostsFromJson(Map<String, dynamic> json) {
-  return Posts(
+UserPost _$UserPostFromJson(Map<String, dynamic> json) {
+  return UserPost(
     (json['list'] as List)
-        ?.map(
-            (e) => e == null ? null : Post.fromJson(e as Map<String, dynamic>))
+        ?.map((e) =>
+            e == null ? null : PostThread.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     json['count'] as int,
   );
 }
 
-Map<String, dynamic> _$PostsToJson(Posts instance) => <String, dynamic>{
+Map<String, dynamic> _$UserPostToJson(UserPost instance) => <String, dynamic>{
       'list': instance.posts,
       'count': instance.count,
     };

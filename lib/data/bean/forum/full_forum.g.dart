@@ -18,7 +18,7 @@ FullForum _$FullForumFromJson(Map<String, dynamic> json) {
         : PostInfo.fromJson(json['lastPost'] as Map<String, dynamic>),
     json['lastPostInfo'] == null
         ? null
-        : LastPost.fromJson(json['lastPostInfo'] as Map<String, dynamic>),
+        : LastPostInfo.fromJson(json['lastPostInfo'] as Map<String, dynamic>),
   );
 }
 

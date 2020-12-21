@@ -1,7 +1,7 @@
 import 'package:UniqueBBSFlutter/data/bean/forum/post_info.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'last_post.dart';
+import 'last_post_info.dart';
 
 part 'full_forum.g.dart';
 
@@ -17,7 +17,7 @@ class FullForum {
   // 这里 last post 包含最后一个 post 的信息
   PostInfo lastPost;
   // lastPostInfo 包含最后一个 post 所在的 thread 以及 user 信息
-  LastPost lastPostInfo;
+  LastPostInfo lastPostInfo;
 
   factory FullForum.fromJson(Map<String, dynamic> json) =>
       _$FullForumFromJson(json);

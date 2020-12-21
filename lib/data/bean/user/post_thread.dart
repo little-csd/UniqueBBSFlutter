@@ -2,15 +2,16 @@ import 'package:UniqueBBSFlutter/data/bean/forum/post_info.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'post.g.dart';
+part 'post_thread.g.dart';
 
 @JsonSerializable()
-class Post {
+class PostThread {
   PostInfo post;
   ThreadInfo thread;
 
-  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
-  Map<String, dynamic> toJson() => _$PostToJson(this);
+  factory PostThread.fromJson(Map<String, dynamic> json) =>
+      _$PostThreadFromJson(json);
+  Map<String, dynamic> toJson() => _$PostThreadToJson(this);
 
-  Post(this.post, this.thread);
+  PostThread(this.post, this.thread);
 }

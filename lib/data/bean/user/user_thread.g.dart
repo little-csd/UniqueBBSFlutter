@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'threads.dart';
+part of 'user_thread.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Threads _$ThreadsFromJson(Map<String, dynamic> json) {
-  return Threads(
+UserThread _$UserThreadFromJson(Map<String, dynamic> json) {
+  return UserThread(
     (json['list'] as List)
         ?.map((e) =>
             e == null ? null : ThreadInfo.fromJson(e as Map<String, dynamic>))
@@ -16,7 +16,8 @@ Threads _$ThreadsFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ThreadsToJson(Threads instance) => <String, dynamic>{
+Map<String, dynamic> _$UserThreadToJson(UserThread instance) =>
+    <String, dynamic>{
       'list': instance.threads,
       'count': instance.count,
     };
