@@ -5,6 +5,8 @@ import 'dart:ui';
 
 import 'package:UniqueBBSFlutter/data/bean/forum/basic_forum.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
+import 'package:UniqueBBSFlutter/data/bean/forum/post_list.dart';
+import 'package:UniqueBBSFlutter/data/bean/forum/thread_list.dart';
 import 'package:UniqueBBSFlutter/data/bean/group/group.dart';
 import 'package:UniqueBBSFlutter/data/bean/group/group_users.dart';
 import 'package:UniqueBBSFlutter/data/bean/user/mentee.dart';
@@ -16,12 +18,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'bean/forum/posts.dart';
-import 'bean/forum/threads.dart';
+import 'bean/forum/post_search.dart';
 import 'bean/group/group_info.dart';
+import 'bean/message/message.dart';
 import 'bean/report/reports.dart';
 import 'bean/user/user.dart';
 import 'bean/user/user_info.dart';
+import 'bean/user/user_post.dart';
+import 'bean/user/user_thread.dart';
 import 'repo.dart';
 
 const _baseUrl = 'https://hustunique.com:7010/api';
@@ -44,40 +48,55 @@ class NetRsp<T> {
 /// token 错误返回信息： {code: -1, msg: jwt malformed}
 class Server {
   static const _TAG = "Server";
-  static const LoginUrl = '/user/login/pwd';
-
-  static const UserUrl = '/user/info';
-  static const MentorUrl = '/user/mentor/info';
-  static const MyMentor = '/user/mentor/my';
-  static const MyMentee = '/user/mentor/students';
-  static const UpdateUser = '/user/update/normal';
-  static const UpdatePwd = '/user/update/pwd';
-
-  static const UserThread = '/user/threads';
-  static const UserPost = '/user/posts';
-
-  static const ForumList = '/forum/list';
-  static const MiniForumList = '/forum/listSimple';
-
-  static const GroupList = '/group/list';
-  static const GroupUserList = '/group/users';
-  static const UserGroupInfo = '/group/user';
-
-  static const CanPostReport = '/report/can';
-  static const ReportInfo = '/report/info';
-  static const ReportList = '/report/list';
-  static const ReportCreate = '/report/create';
-  static const ReportUpdate = '/report/update';
+  static const _LoginUrl = '/user/login/pwd';
+  // user url
+  static const _UserUrl = '/user/info';
+  static const _MentorUrl = '/user/mentor/info';
+  // static const MyMentor = '/user/mentor/my';
+  static const _MyMentee = '/user/mentor/students';
+  static const _UpdateUser = '/user/update/normal';
+  static const _UpdatePwd = '/user/update/pwd';
+  static const _UserThreads = '/user/threads';
+  static const _UserPosts = '/user/posts';
+  // group url
+  static const _GroupList = '/group/list';
+  static const _GroupUserList = '/group/users';
+  static const _UserGroupInfo = '/group/user';
+  // report url
+  static const _CanPostReport = '/report/can';
+  static const _ReportInfo = '/report/info';
+  static const _ReportList = '/report/list';
+  static const _ReportCreate = '/report/create';
+  static const _ReportUpdate = '/report/update';
+  // forum url
+  static const _ForumList = '/forum/list';
+  static const _MiniForumList = '/forum/listSimple';
+  // thread / post operation url
+  static const _ThreadCreate = '/thread/create';
+  static const _ThreadList = '/thread/list';
+  static const _ThreadInfo = '/thread/info';
+  static const _ThreadReply = '/thread/reply';
+  static const _PostUpdate = '/post/update';
+  static const _PostSearch = '/post/search';
+  // notification url
+  static const _MessageList = '/message/list';
+  // static const _MessageCount = '/message/count';
+  // static const _MessagePush = '/message/push';
+  static const _MessageRead = '/message/read';
+  static const _MessageDelete = '/message/delete';
+  static const _MessageReadAll = '/message/all/read';
+  static const _MessageDeleteAll = '/message/all/delete';
 
   static const NetworkError = '网络错误!';
   static const UidError = '找不到用户信息!';
   static const TokenExpired = 'Token 已过期!';
   static const EmptyMsg = '收到空消息!';
   static const UnknownError = '未知异常';
+  static const CodeNotValid = '服务器执行失败';
   static const NoError = '';
 
-  static const UidKeyInSp = 'uid';
-  static const TokenKeyInSp = 'token';
+  static const _UidKeyInSp = 'uid';
+  static const _TokenKeyInSp = 'token';
 
   VoidCallback tokenErrCallback;
 
@@ -85,8 +104,8 @@ class Server {
     // token 过期统一在 _get 和 _post 方法中处理
     this.tokenErrCallback = tokenErrCallback;
     final sp = await SharedPreferences.getInstance();
-    final uid = sp.getString(UidKeyInSp);
-    final token = sp.getString(TokenKeyInSp);
+    final uid = sp.getString(_UidKeyInSp);
+    final token = sp.getString(_TokenKeyInSp);
     Logger.d(_TAG, 'token = $token, uid = $uid');
     if (uid == null || token == null) {
       return UidError;
@@ -102,7 +121,7 @@ class Server {
       'pwd': generateMD5(password),
     };
     Map<String, dynamic> json = HashMap();
-    String errno = await _post(LoginUrl, data, json);
+    String errno = await _post(_LoginUrl, data, json);
     if (errno != null) {
       return NetRsp(false, msg: errno);
     }
@@ -117,17 +136,19 @@ class Server {
     final sp = await SharedPreferences.getInstance();
     // 此处异步保存
     sp
-        .setString(UidKeyInSp, uid)
+        .setString(_UidKeyInSp, uid)
         .then((ok) => Logger.i(_TAG, 'save uid $uid $ok'));
     sp
-        .setString(TokenKeyInSp, token)
+        .setString(_TokenKeyInSp, token)
         .then((value) => Logger.i(_TAG, 'save uid $token $value'));
     return NetRsp(true, data: NoError);
   }
 
+  /// 下面部分为用户相关的 api
+
   Future<NetRsp<User>> user(String uid) {
-    final url = '$UserUrl/$uid';
-    return process(url, User);
+    final url = '$_UserUrl/$uid';
+    return _process(url, User);
   }
 
   Future<NetRsp<User>> me() async {
@@ -159,8 +180,8 @@ class Server {
   }
 
   Future<NetRsp<Mentor>> mentor(String uid) {
-    final url = '$MentorUrl/$uid';
-    return process(url, Mentor);
+    final url = '$_MentorUrl/$uid';
+    return _process(url, Mentor);
   }
 
   Future<NetRsp<Mentor>> myMentor() async {
@@ -172,7 +193,7 @@ class Server {
   }
 
   Future<NetRsp<Mentee>> myMentee() {
-    return process(MyMentee, Mentee);
+    return _process(_MyMentee, Mentee);
   }
 
   Future<NetRsp<bool>> updateUser(UserInfo user) async {
@@ -186,12 +207,7 @@ class Server {
       'nickname': user.username,
       'signature': user.signature
     };
-    Map<String, dynamic> json = HashMap();
-    final errno = await _post(UpdateUser, req, json);
-    if (errno != null) {
-      return NetRsp(false, msg: errno);
-    }
-    return NetRsp(true, data: json['code'] == 1);
+    return _simplePost(_UpdateUser, req);
   }
 
   Future<NetRsp<bool>> updatePwd(String oldPwd, String newPwd) async {
@@ -199,59 +215,40 @@ class Server {
       'previousPwd': generateMD5(oldPwd),
       'newPwd': generateMD5(newPwd),
     };
-    Map<String, dynamic> json = HashMap();
-    final errno = await _post(UpdatePwd, req, json);
-    if (errno != null) {
-      return NetRsp(false, msg: errno);
-    }
-    return NetRsp(true, data: json['code'] == 1);
+    return _simplePost(_UpdatePwd, req);
   }
 
-  Future<NetRsp<Threads>> threadsForUser(String uid, int page) {
-    final url = '$UserThread/$uid/$page';
-    return process(url, Threads);
+  Future<NetRsp<UserThread>> threadsForUser(String uid, int page) {
+    final url = '$_UserThreads/$uid/$page';
+    return _process(url, UserThread);
   }
 
-  Future<NetRsp<Posts>> postForUser(String uid, int page) {
-    final url = '$UserPost/$uid/$page';
-    return process(url, Posts);
+  Future<NetRsp<UserPost>> postForUser(String uid, int page) {
+    final url = '$_UserPosts/$uid/$page';
+    return _process(url, UserPost);
   }
 
-  // Future<NetRsp<Threads>> threadsForForum(String fid, int page) {
-  //   final url = '$UserThread/$fid/$page';
-  //   return process(url, Threads);
-  // }
-  //
-  // Future<NetRsp<Threads>> postsForForum(String tid, int page) {
-  //   final url = '$UserThread/$tid/$page';
-  //   return process(url, Threads);
-  // }
-
-  Future<NetRsp<List<FullForum>>> forums() {
-    return processArray(ForumList, FullForum);
-  }
-
-  Future<NetRsp<List<BasicForum>>> basicForums() {
-    return processArray(MiniForumList, BasicForum);
-  }
+  /// 下面为组别信息的请求
 
   Future<NetRsp<List<Group>>> groups() {
-    return processArray(GroupList, Group);
+    return _processArray(_GroupList, Group);
   }
 
   Future<NetRsp<GroupUsers>> groupUsers(String gid) {
-    final url = '$GroupUserList/$gid';
-    return process(url, GroupUsers);
+    final url = '$_GroupUserList/$gid';
+    return _process(url, GroupUsers);
   }
 
   Future<NetRsp<List<GroupInfo>>> groupInfo(String uid) {
-    final url = '$UserGroupInfo/$uid';
-    return processArray(url, GroupInfo);
+    final url = '$_UserGroupInfo/$uid';
+    return _processArray(url, GroupInfo);
   }
+
+  /// 下面开始是日报/周报部分
 
   Future<NetRsp<List<bool>>> canReport() async {
     Map<String, dynamic> json = HashMap();
-    final errno = await _get(CanPostReport, json);
+    final errno = await _get(_CanPostReport, json);
     if (errno != null) {
       return NetRsp(false, msg: errno);
     }
@@ -263,7 +260,7 @@ class Server {
   }
 
   Future<NetRsp<String>> reportInfo(String rid) async {
-    final url = '$ReportInfo/$rid';
+    final url = '$_ReportInfo/$rid';
     Map<String, dynamic> json = HashMap();
     final errno = await _get(url, json);
     if (errno != null) {
@@ -277,8 +274,8 @@ class Server {
   }
 
   Future<NetRsp<Reports>> reports(String uid, int page) {
-    final url = '$ReportList/$uid/$page';
-    return process(url, Reports);
+    final url = '$_ReportList/$uid/$page';
+    return _process(url, Reports);
   }
 
   Future<NetRsp<String>> createReport(bool weekly, String msg) async {
@@ -287,7 +284,7 @@ class Server {
       'message': msg,
     };
     Map<String, dynamic> json = HashMap();
-    final errno = await _post(ReportCreate, req, json);
+    final errno = await _post(_ReportCreate, req, json);
     if (errno != null) {
       return NetRsp(false, msg: errno);
     }
@@ -298,17 +295,112 @@ class Server {
     final req = {
       'message': msg,
     };
+    return _simplePost('$_ReportUpdate/$rid', req);
+  }
+
+  /// 下面部分为论坛/帖子/回复相关的 api
+
+  Future<NetRsp<List<FullForum>>> forums() {
+    return _processArray(_ForumList, FullForum);
+  }
+
+  Future<NetRsp<List<BasicForum>>> basicForums() {
+    return _processArray(_MiniForumList, BasicForum);
+  }
+
+  Future<NetRsp<String>> threadCreate(
+      String fid, String subject, String msg, List<String> fileListArr) async {
+    final req = {
+      'fid': fid,
+      'subject': subject,
+      'message': msg,
+      'fileListArr': fileListArr,
+    };
     Map<String, dynamic> json = HashMap();
-    final url = '$ReportUpdate/$rid';
+    final errno = await _post(_ThreadCreate, req, json);
+    if (errno != null) {
+      return NetRsp(false, msg: errno);
+    }
+    String tid = json["msg"];
+    if (null == tid) {
+      return NetRsp(false, msg: UnknownError);
+    }
+    return NetRsp(true, data: tid);
+  }
+
+  Future<NetRsp<ThreadList>> threadsInForum(String fid, int page) {
+    final url = '$_ThreadList/$fid/$page';
+    return _process(url, ThreadList);
+  }
+
+  Future<NetRsp<PostList>> postsInThread(String tid, int page) {
+    final url = '$_ThreadInfo/$tid/$page';
+    return _process(url, PostList);
+  }
+
+  Future<NetRsp<bool>> replyUpdate(String pid, String msg) {
+    final req = {
+      'message': msg,
+    };
+    return _simplePost('$_PostUpdate/$pid', req);
+  }
+
+  Future<NetRsp<bool>> threadReply(String tid, String msg, String quote) {
+    final req = {
+      'tid': tid,
+      'message': msg,
+      'quote': quote,
+    };
+    return _simplePost('$_ThreadReply', req);
+  }
+
+  Future<NetRsp<PostSearch>> postSearch(String keyword, int page) async {
+    final req = {
+      'keyword': keyword,
+    };
+    final url = '$_PostSearch/$page';
+    Map<String, dynamic> json = HashMap();
     final errno = await _post(url, req, json);
     if (errno != null) {
       return NetRsp(false, msg: errno);
     }
-    int code = json["code"];
-    return NetRsp(true, data: code == 1);
+    Map<String, dynamic> msg = json['msg'];
+    if (msg == null) {
+      return NetRsp(false, msg: EmptyMsg);
+    }
+    final data = Converter.getFromJson(PostSearch, msg);
+    return NetRsp(true, data: data);
   }
 
-  Future<NetRsp<T>> process<T>(String url, Type type) async {
+  /// 下面是通知相关的 api
+  Future<NetRsp<List<Message>>> messages(int page) {
+    final url = '$_MessageList/$page';
+    return _processArray(url, Message);
+  }
+
+  Future<NetRsp<bool>> read(String mid) {
+    final url = '$_MessageRead/$mid';
+    return _simplePost(url, {});
+  }
+
+  Future<NetRsp<bool>> delete(String mid) {
+    final url = '$_MessageDelete/$mid';
+    return _simplePost(url, {});
+  }
+
+  Future<NetRsp<bool>> readAll() {
+    return _simplePost(_MessageReadAll, {});
+  }
+
+  Future<NetRsp<bool>> deleteAll() {
+    return _simplePost(_MessageDeleteAll, {});
+  }
+
+  /// 下面开始是内部使用的辅助方法
+
+  // 处理一个 get 请求, 返回带有类型为 type 的 NetRsp, 存于 data 字段
+  // 若请求失败, 则错误信息存放在 msg 字段
+  Future<NetRsp<T>> _process<T>(String url, Type type) async {
     Map<String, dynamic> json = HashMap();
     final errno = await _get(url, json);
     if (errno != null) {
@@ -322,7 +414,9 @@ class Server {
     return NetRsp(true, data: data);
   }
 
-  Future<NetRsp<List<T>>> processArray<T>(String url, Type type) async {
+  // 处理一个 get 请求, 返回带有类型为 type 的 List 的 NetRsp, 存于 data 字段
+  // 若请求失败, 则错误信息存放在 msg 字段
+  Future<NetRsp<List<T>>> _processArray<T>(String url, Type type) async {
     Map<String, dynamic> json = HashMap();
     final errno = await _get(url, json);
     if (errno != null) {
@@ -341,6 +435,16 @@ class Server {
       }
       return NetRsp(true, data: data);
     }
+  }
+
+  // 发送仅返回一个 code 的 post 请求
+  Future<NetRsp<bool>> _simplePost(String url, Map<String, dynamic> req) async {
+    Map<String, dynamic> json = HashMap();
+    final errno = await _post(url, req, json);
+    if (errno != null) {
+      return NetRsp(false, msg: errno);
+    }
+    return NetRsp(true, data: json['code'] == 1);
   }
 
   // 发送 Post 请求, 没有错误则返回 null, 并将数据填充到 json 这个 map 中
@@ -378,7 +482,7 @@ class Server {
         json.addAll(res);
         return null;
       } else {
-        String msg = res['msg'] ? res['msg'] : "";
+        String msg = res['msg'] != null ? res['msg'] : "";
         Logger.d(_TAG, msg);
         return msg;
       }
@@ -389,6 +493,8 @@ class Server {
       return NetworkError;
     }
   }
+
+  /// 下面部分为单例的构造
 
   factory Server() => _getInstance();
 

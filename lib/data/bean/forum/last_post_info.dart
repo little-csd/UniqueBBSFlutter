@@ -2,16 +2,16 @@ import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
 import 'package:UniqueBBSFlutter/data/bean/user/user_info.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'last_post.g.dart';
+part 'last_post_info.g.dart';
 
 @JsonSerializable()
-class LastPost {
+class LastPostInfo {
   UserInfo user;
   ThreadInfo thread;
 
-  factory LastPost.fromJson(Map<String, dynamic> json) =>
-      _$LastPostFromJson(json);
-  Map<String, dynamic> toJson() => _$LastPostToJson(this);
+  factory LastPostInfo.fromJson(Map<String, dynamic> json) =>
+      _$LastPostInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$LastPostInfoToJson(this);
 
-  LastPost(this.user, this.thread);
+  LastPostInfo(this.user, this.thread);
 }

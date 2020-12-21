@@ -20,6 +20,7 @@ do
 done
 
 printf "\t\t}\n" >> $target
+printf "\t\tprint('Type error! You may forgot to generate converter_gen.sh');\n" >> $target
 printf "\t\treturn null;\n" >> $target
 printf "\t}\n" >> $target
 printf "}\n" >> $target
