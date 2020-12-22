@@ -13,10 +13,6 @@ class AvatarModel extends ChangeNotifier {
   Set<String> _pendingSet = HashSet();
   static const _retryInterval = 5;
 
-  void doNotify() async {
-    notifyListeners();
-  }
-
   void _put(String name, Image img) {
     if (img == null) {
       Logger.w(_TAG, 'Put a null img for $name');
@@ -33,6 +29,12 @@ class AvatarModel extends ChangeNotifier {
       image = _findInLocal(path, name);
     }
     return image;
+  }
+
+  void refresh(String url) {
+    final name = url.split('/').last;
+    final savePath = '${Repo.instance.localPath}/$name';
+    _findInNetwork(url, savePath, name);
   }
 
   Image _findInLocal(String url, String name) {

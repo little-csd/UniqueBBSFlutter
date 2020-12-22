@@ -36,7 +36,7 @@ class ThreadModel extends ChangeNotifier {
   // 第几个 item(从零开始计)
   // "我的"帖子信息不要调用此接口!
   UserInfo getUserInfo(int index) {
-    // if (me) return null;
+    if (isMe) return null;
     int page = getPage(index);
     index = index - (page - 1) * HyperParam.pageSize;
     final users = _userMap[page];
