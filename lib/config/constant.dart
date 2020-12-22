@@ -23,6 +23,7 @@ class ColorConstant {
 
   static const backgroundLightGrey = Color(0xFFFaFaFa);
   static const backgroundGrey = Color(0xFFCCCBD8);
+  static const backgroundPurple = Color(0xFFCCC5EA);
   static const backgroundWhite = Colors.white;
   static const backgroundBlack = Colors.black;
 
@@ -45,6 +46,7 @@ class StringConstant {
   static const freshmanTask = '新人任务';
   static const fileData = '文件留存';
   static const share = '交流分享';
+  static const loadMore = '查看更多';
   // 网络异常页
   static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
   // 登陆页
