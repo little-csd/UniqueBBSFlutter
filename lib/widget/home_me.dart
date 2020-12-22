@@ -1,8 +1,8 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/data/bean/user/user.dart';
-import 'package:UniqueBBSFlutter/data/model/avatar_model.dart';
 import 'package:UniqueBBSFlutter/data/model/user_model.dart';
 import 'package:UniqueBBSFlutter/data/repo.dart';
+import 'package:UniqueBBSFlutter/widget/common/common_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -79,23 +79,9 @@ final notFound = Container(
 );
 
 Widget _buildHeadPortrait(User user) {
-  return Consumer<AvatarModel>(
-    builder: (context, model, child) {
-      if (user == null) {
-        return notFound;
-      }
-      final image = model.find(user.user.avatar);
-      if (image == null) {
-        return notFound;
-      }
-      return Container(
-        alignment: Alignment.center,
-        child: CircleAvatar(
-          radius: _portraitRadius,
-          backgroundImage: image.image,
-        ),
-      );
-    },
+  return BBSAvatar(
+    user?.user?.avatar,
+    radius: _portraitRadius,
   );
 }
 

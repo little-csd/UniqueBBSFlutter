@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
@@ -28,4 +29,15 @@ List<Alignment> transAngle2Alignments(double angle) {
 
 String generateMD5(String input) {
   return md5.convert(utf8.encode(input)).toString();
+}
+
+int getPage(int index) {
+  return index ~/ HyperParam.pageSize + 1;
+}
+
+String getDayString(String str) {
+  if (str == null) return "";
+  final date = DateTime.parse(str);
+  if (date == null) return "";
+  return "${date.year}.${date.month}.${date.day}";
 }

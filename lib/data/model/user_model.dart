@@ -44,8 +44,7 @@ class UserModel extends ChangeNotifier {
       if (rsp.success) {
         put(uid, rsp.data);
       } else {
-        Future.delayed(Duration(seconds: _reqInterval))
-            .then((value) => pull(uid));
+        Future.delayed(Duration(seconds: _reqInterval)).then((_) => pull(uid));
       }
     });
   }

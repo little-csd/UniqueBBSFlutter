@@ -86,6 +86,8 @@ class StringConstant {
   static const showMyPost = '查看我的帖子';
   static const logout = '退出登录';
   static const noData = '无';
+  // 其他
+  static const noQuote = "-1";
   // toast 常量
   static const loginSuccess = '登录成功!';
 }
@@ -116,4 +118,11 @@ class SvgIcon {
   static const birthday = _base + 'birthday_icon.svg';
 
   static const splashLogo = _base + 'logo.svg';
+
+  static const defaultAvatar = _base + 'default_avatar.svg';
+}
+
+class HyperParam {
+  static const requestInterval = 5;
+  static const pageSize = 20;
 }
