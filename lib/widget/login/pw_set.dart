@@ -1,6 +1,6 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/config/route.dart';
-import 'package:UniqueBBSFlutter/widget/common/FilledTextField.dart';
+import 'package:UniqueBBSFlutter/widget/common/filled_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
