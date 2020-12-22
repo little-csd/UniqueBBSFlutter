@@ -32,6 +32,6 @@ class Repo {
 
   String uid = ''; // 当前用户的 uid
   final UserModel userModel = UserModel();
-  final ForumModel threadModel = ForumModel();
+  final ForumModel forumModel = ForumModel();
   final AvatarModel avatarModel = AvatarModel();
 }

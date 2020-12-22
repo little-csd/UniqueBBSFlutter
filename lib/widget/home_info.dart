@@ -1,9 +1,13 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/config/route.dart';
+import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
+import 'package:UniqueBBSFlutter/data/model/forum_model.dart';
 import 'package:UniqueBBSFlutter/tool/helper.dart';
+import 'package:UniqueBBSFlutter/widget/common/common_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 const _mainHorizontalPadding = 20.0;
 const _mainVerticalPadding = 10.0;
@@ -14,7 +18,10 @@ const _innerHorizontalPadding = 15.0;
 const _innerVerticalPadding = 10.0;
 const _smallIconSize = 18.0;
 const _broadcastRadius = 25.0;
-const _titleStyle = TextStyle(fontSize: 18, color: ColorConstant.textBlack);
+const _titleStyle = TextStyle(
+  fontSize: 18,
+  color: ColorConstant.textBlack,
+);
 const _subtitleStyle = TextStyle(fontSize: 12, color: ColorConstant.textGrey);
 
 // 查看 report 部分的常量
@@ -55,26 +62,59 @@ Widget _buildBroadcastHead() {
   return wrapPadding(head, _innerVerticalPadding, _innerHorizontalPadding);
 }
 
-Widget _buildBroadcastBody() {
-  Widget body = Row(
+Widget _buildBroadcastBodyWithData(FullForum forum) {
+  final user = forum.lastPostInfo.user;
+  final thread = forum.lastPostInfo.thread;
+  final subject = thread?.subject == null ? "" : thread.subject;
+  final date = getDayString(thread?.createDate);
+  final userName = user?.username == null ? "" : user.username;
+  return Row(
     children: [
-      CircleAvatar(
+      BBSAvatar(
+        user?.avatar,
         radius: _broadcastRadius,
-        backgroundImage:
-            NetworkImage('https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/'
-                'it/u=1336318030,2258820972&fm=26&gp=0.jpg'),
       ),
-      Container(
-        width: 10,
-      ),
-      Text.rich(
-        TextSpan(text: '2020年春招相关事宜\n', style: _titleStyle, children: [
-          TextSpan(text: '2020.01.09 肖宇轩 发布', style: _subtitleStyle),
-        ]),
+      Container(width: 10),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '$subject',
+              style: _titleStyle,
+              overflow: TextOverflow.clip,
+              maxLines: 1,
+            ),
+            Text(
+              '$date $userName 发布',
+              style: _subtitleStyle,
+              overflow: TextOverflow.clip,
+              maxLines: 1,
+            ),
+          ],
+        ),
+        flex: 1,
       ),
     ],
   );
-  return wrapPadding(body, _innerVerticalPadding, _innerHorizontalPadding);
+}
+
+Widget _buildBroadcastBody() {
+  return Consumer<ForumModel>(
+    builder: (context, model, child) {
+      final forum = model.findByName(StringConstant.broadcast);
+      Widget body;
+      body = forum == null ? Container() : _buildBroadcastBodyWithData(forum);
+      return Container(
+        height: 2 * _broadcastRadius,
+        padding: EdgeInsets.symmetric(
+            vertical: _innerVerticalPadding,
+            horizontal: _innerHorizontalPadding),
+        child: body,
+      );
+    },
+  );
 }
 
 Widget _buildBroadcast() {
