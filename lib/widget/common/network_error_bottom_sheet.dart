@@ -1,6 +1,6 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:flutter/material.dart';
-import 'NormalBottomSheetContainer.dart';
+import 'normal_bottom_sheet.dart';
 
 buildNetworkErrorBottomSheet(BuildContext context) {
   showModalBottomSheet(
