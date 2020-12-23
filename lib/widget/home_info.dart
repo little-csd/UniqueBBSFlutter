@@ -116,9 +116,11 @@ Widget _buildReport(BuildContext context) {
   );
 }
 
-Widget _buildGridBlock(List<String> contents) {
+Widget _buildGridBlock(List<String> contents, BuildContext context) {
   return MaterialButton(
-    onPressed: () => print(contents),
+    onPressed: () {
+      Navigator.pushNamed(context, BBSRoute.postList);
+    },
     color: ColorConstant.backgroundWhite,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_gridBorderRadius)),
@@ -137,7 +139,7 @@ Widget _buildGridBlock(List<String> contents) {
   );
 }
 
-Widget _buildGrid() {
+Widget _buildGrid(BuildContext context) {
   return Expanded(
     flex: 1,
     child: GridView.count(
@@ -155,7 +157,7 @@ Widget _buildGrid() {
         [SvgIcon.share, StringConstant.share],
       ].map((e) {
         return GridTile(
-          child: _buildGridBlock(e),
+          child: _buildGridBlock(e, context),
         );
       }).toList(),
     ),
@@ -170,7 +172,7 @@ class _HomeInfoState extends State<HomeInfoWidget> {
       children: [
         _buildBroadcast(),
         _buildReport(context),
-        _buildGrid(),
+        _buildGrid(context),
       ],
     );
   }

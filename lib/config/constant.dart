@@ -47,6 +47,7 @@ class StringConstant {
   static const fileData = '文件留存';
   static const share = '交流分享';
   static const loadMore = '查看更多';
+  static const noMoreForum = "再往下拉也没有啦~";
   // 网络异常页
   static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
   // 登陆页

@@ -21,7 +21,7 @@ class _HomeForumState extends State<HomeForumWidget> {
               top: 20,
               left: 20,
             ),
-            child: ForumListCard(true, true),
+            child: ForumListCard(true, true, false, null),
           ),
           itemCount: 10,
         ));

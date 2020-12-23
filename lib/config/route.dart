@@ -1,3 +1,4 @@
+import 'package:UniqueBBSFlutter/widget/forum_page.dart';
 import 'package:UniqueBBSFlutter/widget/home.dart';
 import 'package:UniqueBBSFlutter/widget/home_select.dart';
 import 'package:UniqueBBSFlutter/widget/login/info_set.dart';
@@ -33,6 +34,7 @@ class BBSRoute {
     login: (context) => LoginWidget(),
     pwSet: (context) => PasswordSetWidget(),
     infoSet: (context) => InfoSetWidget(),
+    postList: (context) => ForumPageWidget(),
   };
 
   static Route buildPage(String path, dynamic arg) {
