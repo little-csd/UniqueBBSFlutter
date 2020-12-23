@@ -71,9 +71,10 @@ flutter:
     - images/
 
   fonts:
-    - family: PingFang SC
+    - family: PingFang
       fonts:
-        - asset: fonts/PingFang SC-Regular.ttf
+        - asset: fonts/PingFang-Regular.ttf
+        - asset: fonts/PingFang-Bold.ttf
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

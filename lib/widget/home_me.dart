@@ -41,7 +41,7 @@ final _cardTextStyle = TextStyle(fontSize: 14, color: ColorConstant.textWhite);
 // 中间信息部分
 const _shadowBlueRadius = 1.0;
 const _iconSize = 20.0;
-const _iconTextOffset = 5.0;
+const _iconTextOffset = 10.0;
 const _personalVerticalPadding = 14.0;
 final divider = Container(
   height: 0.2,
@@ -165,7 +165,9 @@ Widget _buildSignature(User me) {
     TextSpan(
       text: StringConstant.signature,
       style: const TextStyle(
-          color: ColorConstant.textBlack, fontSize: _buttonTextFontSize),
+          color: ColorConstant.textBlack,
+          fontSize: _buttonTextFontSize,
+          fontWeight: FontWeight.bold),
     ),
     TextSpan(
       text: '   $signature',
@@ -176,45 +178,39 @@ Widget _buildSignature(User me) {
   return _wrapBoxShadow(text, _buttonTextPadding);
 }
 
-final personalData = [
-  '12344448901',
-  '123456798',
-  '474594049@qq.com',
-  '2000.05.10'
-];
+// final personalData = [
+//   '12344448901',
+//   '123456798',
+//   '474594049@qq.com',
+//   '2000.05.10'
+// ];
 
-String _replaceWithStar(String data, int show) {
-  if (show >= 0 || data.length <= 4) return data;
-  return data.replaceRange(2, data.length - 2, '*****');
-}
+// Widget _getWidgetByShow(int show, int index, ShowStateCallback callback) {
+//   if (show > 0) {
+//     return GestureDetector(
+//       onTap: () => callback(index, -1),
+//       child: Icon(
+//         Icons.remove_red_eye_outlined,
+//         size: _iconSize,
+//       ),
+//     );
+//   } else if (show < 0) {
+//     return GestureDetector(
+//       onTap: () => callback(index, 1),
+//       child: Icon(
+//         Icons.panorama_fish_eye,
+//         size: _iconSize,
+//       ),
+//     );
+//   } else {
+//     return Container(
+//       height: _iconSize,
+//       width: _iconSize,
+//     );
+//   }
+// }
 
-Widget _getWidgetByShow(int show, int index, ShowStateCallback callback) {
-  if (show > 0) {
-    return GestureDetector(
-      onTap: () => callback(index, -1),
-      child: Icon(
-        Icons.remove_red_eye_outlined,
-        size: _iconSize,
-      ),
-    );
-  } else if (show < 0) {
-    return GestureDetector(
-      onTap: () => callback(index, 1),
-      child: Icon(
-        Icons.panorama_fish_eye,
-        size: _iconSize,
-      ),
-    );
-  } else {
-    return Container(
-      height: _iconSize,
-      width: _iconSize,
-    );
-  }
-}
-
-Widget _wrapPersonalDataLine(
-    List<String> itemData, int isShow, int index, ShowStateCallback callback) {
+Widget _wrapPersonalDataLine(String iconSrc, String type, String data) {
   // 每一行第一个数据是 Icon 名字, 第二个是提示信息, 第三个是实际数据
   return Container(
     child: Row(
@@ -225,47 +221,47 @@ Widget _wrapPersonalDataLine(
           height: _iconSize,
           alignment: Alignment.center,
           margin: EdgeInsets.only(right: _iconTextOffset),
-          child: SvgPicture.asset(itemData[0]),
+          child: SvgPicture.asset(iconSrc),
         ),
-        Text(itemData[1]),
+        Text(
+          type,
+          style: TextStyle(
+            color: ColorConstant.textBlack,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         Expanded(
           child: Text(
-            _replaceWithStar(itemData[2], isShow),
+            data,
             textAlign: TextAlign.end,
             style: const TextStyle(color: ColorConstant.textGrey),
           ),
           flex: 1,
         ),
-        _getWidgetByShow(isShow, index, callback),
       ],
     ),
   );
 }
 
 /// TODO: 此处后台没有生日信息, 先放个学号
-Widget _buildPersonalData(
-    User me, ShowStateCallback callback, List<int> showState) {
+Widget _buildPersonalData(User me) {
   // 这里将构建一行 UI 所需要的字符串都封装在一起, 后面直接传递给 _wrapPersonalDataLine
   final mobile = me == null ? StringConstant.noData : me.user.mobile;
   final weChat = me == null ? StringConstant.noData : me.user.wechat;
   final email = me == null ? StringConstant.noData : me.user.email;
   final studentID = me == null ? StringConstant.noData : me.user.studentID;
-  final itemData = [
-    [SvgIcon.phoneNumber, StringConstant.phoneNumber, mobile],
-    [SvgIcon.weChat, StringConstant.weChat, weChat],
-    [SvgIcon.mailbox, StringConstant.mailbox, email],
-    [SvgIcon.birthday, StringConstant.birthday, studentID],
-  ];
   return _wrapBoxShadow(
     Column(
       children: [
-        _wrapPersonalDataLine(itemData[0], showState[0], 0, callback),
+        _wrapPersonalDataLine(
+            SvgIcon.phoneNumber, StringConstant.phoneNumber, mobile),
         divider,
-        _wrapPersonalDataLine(itemData[1], showState[1], 1, callback),
+        _wrapPersonalDataLine(SvgIcon.weChat, StringConstant.weChat, weChat),
         divider,
-        _wrapPersonalDataLine(itemData[2], showState[2], 2, callback),
+        _wrapPersonalDataLine(SvgIcon.mailbox, StringConstant.mailbox, email),
         divider,
-        _wrapPersonalDataLine(itemData[3], showState[3], 3, callback),
+        _wrapPersonalDataLine(
+            SvgIcon.birthday, StringConstant.birthday, studentID),
       ],
     ),
     _personalVerticalPadding,
@@ -341,16 +337,8 @@ typedef ShowStateCallback = void Function(int, int);
 
 /// 进入 me 界面前要保证自己的 user 信息必须存在
 class _HomeMeState extends State<HomeMeWidget> {
-  // 是否展示: 1 表示全部展示, -1 表示部分隐藏, 0 表示不显示图标
-  var _showState = [1, 1, 0, 0];
-
   @override
   Widget build(BuildContext context) {
-    final _showStateCallback = (int index, int state) {
-      setState(() {
-        _showState[index] = state;
-      });
-    };
     return Consumer<UserModel>(
       builder: (context, userModel, child) {
         User me = userModel.find(Repo.instance.uid);
@@ -373,7 +361,7 @@ class _HomeMeState extends State<HomeMeWidget> {
                     Container(height: 15),
                     _buildSignature(me),
                     Container(height: 20),
-                    _buildPersonalData(me, _showStateCallback, _showState),
+                    _buildPersonalData(me),
                     Container(height: 30),
                     _buildShowMyPost(context),
                     Container(height: 10),

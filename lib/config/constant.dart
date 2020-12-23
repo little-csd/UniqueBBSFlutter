@@ -20,6 +20,7 @@ class ColorConstant {
   static const weComButtonGray = Color(0xff707070);
   static const inputPurple = Color(0xfff0f0f6);
   static const inputHintPurple = Color(0xffcecae7);
+  static const invisibleColor = Color(0x00000000);
 
   static const backgroundLightGrey = Color(0xFFFaFaFa);
   static const backgroundGrey = Color(0xFFCCCBD8);
@@ -88,6 +89,8 @@ class StringConstant {
   static const noData = '无';
   // 其他
   static const noQuote = "-1";
+  static const jwtExpired = "jwt expired";
+  static const jwtMalformed = "jwt malformed";
   // toast 常量
   static const loginSuccess = '登录成功!';
 }
@@ -103,6 +106,7 @@ class SvgIcon {
   static const freshmanTask = _base + 'freshman_task.svg';
   static const projectTask = _base + 'project_task.svg';
   static const share = _base + 'share.svg';
+  static const homeBottomBg = _base + 'home_bottom_bg.svg';
   static const broadcast = _base + 'broadcast.svg';
   static const loginLogo = _base + "login_logo.svg";
   static const doubt = _base + "jyr_doubt.svg";
