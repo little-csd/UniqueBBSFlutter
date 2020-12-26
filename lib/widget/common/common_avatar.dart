@@ -17,11 +17,15 @@ class BBSAvatar extends StatelessWidget {
       builder: (context, model, child) {
         Widget child;
         if (url == null || (child = model.find(url)) == null) {
-          child = SvgPicture.asset(SvgIcon.defaultAvatar);
+          child = SvgPicture.asset(
+            SvgIcon.defaultAvatar,
+            height: radius * 2,
+            width: radius * 2,
+          );
         }
         return Container(
-          width: radius * 2,
           height: radius * 2,
+          width: radius * 2,
           alignment: Alignment.center,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(shape: BoxShape.circle),

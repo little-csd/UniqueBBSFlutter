@@ -1,4 +1,5 @@
 import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
+import 'package:UniqueBBSFlutter/tool/logger.dart';
 import 'package:flutter/material.dart';
 
 import '../dio.dart';
@@ -11,8 +12,10 @@ class ForumModel extends ChangeNotifier {
   List<FullForum> _forums;
   bool _fetching = false;
   static const _fetchInterval = 5;
+  static const _TAG = "ForumModel";
 
   FullForum findByName(String name) {
+    Logger.v(_TAG, 'find $name');
     if (_forums == null) {
       _fetch();
       return null;
@@ -32,11 +35,13 @@ class ForumModel extends ChangeNotifier {
 
   void _fetch() async {
     if (_fetching) return;
+    Logger.v(_TAG, 'fetching');
     _fetching = true;
     Server.instance.forums().then((rsp) {
       if (rsp.success) {
         _fetching = false;
         _forums = rsp.data;
+        Logger.v(_TAG, 'fetch ok');
         notifyListeners();
       } else {
         Future.delayed(Duration(seconds: _fetchInterval)).then((_) => _fetch());

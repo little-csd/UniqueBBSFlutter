@@ -182,7 +182,6 @@ Widget _buildGrid() {
   return Expanded(
     flex: 1,
     child: GridView.count(
-      physics: NeverScrollableScrollPhysics(),
       crossAxisCount: 2,
       childAspectRatio: 1,
       padding: EdgeInsets.symmetric(

@@ -1,8 +1,8 @@
 import 'package:UniqueBBSFlutter/widget/home.dart';
 import 'package:UniqueBBSFlutter/widget/home_select.dart';
 import 'package:UniqueBBSFlutter/widget/login/info_set.dart';
-import 'package:UniqueBBSFlutter/widget/login/pw_set.dart';
 import 'package:UniqueBBSFlutter/widget/login/login.dart';
+import 'package:UniqueBBSFlutter/widget/login/pw_set.dart';
 import 'package:flutter/material.dart';
 
 class BBSRoute {
@@ -36,14 +36,11 @@ class BBSRoute {
   };
 
   static Route buildPage(String path, dynamic arg) {
-    WidgetBuilder builder = routes[home];
     if (routes.containsKey(path)) {
-      builder = routes[path];
-    } else {
-      // used for build page with arguments
-      // now only throw an exception
-      throw Exception("Route $path not found!");
+      return MaterialPageRoute(builder: routes[path]);
     }
-    return MaterialPageRoute(builder: builder);
+    // used for build page with arguments
+    // now only throw an exception
+    throw Exception("Route $path not found!");
   }
 }

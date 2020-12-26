@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/tool/logger.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,6 @@ class AvatarModel extends ChangeNotifier {
   static const _TAG = "AvatarModel";
   Map<String, Image> _avatarMap = HashMap();
   Set<String> _pendingSet = HashSet();
-  static const _retryInterval = 5;
 
   void _put(String name, Image img) {
     if (img == null) {
@@ -59,7 +59,7 @@ class AvatarModel extends ChangeNotifier {
         _pendingSet.remove(name);
         _put(name, rsp.data);
       } else {
-        Future.delayed(Duration(seconds: _retryInterval))
+        Future.delayed(Duration(seconds: HyperParam.requestInterval))
             .then((_) => _findInNetwork(url, savePath, name));
       }
     });

@@ -6,8 +6,11 @@ import 'package:UniqueBBSFlutter/widget/home_me.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-const _bottomHeight = 65.0;
-const _bottomButtonOffset = 10.0;
+const _bottomHeight = 50.0;
+const _bottomMaskHeight = 120.0;
+const _bottomButtonOffset = 15.0;
+const _bottomButtonHeight = 50.0;
+const _bottomAddIconSize = 25.0;
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -25,8 +28,8 @@ Widget _getBottomItem(
     String src, int index, int selectedIndex, _TapCallback callback) {
   return FlatButton(
     onPressed: () => callback(index),
-    splashColor: ColorConstant.invisibleColor,
-    highlightColor: ColorConstant.invisibleColor,
+    splashColor: ColorConstant.invisibleBlack,
+    highlightColor: ColorConstant.invisibleBlack,
     child: SvgPicture.asset(
       src,
       color: index == selectedIndex
@@ -37,17 +40,46 @@ Widget _getBottomItem(
 }
 
 Widget _getBottomButton(BuildContext context) {
-  return Padding(
+  return Container(
+    height: _bottomButtonHeight,
     padding: EdgeInsets.only(bottom: _bottomButtonOffset),
-    child: MaterialButton(
-      onPressed: () => _clickHomeSelect(context),
-      shape: CircleBorder(),
-      color: ColorConstant.backgroundBlack,
-      child: Icon(
-        Icons.add,
-        color: ColorConstant.backgroundGrey,
+    child: Hero(
+      tag: StringConstant.selectPlateHero,
+      child: MaterialButton(
+        onPressed: () => _clickHomeSelect(context),
+        shape: CircleBorder(),
+        color: ColorConstant.backgroundWhite,
+        elevation: 1,
+        child: Icon(
+          Icons.add,
+          size: _bottomAddIconSize,
+          color: ColorConstant.backgroundGrey,
+        ),
       ),
     ),
+  );
+}
+
+Widget _wrapMask(Widget widget) {
+  return Stack(
+    alignment: Alignment.bottomCenter,
+    children: [
+      Container(
+        height: _bottomMaskHeight,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            stops: [0.0, 1.0],
+            colors: [
+              ColorConstant.lightBackgroundPurple,
+              ColorConstant.invisibleBlack,
+            ],
+          ),
+        ),
+      ),
+      widget,
+    ],
   );
 }
 
@@ -75,33 +107,39 @@ class _HomeState extends State<HomeWidget> {
       });
     };
     return Scaffold(
-      body: Column(
+      body: _wrapMask(Column(
         children: [
           Expanded(
             child: _pages[_index],
             flex: 1,
           ),
           Container(
-            height: _bottomHeight,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: Image.asset(
-                  'images/home_bottom_bg.jpg',
-                ).image,
-                fit: BoxFit.fill,
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            height: _bottomButtonHeight,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
               children: [
-                _getBottomItem(SvgIcon.message, 0, _index, tapIconCallback),
-                _getBottomButton(context),
-                _getBottomItem(SvgIcon.person, 1, _index, tapIconCallback),
+                Container(
+                  height: _bottomHeight,
+                  width: double.infinity,
+                  child: SvgPicture.asset(
+                    SvgIcon.homeBottomBg,
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _getBottomItem(SvgIcon.message, 0, _index, tapIconCallback),
+                    _getBottomButton(context),
+                    _getBottomItem(SvgIcon.person, 1, _index, tapIconCallback),
+                  ],
+                ),
               ],
             ),
           ),
         ],
-      ),
+      )),
     );
   }
 }

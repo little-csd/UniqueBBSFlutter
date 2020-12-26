@@ -1,7 +1,6 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/config/route.dart';
 import 'package:UniqueBBSFlutter/data/dio.dart';
-import 'package:UniqueBBSFlutter/data/repo.dart';
 import 'package:UniqueBBSFlutter/widget/common/filled_text_field.dart';
 import 'package:UniqueBBSFlutter/widget/common/network_error_bottom_sheet.dart';
 import 'package:UniqueBBSFlutter/widget/common/normal_bottom_sheet.dart';
@@ -100,7 +99,6 @@ _buildLoginButton(BuildContext context) => SizedBox(
               Fluttertoast.showToast(msg: rsp.msg);
             } else {
               Fluttertoast.showToast(msg: StringConstant.loginSuccess);
-              Server.instance.user(Repo.instance.uid);
               Navigator.of(context).popAndPushNamed(BBSRoute.home);
             }
           });
