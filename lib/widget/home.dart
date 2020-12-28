@@ -9,8 +9,13 @@ import 'package:flutter_svg/svg.dart';
 const _bottomHeight = 50.0;
 const _bottomMaskHeight = 120.0;
 const _bottomButtonOffset = 15.0;
-const _bottomButtonHeight = 50.0;
-const _bottomAddIconSize = 25.0;
+const _bottomButtonHeight = 40.0;
+final _bottomButtonShadow = BoxShadow(
+  color: ColorConstant.lightBackgroundShadow,
+  spreadRadius: 1,
+  blurRadius: 1.5,
+  offset: Offset(0, 3),
+);
 
 class HomeWidget extends StatefulWidget {
   @override
@@ -24,7 +29,7 @@ void _clickHomeSelect(BuildContext context) async {
   print(data);
 }
 
-Widget _getBottomItem(
+Widget _buildBottomItem(
     String src, int index, int selectedIndex, _TapCallback callback) {
   return FlatButton(
     onPressed: () => callback(index),
@@ -39,47 +44,41 @@ Widget _getBottomItem(
   );
 }
 
-Widget _getBottomButton(BuildContext context) {
+Widget _buildBottomButton(BuildContext context) {
   return Container(
-    height: _bottomButtonHeight,
-    padding: EdgeInsets.only(bottom: _bottomButtonOffset),
-    child: Hero(
-      tag: StringConstant.selectPlateHero,
-      child: MaterialButton(
-        onPressed: () => _clickHomeSelect(context),
-        shape: CircleBorder(),
-        color: ColorConstant.backgroundWhite,
-        elevation: 1,
-        child: Icon(
-          Icons.add,
-          size: _bottomAddIconSize,
-          color: ColorConstant.backgroundGrey,
+    margin: EdgeInsets.only(bottom: _bottomButtonOffset),
+    decoration: BoxDecoration(
+      boxShadow: [_bottomButtonShadow],
+      shape: BoxShape.circle,
+    ),
+    child: GestureDetector(
+      onTap: () => _clickHomeSelect(context),
+      child: Hero(
+        tag: StringConstant.selectPlateHero,
+        child: SvgPicture.asset(
+          SvgIcon.homeBottomBtn,
+          height: _bottomButtonHeight,
+          width: _bottomButtonHeight,
         ),
       ),
     ),
   );
 }
 
-Widget _wrapMask(Widget widget) {
-  return Stack(
-    alignment: Alignment.bottomCenter,
-    children: [
-      Container(
-        height: _bottomMaskHeight,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            stops: [0.0, 1.0],
-            colors: [
-              ColorConstant.lightBackgroundPurple,
-              ColorConstant.invisibleBlack,
-            ],
-          ),
-        ),
+Widget _buildMask() {
+  return Container(
+    height: _bottomMaskHeight,
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+        stops: [0.0, 1.0],
+        colors: [
+          ColorConstant.lightBackgroundPurple,
+          ColorConstant.invisibleBlack,
+        ],
       ),
-      widget,
-    ],
+    ),
   );
 }
 
@@ -107,39 +106,34 @@ class _HomeState extends State<HomeWidget> {
       });
     };
     return Scaffold(
-      body: _wrapMask(Column(
+      body: Stack(
+        alignment: Alignment.bottomCenter,
         children: [
-          Expanded(
-            child: _pages[_index],
-            flex: 1,
-          ),
           Container(
-            height: _bottomButtonHeight,
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Container(
-                  height: _bottomHeight,
-                  width: double.infinity,
-                  child: SvgPicture.asset(
-                    SvgIcon.homeBottomBg,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _getBottomItem(SvgIcon.message, 0, _index, tapIconCallback),
-                    _getBottomButton(context),
-                    _getBottomItem(SvgIcon.person, 1, _index, tapIconCallback),
-                  ],
-                ),
-              ],
+            height: double.infinity,
+            width: double.infinity,
+            child: _pages[_index],
+          ),
+          _buildMask(),
+          Container(
+            height: _bottomHeight,
+            width: double.infinity,
+            child: SvgPicture.asset(
+              SvgIcon.homeBottomBg,
+              fit: BoxFit.fill,
             ),
           ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildBottomItem(SvgIcon.message, 0, _index, tapIconCallback),
+              _buildBottomButton(context),
+              _buildBottomItem(SvgIcon.person, 1, _index, tapIconCallback),
+            ],
+          ),
         ],
-      )),
+      ),
     );
   }
 }

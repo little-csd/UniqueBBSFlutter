@@ -22,9 +22,10 @@ class ColorConstant {
   static const inputHintPurple = Color(0xffcecae7);
   static const invisibleBlack = Color(0x00FFFFFF);
 
-  static const backgroundLightGrey = Color(0xFFFaFaFa);
+  static const backgroundLightGrey = Color(0xFFFAFAFA);
   static const backgroundGrey = Color(0xFFCCCBD8);
   static const backgroundPurple = Color(0xFFCCC5EA);
+  static const lightBackgroundShadow = Color(0x7FCCC5EA);
   static const lightBackgroundPurple = Color(0x50CCC5EA);
   static const backgroundWhite = Colors.white;
   static const backgroundBlack = Colors.black;
@@ -43,7 +44,8 @@ class StringConstant {
   static const home = '首页';
   static const me = '我的';
   static const broadcast = '通知公告';
-  static const showReport = '查看 report';
+  static const report = 'Report';
+  static const uniqueMarket = '联创市场';
   static const projectTask = '项目任务';
   static const freshmanTask = '新人任务';
   static const fileData = '文件留存';
@@ -106,10 +108,13 @@ class SvgIcon {
   static const person = _base + 'person.svg';
   static const search = _base + 'search.svg';
   static const file = _base + 'file.svg';
+  static const market = _base + 'market.svg';
+  static const report = _base + 'report.svg';
   static const freshmanTask = _base + 'freshman_task.svg';
   static const projectTask = _base + 'project_task.svg';
   static const share = _base + 'share.svg';
   static const homeBottomBg = _base + 'home_bottom_bg.svg';
+  static const homeBottomBtn = _base + 'home_bottom_btn.svg';
   static const broadcast = _base + 'broadcast.svg';
 
   static const loginLogo = _base + "login_logo.svg";

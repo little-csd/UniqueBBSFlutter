@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // TODO: 这里大小最好是根据屏幕长宽去计算，可能会 overflow
-const _cancelIconSize = 25.0;
-const _cancelButtonHeight = 35.0;
+const _cancelButtonSize = 40.0;
 const _selectBtnSize = 80.0;
 const _selectBtnRadius = 130.0;
 const _animationDuration = 600;
@@ -74,27 +73,22 @@ Widget _buildCircularWidget(BuildContext context) {
 Widget _buildCancelButton(
     BuildContext context, AnimationController controller) {
   return Container(
-    height: _cancelButtonHeight,
     child: AnimatedBuilder(
       builder: (context, child) {
         final value = controller.value;
         final btnColor = Color.lerp(
             ColorConstant.backgroundWhite, ColorConstant.primaryColor, value);
-        final cancelColor = Color.lerp(
-            ColorConstant.textGrey, ColorConstant.backgroundWhite, value);
         return Hero(
           tag: StringConstant.selectPlateHero,
-          child: MaterialButton(
-            onPressed: () => Navigator.pop(context, ''),
-            shape: CircleBorder(),
-            color: btnColor,
-            elevation: 1,
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context, ''),
             child: Transform.rotate(
               angle: pi / 4 * value,
-              child: Icon(
-                Icons.add,
-                size: _cancelIconSize,
-                color: cancelColor,
+              child: SvgPicture.asset(
+                SvgIcon.homeBottomBtn,
+                height: _cancelButtonSize,
+                width: _cancelButtonSize,
+                color: btnColor,
               ),
             ),
           ),

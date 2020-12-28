@@ -17,7 +17,6 @@ import 'package:provider/provider.dart';
 /// 手机号
 /// 微信
 /// 邮箱
-/// 生日
 /// 查看帖子
 /// 修改密码
 /// 退出登录
@@ -43,11 +42,22 @@ const _shadowBlueRadius = 1.0;
 const _iconSize = 20.0;
 const _iconTextOffset = 10.0;
 const _personalVerticalPadding = 14.0;
+const _maxSignLine = 10;
 final divider = Container(
   height: 0.2,
   margin: EdgeInsets.symmetric(vertical: 8.0),
   color: ColorConstant.backgroundGrey,
 );
+final _personalTextStyle = TextStyle(
+  color: ColorConstant.textBlack,
+  fontSize: 15,
+  fontWeight: FontWeight.bold,
+);
+final _personalDataTextStyle = TextStyle(
+  color: ColorConstant.textGrey,
+  fontSize: 13,
+);
+
 // 底部几个按钮部分
 const _buttonTextPadding = 10.0;
 const _buttonTextHorizontalPadding = 20.0;
@@ -67,16 +77,6 @@ Widget _buildNotification() {
     ),
   );
 }
-
-final notFound = Container(
-  alignment: Alignment.center,
-  child: CircleAvatar(
-    radius: _portraitRadius,
-    backgroundImage:
-        NetworkImage('https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/'
-            'it/u=1336318030,2258820972&fm=26&gp=0.jpg'),
-  ),
-);
 
 Widget _buildHeadPortrait(User user) {
   return BBSAvatar(
@@ -103,16 +103,12 @@ Widget _buildActivePoint() {
       children: [
         TextSpan(
             text: StringConstant.activePoint, style: _activePointTextStyle),
-        TextSpan(text: ': 100', style: _activePointNumStyle),
+        TextSpan(text: ': 0', style: _activePointNumStyle),
       ],
     )),
   );
 }
 
-// final cardData = [
-//   'DESIGN',
-//   'BBS',
-// ];
 /// 此处如果一个人同时位于很多个组，有可能会溢出
 Widget _buildCards(User me) {
   if (me == null) {
@@ -158,57 +154,38 @@ Widget _wrapBoxShadow(Widget child, double verticalPadding) {
   );
 }
 
-/// 此处注意 signature 过长的情况，可能发生 ui 问题
-Widget _buildSignature(User me) {
+Widget _buildSignature(User me, bool isOpen, VoidCallback callback) {
   final signature = me == null ? StringConstant.noData : me.user.signature;
-  final text = Text.rich(TextSpan(children: [
-    TextSpan(
-      text: StringConstant.signature,
-      style: const TextStyle(
-          color: ColorConstant.textBlack,
-          fontSize: _buttonTextFontSize,
-          fontWeight: FontWeight.bold),
-    ),
-    TextSpan(
-      text: '   $signature',
-      style: const TextStyle(
-          color: ColorConstant.textGrey, fontSize: _buttonTextFontSize),
-    ),
-  ]));
-  return _wrapBoxShadow(text, _buttonTextPadding);
+  final widget = Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        '${StringConstant.signature}   ',
+        style: _personalTextStyle,
+      ),
+      Expanded(
+        child: Container(
+          padding: EdgeInsets.only(top: 2),
+          child: Text(
+            '$signature 就对啦看风景拉开到手机费了；按时打卡积分；啦可怜；复健科阿萨德路附近；阿里的手机费按时交宽带费；阿贾克斯地方 附近',
+            style: _personalDataTextStyle,
+            maxLines: isOpen ? _maxSignLine : 1,
+          ),
+        ),
+        flex: 1,
+      ),
+      Container(
+        child: GestureDetector(
+          onTap: callback,
+          child: isOpen
+              ? Icon(Icons.keyboard_arrow_up)
+              : Icon(Icons.keyboard_arrow_down),
+        ),
+      ),
+    ],
+  );
+  return _wrapBoxShadow(widget, _buttonTextPadding);
 }
-
-// final personalData = [
-//   '12344448901',
-//   '123456798',
-//   '474594049@qq.com',
-//   '2000.05.10'
-// ];
-
-// Widget _getWidgetByShow(int show, int index, ShowStateCallback callback) {
-//   if (show > 0) {
-//     return GestureDetector(
-//       onTap: () => callback(index, -1),
-//       child: Icon(
-//         Icons.remove_red_eye_outlined,
-//         size: _iconSize,
-//       ),
-//     );
-//   } else if (show < 0) {
-//     return GestureDetector(
-//       onTap: () => callback(index, 1),
-//       child: Icon(
-//         Icons.panorama_fish_eye,
-//         size: _iconSize,
-//       ),
-//     );
-//   } else {
-//     return Container(
-//       height: _iconSize,
-//       width: _iconSize,
-//     );
-//   }
-// }
 
 Widget _wrapPersonalDataLine(String iconSrc, String type, String data) {
   // 每一行第一个数据是 Icon 名字, 第二个是提示信息, 第三个是实际数据
@@ -225,16 +202,13 @@ Widget _wrapPersonalDataLine(String iconSrc, String type, String data) {
         ),
         Text(
           type,
-          style: TextStyle(
-            color: ColorConstant.textBlack,
-            fontWeight: FontWeight.bold,
-          ),
+          style: _personalTextStyle,
         ),
         Expanded(
           child: Text(
             data,
             textAlign: TextAlign.end,
-            style: const TextStyle(color: ColorConstant.textGrey),
+            style: _personalDataTextStyle,
           ),
           flex: 1,
         ),
@@ -243,13 +217,11 @@ Widget _wrapPersonalDataLine(String iconSrc, String type, String data) {
   );
 }
 
-/// TODO: 此处后台没有生日信息, 先放个学号
 Widget _buildPersonalData(User me) {
   // 这里将构建一行 UI 所需要的字符串都封装在一起, 后面直接传递给 _wrapPersonalDataLine
   final mobile = me == null ? StringConstant.noData : me.user.mobile;
   final weChat = me == null ? StringConstant.noData : me.user.wechat;
   final email = me == null ? StringConstant.noData : me.user.email;
-  final studentID = me == null ? StringConstant.noData : me.user.studentID;
   return _wrapBoxShadow(
     Column(
       children: [
@@ -259,9 +231,6 @@ Widget _buildPersonalData(User me) {
         _wrapPersonalDataLine(SvgIcon.weChat, StringConstant.weChat, weChat),
         divider,
         _wrapPersonalDataLine(SvgIcon.mailbox, StringConstant.mailbox, email),
-        divider,
-        _wrapPersonalDataLine(
-            SvgIcon.birthday, StringConstant.birthday, studentID),
       ],
     ),
     _personalVerticalPadding,
@@ -333,12 +302,14 @@ class HomeMeWidget extends StatefulWidget {
   State createState() => _HomeMeState();
 }
 
-typedef ShowStateCallback = void Function(int, int);
-
-/// 进入 me 界面前要保证自己的 user 信息必须存在
 class _HomeMeState extends State<HomeMeWidget> {
+  bool _isSignOpen = false; // 是否展开签名
+
   @override
   Widget build(BuildContext context) {
+    final signOpenCallback = () => setState(() {
+          _isSignOpen = !_isSignOpen;
+        });
     return Consumer<UserModel>(
       builder: (context, userModel, child) {
         User me = userModel.find(Repo.instance.uid);
@@ -359,7 +330,7 @@ class _HomeMeState extends State<HomeMeWidget> {
                     Container(height: 5),
                     _buildCards(me),
                     Container(height: 15),
-                    _buildSignature(me),
+                    _buildSignature(me, _isSignOpen, signOpenCallback),
                     Container(height: 20),
                     _buildPersonalData(me),
                     Container(height: 30),
