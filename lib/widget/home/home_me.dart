@@ -1,10 +1,12 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBSFlutter/config/route.dart';
 import 'package:UniqueBBSFlutter/data/bean/user/user.dart';
 import 'package:UniqueBBSFlutter/data/model/user_model.dart';
 import 'package:UniqueBBSFlutter/data/repo.dart';
 import 'package:UniqueBBSFlutter/widget/common/common_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 /// '我的'界面从上到下依次是:
@@ -23,6 +25,8 @@ import 'package:provider/provider.dart';
 
 // 整体
 const _mainHorizontalPadding = 15.0;
+// 通知
+const _notificationHeight = 90.0;
 // 头像部分
 const _portraitRadius = 40.0;
 // 名字部分
@@ -69,11 +73,13 @@ final _buttonRoundedBorder =
 
 Widget _buildNotification() {
   return Container(
-    height: 90,
+    height: _notificationHeight,
     alignment: Alignment.bottomRight,
     child: IconButton(
       icon: SvgPicture.asset(SvgIcon.notification),
-      onPressed: () => print('hello mike'),
+      onPressed: () {
+        Fluttertoast.showToast(msg: StringConstant.notImpl);
+      },
     ),
   );
 }
@@ -167,7 +173,7 @@ Widget _buildSignature(User me, bool isOpen, VoidCallback callback) {
         child: Container(
           padding: EdgeInsets.only(top: 2),
           child: Text(
-            '$signature 就对啦看风景拉开到手机费了；按时打卡积分；啦可怜；复健科阿萨德路附近；阿里的手机费按时交宽带费；阿贾克斯地方 附近',
+            signature,
             style: _personalDataTextStyle,
             maxLines: isOpen ? _maxSignLine : 1,
           ),
@@ -263,7 +269,7 @@ Widget _buildChangPwd(BuildContext context) {
     width: double.infinity,
     child: OutlineButton(
       color: ColorConstant.backgroundBlack,
-      onPressed: () => print('修改密码'),
+      onPressed: () => Navigator.of(context).pushNamed(BBSRoute.pwSet),
       shape: _buttonRoundedBorder,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: _buttonTextPadding),
@@ -283,7 +289,7 @@ Widget _buildChangPwd(BuildContext context) {
 Widget _buildLogout(BuildContext context) {
   return MaterialButton(
     padding: EdgeInsets.symmetric(vertical: _buttonTextPadding),
-    onPressed: () => print('退出登录'),
+    onPressed: () => Navigator.of(context).popAndPushNamed(BBSRoute.login),
     minWidth: double.infinity,
     shape: _buttonRoundedBorder,
     child: Text(

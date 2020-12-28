@@ -1,6 +1,6 @@
 class Logger {
   // 过滤 level 小于 flag 的 log
-  static const flag = 2;
+  static const flag = 1;
 
   // verbose, flag = 1
   static void v(String tag, String msg) {

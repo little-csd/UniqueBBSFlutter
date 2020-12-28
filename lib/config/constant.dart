@@ -47,9 +47,14 @@ class StringConstant {
   static const report = 'Report';
   static const uniqueMarket = '联创市场';
   static const projectTask = '项目任务';
+  static const uniqueProject = '团队项目';
   static const freshmanTask = '新人任务';
   static const fileData = '文件留存';
+  static const uniqueData = '团队资料';
   static const share = '交流分享';
+  static const uniqueShare = '团队分享';
+  static const discussion = '闲杂讨论';
+
   static const loadMore = '查看更多';
   // 网络异常页
   static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
@@ -98,6 +103,7 @@ class StringConstant {
   static const noQuote = "-1";
   static const jwtExpired = "jwt expired";
   static const jwtMalformed = "jwt malformed";
+  static const notImpl = "此功能尚待开发";
 }
 
 // svg 图片按界面划分

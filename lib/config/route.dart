@@ -1,5 +1,5 @@
-import 'package:UniqueBBSFlutter/widget/home.dart';
-import 'package:UniqueBBSFlutter/widget/home_select.dart';
+import 'package:UniqueBBSFlutter/widget/home/home.dart';
+import 'package:UniqueBBSFlutter/widget/home/home_select.dart';
 import 'package:UniqueBBSFlutter/widget/login/info_set.dart';
 import 'package:UniqueBBSFlutter/widget/login/login.dart';
 import 'package:UniqueBBSFlutter/widget/login/pw_set.dart';

@@ -1,4 +1,3 @@
-import 'package:UniqueBBSFlutter/widget/forum_item.dart';
 import 'package:UniqueBBSFlutter/widget/post/post_list.dart';
 import 'package:flutter/material.dart';
 
