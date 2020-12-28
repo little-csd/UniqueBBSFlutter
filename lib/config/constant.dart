@@ -100,39 +100,41 @@ class StringConstant {
   static const jwtMalformed = "jwt malformed";
 }
 
+// svg 图片按界面划分
 class SvgIcon {
-  static const _base = 'images/';
+  static const _base = 'images';
+  static const _home = '$_base/home';
+  static const _me = '$_base/me';
   // 主页
-  static const notification = _base + 'notification.svg';
-  static const message = _base + 'message.svg';
-  static const person = _base + 'person.svg';
-  static const search = _base + 'search.svg';
-  static const file = _base + 'file.svg';
-  static const market = _base + 'market.svg';
-  static const report = _base + 'report.svg';
-  static const freshmanTask = _base + 'freshman_task.svg';
-  static const projectTask = _base + 'project_task.svg';
-  static const share = _base + 'share.svg';
-  static const homeBottomBg = _base + 'home_bottom_bg.svg';
-  static const homeBottomBtn = _base + 'home_bottom_btn.svg';
-  static const broadcast = _base + 'broadcast.svg';
-
-  static const loginLogo = _base + "login_logo.svg";
-  static const doubt = _base + "jyr_doubt.svg";
-  static const setInfo = _base + "set_info.svg";
-  static const error = _base + "no_phone_number.svg";
-  // 选择发帖板块页
-  static const selectPlateIcon = _base + 'select_plate_icon.svg';
-  static const selectPlateCancel = _base + 'select_plate_cancel.svg';
+  static const notification = '$_home/notification.svg';
+  static const message = '$_home/message.svg';
+  static const person = '$_home/person.svg';
+  static const search = '$_home/search.svg';
+  static const file = '$_home/file.svg';
+  static const market = '$_home/market.svg';
+  static const report = '$_home/report.svg';
+  static const freshmanTask = '$_home/freshman_task.svg';
+  static const projectTask = '$_home/project_task.svg';
+  static const share = '$_home/share.svg';
+  static const homeBottomBg = '$_home/home_bottom_bg.svg';
+  static const homeBottomBtn = '$_home/home_bottom_btn.svg';
+  static const broadcast = '$_home/broadcast.svg';
   // 我的
-  static const phoneNumber = _base + 'phone_icon.svg';
-  static const weChat = _base + 'wechat_icon.svg';
-  static const mailbox = _base + 'mailbox_icon.svg';
-  static const birthday = _base + 'birthday_icon.svg';
+  static const phoneNumber = '$_me/phone_icon.svg';
+  static const weChat = '$_me/wechat_icon.svg';
+  static const mailbox = '$_me/mailbox_icon.svg';
+  static const birthday = '$_me/birthday_icon.svg';
+
+  static const loginLogo = _base + "/login_logo.svg";
+  static const doubt = _base + "/jyr_doubt.svg";
+  static const setInfo = _base + "/set_info.svg";
+  static const error = _base + "/no_phone_number.svg";
+  // 选择发帖板块页
+  static const selectPlateIcon = _base + '/select_plate_icon.svg';
   // splash 界面
-  static const splashLogo = _base + 'logo.svg';
+  static const splashLogo = _base + '/logo.svg';
   // 其他
-  static const defaultAvatar = _base + 'default_avatar.svg';
+  static const defaultAvatar = _base + '/default_avatar.svg';
 }
 
 class HyperParam {
