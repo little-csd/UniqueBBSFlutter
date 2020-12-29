@@ -106,6 +106,7 @@ Widget _buildReport(BuildContext context) {
       minWidth: double.infinity,
       height: _reportButtonHeight,
       onPressed: () {
+        Navigator.pushNamed(context, BBSRoute.reportPage);
         print('report!');
       },
       shape: RoundedRectangleBorder(

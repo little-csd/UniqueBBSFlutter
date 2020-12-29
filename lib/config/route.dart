@@ -4,6 +4,7 @@ import 'package:UniqueBBSFlutter/widget/home_select.dart';
 import 'package:UniqueBBSFlutter/widget/login/info_set.dart';
 import 'package:UniqueBBSFlutter/widget/login/pw_set.dart';
 import 'package:UniqueBBSFlutter/widget/login/login.dart';
+import 'package:UniqueBBSFlutter/widget/report/report_page.dart';
 import 'package:flutter/material.dart';
 
 class BBSRoute {
@@ -14,6 +15,7 @@ class BBSRoute {
   static final forum = 'forum'; // 首页-论坛
   static final search = 'search'; // 首页-搜索
   static final selectPlate = 'select plate';
+  static final reportPage = 'report';
 
   static final login = 'login'; // 登录
 
@@ -35,6 +37,7 @@ class BBSRoute {
     pwSet: (context) => PasswordSetWidget(),
     infoSet: (context) => InfoSetWidget(),
     postList: (context) => ForumPageWidget(),
+    reportPage: (context) => ReportPageWidget(),
   };
 
   static Route buildPage(String path, dynamic arg) {

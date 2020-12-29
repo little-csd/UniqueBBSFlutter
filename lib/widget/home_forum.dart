@@ -1,4 +1,3 @@
-import 'package:UniqueBBSFlutter/widget/forum_item.dart';
 import 'package:UniqueBBSFlutter/widget/post/post_list.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +10,20 @@ class HomeForumWidget extends StatefulWidget {
 class _HomeForumState extends State<HomeForumWidget> {
   @override
   Widget build(BuildContext context) {
+    ForumListCard listCard = ForumListCard(
+      showLabel: true,
+      showLoadMore: true,
+      canScroll: false,
+      bodyHeight: null,
+    );
+
+    ScrollController scrollController = ScrollController();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent) {
+        print("sunkaiyi");
+      }
+    });
+
     return MediaQuery.removePadding(
         context: context,
         removeTop: true,
@@ -21,7 +34,7 @@ class _HomeForumState extends State<HomeForumWidget> {
               top: 20,
               left: 20,
             ),
-            child: ForumListCard(true, true, false, null),
+            child: listCard,
           ),
           itemCount: 10,
         ));

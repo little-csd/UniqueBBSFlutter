@@ -2,8 +2,10 @@ import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/widget/post/post_list.dart';
 import 'package:flutter/material.dart';
 
+const pageSize = 20;
+
 class ForumPageWidget extends StatefulWidget {
-  final String titleText = "闲杂讨论";
+  final String titleText = "新人任务";
 
   @override
   State<StatefulWidget> createState() => ForumPageState();
@@ -20,23 +22,30 @@ class ForumPageState extends State<ForumPageWidget> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        body: _buildBody()
-    );
+        body: _buildBody(context));
   }
 }
 
-_buildBody() {
+_buildBody(BuildContext context) {
   return SingleChildScrollView(
     child: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [ForumListCard(false, false, true, 800), _buildNodeMoreText()],
+          children: [
+            ForumListCard(
+              showLabel: false,
+              showLoadMore: false,
+              canScroll: false,
+              bodyHeight: 2000,
+            ),
+            _buildBottomText()
+          ],
         )),
   );
 }
 
-_buildNodeMoreText() {
+_buildBottomText() {
   return Container(
     padding: EdgeInsets.all(20),
     child: Text(

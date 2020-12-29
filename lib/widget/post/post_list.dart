@@ -3,6 +3,7 @@ import 'package:UniqueBBSFlutter/widget/post/post_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+
 final divider = Container(
   height: 1,
   margin: EdgeInsets.symmetric(vertical: 8.0),
@@ -17,13 +18,22 @@ class ForumListCard extends StatefulWidget {
   final bool canScroll;
   final double bodyHeight;
 
-  ForumListCard(this.showLoadMore, this.showLabel, this.canScroll, this.bodyHeight);
+  ForumListCard(
+      {this.showLoadMore, this.showLabel, this.canScroll, this.bodyHeight});
 
   @override
   State<StatefulWidget> createState() => ForumListCardState();
+
 }
 
 class ForumListCardState extends State<ForumListCard> {
+  var _words = <String>['loading'];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,27 +75,40 @@ class ForumListCardState extends State<ForumListCard> {
             ),
           ),
         Container(
-          height: widget.bodyHeight,
           child: MediaQuery.removePadding(
             context: context,
             removeTop: true,
             removeBottom: true,
             child: ListView.separated(
-                physics: _canScroll(widget),
-                shrinkWrap: (widget.bodyHeight == null),
-                itemBuilder: (context, index) => Padding(
+              physics: _canScroll(widget),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Padding(
                   padding: EdgeInsets.only(
                     bottom: 5,
                   ),
                   child: ForumItem2(),
-                ),
-                itemCount: widget.bodyHeight == null ? 3 : 15,
-                separatorBuilder: (BuildContext context, int index) => divider),
+                );
+              },
+              itemCount: _words.length,
+              separatorBuilder: (BuildContext context, int index) {
+                return divider;
+              },
+            ),
           ),
         ),
         if (widget.showLoadMore) _buildLoadMoreButton(context)
       ]),
     );
+  }
+
+  void receiveData() {
+    Future.delayed(Duration(seconds: 2)).then((e) {
+      var addList = <String>["sss", "sss", "ssss", "ssss"];
+      setState(() {
+        _words.insertAll(_words.length - 1, addList);
+      });
+    });
   }
 }
 

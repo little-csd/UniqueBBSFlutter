@@ -20,6 +20,7 @@ class ColorConstant {
   static const weComButtonGray = Color(0xff707070);
   static const inputPurple = Color(0xfff0f0f6);
   static const inputHintPurple = Color(0xffcecae7);
+  static const textBackgroundLightPurple = Color(0xFFA598FF);
 
   static const backgroundLightGrey = Color(0xFFFaFaFa);
   static const backgroundGrey = Color(0xFFCCCBD8);
@@ -48,6 +49,7 @@ class StringConstant {
   static const share = '交流分享';
   static const loadMore = '查看更多';
   static const noMoreForum = "再往下拉也没有啦~";
+  static const reportTitle = '我的report';
   // 网络异常页
   static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
   // 登陆页
