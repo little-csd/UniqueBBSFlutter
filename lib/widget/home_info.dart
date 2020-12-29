@@ -148,7 +148,6 @@ Widget _buildReport(BuildContext context) {
       onPressed: () {
         Navigator.pushNamed(context, BBSRoute.reportPage);
         print('report!');
-        Navigator.of(context).pushNamed(BBSRoute.login);
       },
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(_showReportRadius)),

@@ -1,12 +1,24 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBSFlutter/data/repo.dart';
 import 'package:flutter/material.dart';
 
+var _tagWeekly = "WEEKLY";
+var _tagDaily = "DAILY";
+
 class ReportItem extends Container {
-  // todo : test data, please refactor after bind to a model
-  String year = "2020";
-  String mouth = "09月";
-  String day = "22";
-  String reportContent = "今天早上吃啥 \n中午吃啥 \n晚上吃啥 \n夜宵吃七幺幺";
+  String year ;
+  String mouth;
+  String day;
+  String reportContent;
+  bool isWeekly;
+
+  ReportItem({
+    this.year,
+    this.mouth,
+    this.day,
+    this.reportContent,
+    this.isWeekly
+  });
 
   @override
   Widget get child {
@@ -31,8 +43,10 @@ class ReportItem extends Container {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _buildColorBackgroundText("   DAILY  "),
-              Container(width: 10,),
+              _buildColorBackgroundText(isWeekly ? _tagWeekly : _tagDaily),
+              Container(
+                width: 10,
+              ),
             ],
           ),
           Container(
@@ -72,6 +86,7 @@ class ReportItem extends Container {
 
 _buildColorBackgroundText(String text) {
   return Container(
+    alignment: Alignment.center,
     width: 50,
     height: 12,
     decoration: BoxDecoration(

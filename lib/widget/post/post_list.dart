@@ -90,7 +90,7 @@ class ForumListCardState extends State<ForumListCard> {
                   child: ForumItem2(),
                 );
               },
-              itemCount: _words.length,
+              itemCount: widget.showLoadMore ? 3 : _words.length,
               separatorBuilder: (BuildContext context, int index) {
                 return divider;
               },

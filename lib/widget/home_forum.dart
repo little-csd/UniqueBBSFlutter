@@ -17,13 +17,6 @@ class _HomeForumState extends State<HomeForumWidget> {
       bodyHeight: null,
     );
 
-    ScrollController scrollController = ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent) {
-        print("sunkaiyi");
-      }
-    });
-
     return MediaQuery.removePadding(
         context: context,
         removeTop: true,
@@ -36,7 +29,7 @@ class _HomeForumState extends State<HomeForumWidget> {
             ),
             child: listCard,
           ),
-          itemCount: 10,
+          itemCount: 1,
         ));
   }
 }
