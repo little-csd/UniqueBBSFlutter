@@ -5,6 +5,7 @@ import 'package:UniqueBBSFlutter/widget/login/info_set.dart';
 import 'package:UniqueBBSFlutter/widget/login/login.dart';
 import 'package:UniqueBBSFlutter/widget/report/report_page.dart';
 import 'package:UniqueBBSFlutter/widget/login/pw_set.dart';
+import 'package:UniqueBBSFlutter/widget/report/report_post_page.dart';
 import 'package:flutter/material.dart';
 
 class BBSRoute {
@@ -21,7 +22,7 @@ class BBSRoute {
 
   static final postList = 'postList'; // 帖子列表：首页-情报-通知公告、首页-我的-我的帖子
   static final postDetail = 'postDetail'; // 帖子详情
-  static final posting = 'postReport'; // 发帖
+  static final postReport = 'postReport'; // 发日报
 
   static final pwUpdate = 'pwUpdate'; // 修改密码
   static final pwSet = 'pwSet'; // 设置密码
@@ -38,6 +39,7 @@ class BBSRoute {
     infoSet: (context) => InfoSetWidget(),
     postList: (context) => ForumPageWidget(),
     reportPage: (context) => ReportPageWidget(),
+    postReport: (context) => ReportPostPageWidget(),
   };
 
   static Route buildPage(String path, dynamic arg) {

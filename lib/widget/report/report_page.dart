@@ -1,9 +1,11 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBSFlutter/config/route.dart';
 import 'package:UniqueBBSFlutter/data/bean/report/report.dart';
 import 'package:UniqueBBSFlutter/data/dio.dart';
 import 'package:UniqueBBSFlutter/data/repo.dart';
 import 'package:UniqueBBSFlutter/widget/report/report_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 int _fetching = 0;
 int _idle = 1;
@@ -62,6 +64,14 @@ class ReportPageState extends State<StatefulWidget> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstant.backgroundLightGrey,
+        actions: <Widget>[
+          IconButton(
+            icon: SvgPicture.asset(SvgIcon.postReport),
+            onPressed: () {
+              Navigator.pushNamed(context, BBSRoute.postReport);
+            }
+          ),
+        ],
         title: Text(
           StringConstant.reportTitle,
           style: TextStyle(color: Colors.black),

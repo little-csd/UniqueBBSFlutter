@@ -10,6 +10,7 @@ class ColorConstant {
   static const textWhite = Colors.white;
   static const textRed = Color(0xFFFF7A7A);
   static const textLightPurPle = Color(0xff9b84fe);
+  static const textPostPurple = Color(0xffb4aafd);
 
   // 前景色/背景色颜色常量
   static const primaryColor = Color(0xFF7966FF);
@@ -43,6 +44,7 @@ class StringConstant {
   static const forum = '放飞';
   static const home = '首页';
   static const me = '我的';
+  static const post = '发布';
   static const broadcast = '通知公告';
   static const showReport = '查看 report';
   static const projectTask = '项目任务';
@@ -52,6 +54,8 @@ class StringConstant {
   static const loadMore = '查看更多';
   static const noMoreForum = "再往下拉也没有啦~";
   static const reportTitle = '我的report';
+  static const postReportTitle = '发布report';
+  static const pleaseInput = '请输入正文';
   // 网络异常页
   static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
   // 登陆页
@@ -114,6 +118,8 @@ class SvgIcon {
   static const share = _base + 'share.svg';
   static const homeBottomBg = _base + 'home_bottom_bg.svg';
   static const broadcast = _base + 'broadcast.svg';
+  static const postReport = _base + 'post_report.svg';
+  static const moduleChooseTag = _base + 'module_choose_tag.svg';
 
   static const loginLogo = _base + "login_logo.svg";
   static const doubt = _base + "jyr_doubt.svg";
