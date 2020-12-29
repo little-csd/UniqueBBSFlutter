@@ -11,7 +11,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => Repo.instance.userModel),
-        ChangeNotifierProvider(create: (context) => Repo.instance.threadModel),
+        ChangeNotifierProvider(create: (context) => Repo.instance.forumModel),
         ChangeNotifierProvider(create: (context) => Repo.instance.avatarModel),
       ],
       child: UniqueStudioApp(),
@@ -45,7 +45,7 @@ class UniqueStudioApp extends StatelessWidget {
         primaryColor: ColorConstant.primaryColor,
         primaryColorLight: ColorConstant.primaryColorLight,
         unselectedWidgetColor: ColorConstant.textGrey,
-        fontFamily: 'PingFang SC',
+        fontFamily: 'PingFang',
       ),
       home: AppSplashWidget(),
       onGenerateRoute: (setting) =>

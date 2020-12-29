@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // TODO: 这里大小最好是根据屏幕长宽去计算，可能会 overflow
-const _cancelIconSize = 60.0;
+const _cancelIconSize = 25.0;
+const _cancelButtonHeight = 35.0;
 const _selectBtnSize = 80.0;
 const _selectBtnRadius = 130.0;
-final emptyContainer = Container(height: 10);
+const _animationDuration = 600;
+final emptyContainer = Container(height: 15);
 final _btnTextStyle = TextStyle(
   fontSize: 20,
   color: ColorConstant.textBlack,
@@ -69,17 +71,68 @@ Widget _buildCircularWidget(BuildContext context) {
   );
 }
 
+Widget _buildCancelButton(
+    BuildContext context, AnimationController controller) {
+  return Container(
+    height: _cancelButtonHeight,
+    child: AnimatedBuilder(
+      builder: (context, child) {
+        final value = controller.value;
+        final btnColor = Color.lerp(
+            ColorConstant.backgroundWhite, ColorConstant.primaryColor, value);
+        final cancelColor = Color.lerp(
+            ColorConstant.textGrey, ColorConstant.backgroundWhite, value);
+        return Hero(
+          tag: StringConstant.selectPlateHero,
+          child: MaterialButton(
+            onPressed: () => Navigator.pop(context, ''),
+            shape: CircleBorder(),
+            color: btnColor,
+            elevation: 1,
+            child: Transform.rotate(
+              angle: pi / 4 * value,
+              child: Icon(
+                Icons.add,
+                size: _cancelIconSize,
+                color: cancelColor,
+              ),
+            ),
+          ),
+        );
+      },
+      animation: controller,
+    ),
+  );
+}
+
 class HomeSelectWidget extends StatefulWidget {
   @override
   State createState() => _HomeSelectState();
 }
 
-class _HomeSelectState extends State<HomeSelectWidget> {
+class _HomeSelectState extends State<HomeSelectWidget>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+        vsync: this, duration: Duration(milliseconds: _animationDuration))
+      ..forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ColorConstant.backgroundLightGrey,
-      child: Column(
+    return Scaffold(
+      backgroundColor: ColorConstant.backgroundLightGrey,
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
@@ -91,15 +144,7 @@ class _HomeSelectState extends State<HomeSelectWidget> {
           emptyContainer,
           _buildCircularWidget(context),
           emptyContainer,
-          FlatButton(
-            onPressed: () => Navigator.pop(context, ''),
-            shape: const CircleBorder(),
-            child: SvgPicture.asset(
-              SvgIcon.selectPlateCancel,
-              width: _cancelIconSize,
-              height: _cancelIconSize,
-            ),
-          ),
+          _buildCancelButton(context, _controller),
           emptyContainer,
         ],
       ),

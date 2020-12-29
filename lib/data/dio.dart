@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/basic_forum.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/post_list.dart';
@@ -98,11 +99,10 @@ class Server {
   static const _UidKeyInSp = 'uid';
   static const _TokenKeyInSp = 'token';
 
-  VoidCallback tokenErrCallback;
+  VoidCallback tokenErrCallback = () => {};
 
-  Future<String> init(VoidCallback tokenErrCallback) async {
+  Future<String> init() async {
     // token 过期统一在 _get 和 _post 方法中处理
-    this.tokenErrCallback = tokenErrCallback;
     final sp = await SharedPreferences.getInstance();
     final uid = sp.getString(_UidKeyInSp);
     final token = sp.getString(_TokenKeyInSp);
@@ -461,6 +461,10 @@ class Server {
       } else {
         String msg = res['msg'] ? res['msg'] : "";
         Logger.d(_TAG, msg);
+        if (msg == StringConstant.jwtExpired ||
+            msg == StringConstant.jwtMalformed) {
+          tokenErrCallback();
+        }
         return msg;
       }
     } catch (e) {
@@ -484,6 +488,10 @@ class Server {
       } else {
         String msg = res['msg'] != null ? res['msg'] : "";
         Logger.d(_TAG, msg);
+        if (msg == StringConstant.jwtExpired ||
+            msg == StringConstant.jwtMalformed) {
+          tokenErrCallback();
+        }
         return msg;
       }
     } catch (e) {

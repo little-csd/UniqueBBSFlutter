@@ -21,10 +21,12 @@ class ColorConstant {
   static const inputPurple = Color(0xfff0f0f6);
   static const inputHintPurple = Color(0xffcecae7);
   static const textBackgroundLightPurple = Color(0xFFA598FF);
+  static const invisibleBlack = Color(0x00FFFFFF);
 
   static const backgroundLightGrey = Color(0xFFFaFaFa);
   static const backgroundGrey = Color(0xFFCCCBD8);
   static const backgroundPurple = Color(0xFFCCC5EA);
+  static const lightBackgroundPurple = Color(0x50CCC5EA);
   static const backgroundWhite = Colors.white;
   static const backgroundBlack = Colors.black;
 
@@ -91,11 +93,17 @@ class StringConstant {
   static const noData = '无';
   // toast 常量
   static const loginSuccess = '登录成功!';
+  // hero tag
+  static const selectPlateHero = "select plate";
+  // 其他
+  static const noQuote = "-1";
+  static const jwtExpired = "jwt expired";
+  static const jwtMalformed = "jwt malformed";
 }
 
 class SvgIcon {
   static const _base = 'images/';
-
+  // 主页
   static const notification = _base + 'notification.svg';
   static const message = _base + 'message.svg';
   static const person = _base + 'person.svg';
@@ -104,19 +112,28 @@ class SvgIcon {
   static const freshmanTask = _base + 'freshman_task.svg';
   static const projectTask = _base + 'project_task.svg';
   static const share = _base + 'share.svg';
+  static const homeBottomBg = _base + 'home_bottom_bg.svg';
   static const broadcast = _base + 'broadcast.svg';
+
   static const loginLogo = _base + "login_logo.svg";
   static const doubt = _base + "jyr_doubt.svg";
   static const setInfo = _base + "set_info.svg";
   static const error = _base + "no_phone_number.svg";
-
+  // 选择发帖板块页
   static const selectPlateIcon = _base + 'select_plate_icon.svg';
   static const selectPlateCancel = _base + 'select_plate_cancel.svg';
-
+  // 我的
   static const phoneNumber = _base + 'phone_icon.svg';
   static const weChat = _base + 'wechat_icon.svg';
   static const mailbox = _base + 'mailbox_icon.svg';
   static const birthday = _base + 'birthday_icon.svg';
-
+  // splash 界面
   static const splashLogo = _base + 'logo.svg';
+  // 其他
+  static const defaultAvatar = _base + 'default_avatar.svg';
+}
+
+class HyperParam {
+  static const requestInterval = 5;
+  static const pageSize = 20;
 }
