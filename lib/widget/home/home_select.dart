@@ -40,14 +40,16 @@ Widget _wrapData(BuildContext context, String data, String name) {
     onPressed: () {
       if (name == StringConstant.notImpl || name == StringConstant.report) {
         Fluttertoast.showToast(msg: name);
+        Navigator.of(context).pop();
+        return;
+      }
+      // 这里是直接从 repo 拿 forum 的数据的，其实不是很好
+      final model = Repo.instance.forumModel;
+      final forum = model.findByName(name);
+      if (forum == null) {
+        Fluttertoast.showToast(msg: StringConstant.networkError);
       } else {
-        final model = Repo.instance.forumModel;
-        final forum = model.findByName(name);
-        if (forum == null) {
-          Fluttertoast.showToast(msg: StringConstant.networkError);
-        } else {
-          print(forum.toJson());
-        }
+        print(forum.toJson());
       }
       Navigator.of(context).pop();
     },

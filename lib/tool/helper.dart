@@ -41,3 +41,21 @@ String getDayString(String str) {
   if (date == null) return "";
   return "${date.year}.${date.month}.${date.day}";
 }
+
+// 用于自动处理 x 小时前这样的数据
+String getDeltaTime(String time) {
+  if (time == null) return "";
+  final date = DateTime.parse(time);
+  if (date == null) return "";
+  final delta = DateTime.now().difference(date);
+  if (delta.isNegative)
+    return "刚刚";
+  else if (delta.inDays > 0)
+    return "${delta.inDays}天前";
+  else if (delta.inHours > 0)
+    return "${delta.inHours}小时前";
+  else if (delta.inMinutes > 0)
+    return "${delta.inMinutes}分钟前";
+  else
+    return "刚刚";
+}

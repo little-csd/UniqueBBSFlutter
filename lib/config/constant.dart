@@ -10,6 +10,8 @@ class ColorConstant {
   static const textWhite = Colors.white;
   static const textRed = Color(0xFFFF7A7A);
   static const textLightPurPle = Color(0xff9b84fe);
+  static const textGreyForComment = Color(0xFFD3CFE9);
+  static const textGreyForNoComment = Color(0xFFE1DDF7);
 
   // 前景色/背景色颜色常量
   static const primaryColor = Color(0xFF7966FF);
@@ -23,6 +25,7 @@ class ColorConstant {
   static const invisibleBlack = Color(0x00FFFFFF);
 
   static const backgroundLightGrey = Color(0xFFFAFAFA);
+  static const backgroundGreyForComment = Color(0xFFF0F0F6);
   static const backgroundGrey = Color(0xFFCCCBD8);
   static const backgroundPurple = Color(0xFFCCC5EA);
   static const lightBackgroundShadow = Color(0x7FCCC5EA);
@@ -54,8 +57,14 @@ class StringConstant {
   static const share = '交流分享';
   static const uniqueShare = '团队分享';
   static const discussion = '闲杂讨论';
-
+  // 帖子列表
   static const loadMore = '查看更多';
+  // 帖子浏览
+  static const comment = '评论';
+  static const edit = '编辑';
+  static const delete = '删除';
+  static const comments = '最新评论';
+  static const noComment = '快来评论吧';
   // 网络异常页
   static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
   // 登陆页
@@ -111,6 +120,7 @@ class SvgIcon {
   static const _base = 'images';
   static const _home = '$_base/home';
   static const _me = '$_base/me';
+  static const _post = '$_base/post';
   // 主页
   static const notification = '$_home/notification.svg';
   static const message = '$_home/message.svg';
@@ -130,6 +140,10 @@ class SvgIcon {
   static const weChat = '$_me/wechat_icon.svg';
   static const mailbox = '$_me/mailbox_icon.svg';
   static const birthday = '$_me/birthday_icon.svg';
+  // 帖子
+  static const like = '$_post/like.svg';
+  static const comment = '$_post/comment.svg';
+  static const star = '$_post/star.svg';
 
   static const loginLogo = _base + "/login_logo.svg";
   static const doubt = _base + "/jyr_doubt.svg";

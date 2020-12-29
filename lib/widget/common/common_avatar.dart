@@ -16,7 +16,7 @@ class BBSAvatar extends StatelessWidget {
     return Consumer<AvatarModel>(
       builder: (context, model, child) {
         Widget child;
-        if (url == null || (child = model.find(url)) == null) {
+        if (url == null || url.isEmpty || (child = model.find(url)) == null) {
           child = SvgPicture.asset(
             SvgIcon.defaultAvatar,
             height: radius * 2,
