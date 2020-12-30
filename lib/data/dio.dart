@@ -50,6 +50,7 @@ class NetRsp<T> {
 class Server {
   static const _TAG = "Server";
   static const _LoginUrl = '/user/login/pwd';
+  static const _UpdateJwt = '/user/update/jwt';
   // user url
   static const _UserUrl = '/user/info';
   static const _MentorUrl = '/user/mentor/info';
@@ -103,15 +104,25 @@ class Server {
 
   Future<String> init() async {
     // token 过期统一在 _get 和 _post 方法中处理
-    /// TODO: 更新 token 后再返回
     final sp = await SharedPreferences.getInstance();
-    final uid = sp.getString(_UidKeyInSp);
-    final token = sp.getString(_TokenKeyInSp);
+    String uid = sp.getString(_UidKeyInSp);
+    String token = sp.getString(_TokenKeyInSp);
     Logger.d(_TAG, 'token = $token, uid = $uid');
     if (uid == null || token == null) {
       return UidError;
     }
     dio.options.headers[HttpHeaders.authorizationHeader] = token;
+    // update token
+    Map<String, dynamic> json = HashMap();
+    String errno = await _post(_UpdateJwt, {}, json);
+    if (errno != null) return errno;
+    if (json["code"] != 1) return TokenExpired;
+    // save token
+    token = json["msg"];
+    dio.options.headers[HttpHeaders.authorizationHeader] = token;
+    sp
+        .setString(_TokenKeyInSp, token)
+        .then((value) => Logger.i(_TAG, 'save uid $token $value'));
     Repo.instance.uid = uid;
     return NoError;
   }
@@ -460,10 +471,11 @@ class Server {
         json.addAll(res);
         return null;
       } else {
-        String msg = res['msg'] ? res['msg'] : "";
+        String msg = res['msg'] != null ? res['msg'] : "";
         Logger.d(_TAG, msg);
-        if (msg == StringConstant.jwtExpired ||
-            msg == StringConstant.jwtMalformed) {
+        if ((msg == StringConstant.jwtExpired ||
+                msg == StringConstant.jwtMalformed) &&
+            tokenErrCallback != null) {
           tokenErrCallback();
         }
         return msg;
@@ -489,8 +501,9 @@ class Server {
       } else {
         String msg = res['msg'] != null ? res['msg'] : "";
         Logger.d(_TAG, msg);
-        if (msg == StringConstant.jwtExpired ||
-            msg == StringConstant.jwtMalformed) {
+        if ((msg == StringConstant.jwtExpired ||
+                msg == StringConstant.jwtMalformed) &&
+            tokenErrCallback != null) {
           tokenErrCallback();
         }
         return msg;

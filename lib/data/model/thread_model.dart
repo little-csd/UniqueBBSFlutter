@@ -1,10 +1,8 @@
-import 'dart:collection';
-
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
 import 'package:UniqueBBSFlutter/data/bean/user/user_info.dart';
-import 'package:UniqueBBSFlutter/tool/helper.dart';
+import 'package:UniqueBBSFlutter/tool/logger.dart';
 import 'package:flutter/material.dart';
 
 import '../dio.dart';
@@ -17,91 +15,83 @@ import '../repo.dart';
 /// Warning: 如果在浏览过程中出现帖子的删除或者添加, 可能会导致并发异常。目前暂不处理
 /// TODO: 后续添加数据库层缓存
 class ThreadModel extends ChangeNotifier {
-  Map<int, List<ThreadInfo>> _threadMap = HashMap();
-  Map<int, List<UserInfo>> _userMap = HashMap();
-  List<bool> _fetching;
+  static const _TAG = "ThreadModel";
+  List<ThreadInfo> _threadList = List();
+  List<UserInfo> _userList = List();
+
+  int _maxThread;
+  int _fetchedPage = 0;
+  bool _fetching = false;
   FullForum _forum;
+  bool _killed = false;
   // 不要在外部修改这个变量
   bool isMe;
 
   ThreadModel(this._forum, this.isMe) : assert(_forum != null) {
-    int tot = getPage(_forum.threadCount - 1);
-    _fetching = List.filled(tot + 1, false);
+    _maxThread = _forum.threadCount;
   }
 
-  int maxThread() {
-    return _forum.threadCount;
-  }
+  get threadCount => _threadList.length;
 
   // 第几个 item(从零开始计)
   // "我的"帖子信息不要调用此接口!
   UserInfo getUserInfo(int index) {
     if (isMe) return null;
-    int page = getPage(index);
-    index = index - (page - 1) * HyperParam.pageSize;
-    final users = _userMap[page];
-    if (users == null) {
-      _fetch(page);
-      return null;
-    }
-    // should not happen!!
-    if (users.length <= index) {
-      return null;
-    }
-    return users[index];
+    if (index >= _maxThread || index >= _userList.length) return null;
+    return _userList[index];
   }
 
   ThreadInfo getThreadInfo(int index) {
-    int page = getPage(index);
-    index = index - (page - 1) * HyperParam.pageSize;
-    final threads = _threadMap[page];
-    if (threads == null) {
-      _fetch(page);
-      return null;
-    }
-    if (threads.length <= index) {
-      return null;
-    }
-    return threads[index];
+    if (index >= _maxThread || index >= _threadList.length) return null;
+    return _threadList[index];
   }
 
-  void _fetch(int page) async {
-    if (page >= _fetching.length || _fetching[page]) return;
-    _fetching[page] = true;
-
+  /// Thread model 这里 fetch 方法暴露给外部，在 ui 界面可以自行确定拉取逻辑
+  void fetch() async {
+    if (_fetching || _threadList.length >= _maxThread || _killed) return;
+    _fetching = true;
+    Logger.v(_TAG, "Fetching page ${_fetchedPage + 1}");
     // 我的帖子调用另一个接口获取
     if (isMe) {
       final uid = Repo.instance.uid;
-      if (uid == null) {
-        return;
-      }
-      Server.instance.threadsForUser(uid, page).then((rsp) {
+      Server.instance.threadsForUser(uid, _fetchedPage + 1).then((rsp) {
         if (rsp.success) {
-          _threadMap[page] = rsp.data.threads;
-          notifyListeners();
+          _threadList.addAll(rsp.data.threads);
+          _onFetchedSuccess();
         } else {
           Future.delayed(Duration(seconds: HyperParam.requestInterval))
-              .then((_) => _fetch(page));
+              .then((_) => fetch());
         }
       });
       return;
     }
 
-    Server.instance.threadsInForum(_forum.fid, page).then((rsp) {
+    Server.instance.threadsInForum(_forum.fid, _fetchedPage + 1).then((rsp) {
       if (rsp.success) {
-        _fetching[page] = false;
         final threads = List<ThreadInfo>(), users = List<UserInfo>();
         rsp.data.threads.forEach((data) {
           threads.add(data.thread);
           users.add(data.user);
         });
-        _threadMap[page] = threads;
-        _userMap[page] = users;
-        notifyListeners();
+        _threadList.addAll(threads);
+        _userList.addAll(users);
+        _onFetchedSuccess();
       } else {
         Future.delayed(Duration(seconds: HyperParam.requestInterval))
-            .then((_) => _fetch(page));
+            .then((_) => fetch());
       }
     });
+  }
+
+  void _onFetchedSuccess() {
+    _fetching = false;
+    _fetchedPage++;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _killed = true;
   }
 }

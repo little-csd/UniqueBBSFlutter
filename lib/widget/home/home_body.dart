@@ -83,7 +83,7 @@ class _HomeBodyState extends State<HomeBodyWidget>
         ),
         Expanded(
           child: TabBarView(
-            physics: ClampingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             controller: _tabController,
             children: <Widget>[
               HomeInfoWidget(),

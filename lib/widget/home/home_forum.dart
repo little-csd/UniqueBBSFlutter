@@ -1,3 +1,4 @@
+import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/widget/post/post_list.dart';
 import 'package:flutter/material.dart';
 
@@ -17,19 +18,33 @@ class _HomeForumState extends State<HomeForumWidget> {
       bodyHeight: null,
     );
 
-    return MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: ListView.builder(
-          itemBuilder: (context, index) => Container(
-            padding: EdgeInsets.only(
-              right: 20,
-              top: 20,
-              left: 20,
-            ),
-            child: listCard,
+    return Stack(
+      children: [
+        Positioned(
+          child: Container(
+            child: Image.asset(PngIcon.homeForumBg),
+            width: double.infinity,
           ),
-          itemCount: 1,
-        ));
+          bottom: 0,
+          left: 0,
+          right: 0,
+        ),
+        MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, index) => Container(
+                padding: EdgeInsets.only(
+                  right: 20,
+                  top: 20,
+                  left: 20,
+                ),
+                child: listCard,
+              ),
+              itemCount: 1,
+            )),
+      ],
+    );
   }
 }

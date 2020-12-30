@@ -134,31 +134,38 @@ Widget _buildBroadcast() {
   );
 }
 
+// contents[0] 是 svg 图片的 url
+// contents[1] 是论坛的名字
 Widget _buildGridBlock(List<String> contents, BuildContext context) {
-  return MaterialButton(
-    onPressed: () {
-      if (contents[1] == 'Report') {
-        Navigator.pushNamed(context, BBSRoute.reportPage);
-      } else {
-        Navigator.pushNamed(context, BBSRoute.postList);
-      }
-    },
-    color: ColorConstant.backgroundWhite,
-    shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(_gridBorderRadius)),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(contents[0]),
-        Container(height: 10), // use for spacing
-        Text(
-          contents[1],
-          style: _gridTextStyle,
-        ),
-      ],
-    ),
-  );
+  return Consumer<ForumModel>(builder: (context, model, child) {
+    return MaterialButton(
+      onPressed: () {
+        final forum = model.findByName(contents[1]);
+        if (forum == null) {
+          if (contents[1] == "Report") {
+            Navigator.pushNamed(context, BBSRoute.reportPage);
+          }
+        } else {
+          Navigator.pushNamed(context, BBSRoute.postList, arguments: forum);
+        }
+      },
+      color: ColorConstant.backgroundWhite,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_gridBorderRadius)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(contents[0]),
+          Container(height: 10), // use for spacing
+          Text(
+            contents[1],
+            style: _gridTextStyle,
+          ),
+        ],
+      ),
+    );
+  });
 }
 
 Widget _buildGrid(BuildContext context) {

@@ -2,6 +2,7 @@ import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/post_data.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
 import 'package:UniqueBBSFlutter/data/bean/other/attach_data.dart';
+import 'package:UniqueBBSFlutter/tool/logger.dart';
 import 'package:flutter/material.dart';
 
 import '../dio.dart';
@@ -13,6 +14,7 @@ import '../dio.dart';
 /// 注: post 如果被删除的话，active 会被置 null
 /// TODO: 后续添加数据库层缓存 & 处理浏览帖子的时候帖子被删除的情况
 class PostModel extends ChangeNotifier {
+  static const _TAG = "PostModel";
   ThreadInfo _threadInfo;
   PostData _firstPost;
   List<AttachData> _attachArr;
@@ -62,7 +64,7 @@ class PostModel extends ChangeNotifier {
     if (_fetching || _postData.length >= _maxPost || _killed) return;
     _fetching = true;
     // 拉取下一页
-    print('fetching page $_fetchedPage');
+    Logger.v(_TAG, 'fetching page ${_fetchedPage + 1}');
     Server.instance
         .postsInThread(_threadInfo.tid, _fetchedPage + 1)
         .then((rsp) {
