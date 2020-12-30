@@ -22,7 +22,10 @@ class _HomeForumState extends State<HomeForumWidget> {
       children: [
         Positioned(
           child: Container(
-            child: Image.asset(PngIcon.homeForumBg),
+            child: Image.asset(
+              PngIcon.homeForumBg,
+              fit: BoxFit.fill,
+            ),
             width: double.infinity,
           ),
           bottom: 0,
