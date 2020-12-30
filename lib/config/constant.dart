@@ -123,13 +123,14 @@ class StringConstant {
   static const notImpl = "此功能尚待开发";
 }
 
+// 存放资源的一些常量
+const _base = 'images';
+const _home = '$_base/home';
+const _me = '$_base/me';
+const _post = '$_base/post';
+
 // svg 图片按界面划分
 class SvgIcon {
-  static const _base = 'images';
-  static const _home = '$_base/home';
-  static const _me = '$_base/me';
-  static const _post = '$_base/post';
-
   // 主页
   static const notification = '$_home/notification.svg';
   static const message = '$_home/message.svg';
@@ -163,10 +164,15 @@ class SvgIcon {
   static const error = _base + "/no_phone_number.svg";
   // 选择发帖板块页
   static const selectPlateIcon = _base + '/select_plate_icon.svg';
-  // splash 界面
-  static const splashLogo = _base + '/logo.svg';
   // 其他
   static const defaultAvatar = _base + '/default_avatar.svg';
+}
+
+/// 某些图片不适合使用 svg(比如图片过于复杂或者 SvgPicture 这个库的加载太慢)
+/// 因此用 png 的格式存储
+class PngIcon {
+  static const splashLogo = _base + "/logo.png";
+  static const homeForumBg = _base + "/home_forum_bg.png";
 }
 
 class HyperParam {

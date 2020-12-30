@@ -1,8 +1,6 @@
+import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/widget/post/post_list.dart';
 import 'package:flutter/material.dart';
-
-const _bgHeight = 350.0;
-const _bgUrl = 'images/home_forum_bg.png';
 
 class HomeForumWidget extends StatefulWidget {
   @override
@@ -24,7 +22,7 @@ class _HomeForumState extends State<HomeForumWidget> {
       children: [
         Positioned(
           child: Container(
-            child: Image.asset(_bgUrl),
+            child: Image.asset(PngIcon.homeForumBg),
             width: double.infinity,
           ),
           bottom: 0,

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../dio.dart';
 import '../repo.dart';
 
+/// TODO: 读取某个 image 时做采样处理，防止头像占用过多内存空间
 class AvatarModel extends ChangeNotifier {
   static const _TAG = "AvatarModel";
   Map<String, Image> _avatarMap = HashMap();
