@@ -1,6 +1,5 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/data/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -13,15 +12,21 @@ class ReportPostPageWidget extends StatefulWidget {
 }
 
 class ReportPostPageState extends State<ReportPostPageWidget> {
-  bool isWeekly;
-  String content;
+  bool _isWeekly = true;
+  String _content;
+  TextEditingController _textEditingController;
 
   _createReport() {
-    // todo : test data, refactor after finished
-    content = "test data";
-    Server.instance.createReport(isWeekly, content).then((value) {
+    _content = _textEditingController.text;
+    Server.instance.createReport(_isWeekly, _content).then((value) {
       Navigator.pop(context);
     });
+  }
+
+  @override
+  void initState() {
+    _textEditingController = TextEditingController();
+    super.initState();
   }
 
   @override
@@ -140,6 +145,7 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
     return Padding(
       padding: EdgeInsets.all(20),
       child: TextField(
+        controller: _textEditingController,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: StringConstant.pleaseInput,

@@ -142,7 +142,9 @@ Widget _buildGridBlock(List<String> contents, BuildContext context) {
       onPressed: () {
         final forum = model.findByName(contents[1]);
         if (forum == null) {
-          //
+          if (contents[1] == "Report") {
+            Navigator.pushNamed(context, BBSRoute.reportPage);
+          }
         } else {
           Navigator.pushNamed(context, BBSRoute.postList, arguments: forum);
         }
