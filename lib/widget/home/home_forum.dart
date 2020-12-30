@@ -1,6 +1,9 @@
 import 'package:UniqueBBSFlutter/widget/post/post_list.dart';
 import 'package:flutter/material.dart';
 
+const _bgHeight = 350.0;
+const _bgUrl = 'images/home_forum_bg.png';
+
 class HomeForumWidget extends StatefulWidget {
   @override
   State createState() => _HomeForumState();
@@ -17,19 +20,33 @@ class _HomeForumState extends State<HomeForumWidget> {
       bodyHeight: null,
     );
 
-    return MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: ListView.builder(
-          itemBuilder: (context, index) => Container(
-            padding: EdgeInsets.only(
-              right: 20,
-              top: 20,
-              left: 20,
-            ),
-            child: listCard,
+    return Stack(
+      children: [
+        Positioned(
+          child: Container(
+            child: Image.asset(_bgUrl),
+            width: double.infinity,
           ),
-          itemCount: 1,
-        ));
+          bottom: 0,
+          left: 0,
+          right: 0,
+        ),
+        MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, index) => Container(
+                padding: EdgeInsets.only(
+                  right: 20,
+                  top: 20,
+                  left: 20,
+                ),
+                child: listCard,
+              ),
+              itemCount: 1,
+            )),
+      ],
+    );
   }
 }
