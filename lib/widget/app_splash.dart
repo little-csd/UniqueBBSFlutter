@@ -13,7 +13,7 @@ const _bottomPadding = 30.0;
 class AppSplashWidget extends StatelessWidget {
   void _init(BuildContext context) {
     Server.instance.init().then((errno) {
-      if (errno == '') {
+      if (errno.isEmpty) {
         Navigator.popAndPushNamed(context, BBSRoute.home);
         Fluttertoast.showToast(msg: StringConstant.loginSuccess);
       } else {

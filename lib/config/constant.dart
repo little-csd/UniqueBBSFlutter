@@ -11,6 +11,8 @@ class ColorConstant {
   static const textRed = Color(0xFFFF7A7A);
   static const textLightPurPle = Color(0xff9b84fe);
   static const textPostPurple = Color(0xffb4aafd);
+  static const textGreyForComment = Color(0xFFD3CFE9);
+  static const textGreyForNoComment = Color(0xFFE1DDF7);
 
   // 前景色/背景色颜色常量
   static const primaryColor = Color(0xFF7966FF);
@@ -24,9 +26,11 @@ class ColorConstant {
   static const textBackgroundLightPurple = Color(0xFFA598FF);
   static const invisibleBlack = Color(0x00FFFFFF);
 
-  static const backgroundLightGrey = Color(0xFFFaFaFa);
+  static const backgroundLightGrey = Color(0xFFFAFAFA);
+  static const backgroundGreyForComment = Color(0xFFF0F0F6);
   static const backgroundGrey = Color(0xFFCCCBD8);
   static const backgroundPurple = Color(0xFFCCC5EA);
+  static const lightBackgroundShadow = Color(0x7FCCC5EA);
   static const lightBackgroundPurple = Color(0x50CCC5EA);
   static const backgroundWhite = Colors.white;
   static const backgroundBlack = Colors.black;
@@ -46,16 +50,29 @@ class StringConstant {
   static const me = '我的';
   static const post = '发布';
   static const broadcast = '通知公告';
-  static const showReport = '查看 report';
+  static const report = 'Report';
+  static const uniqueMarket = '联创市场';
   static const projectTask = '项目任务';
+  static const uniqueProject = '团队项目';
   static const freshmanTask = '新人任务';
   static const fileData = '文件留存';
+  static const uniqueData = '团队资料';
   static const share = '交流分享';
-  static const loadMore = '查看更多';
-  static const noMoreForum = "再往下拉也没有啦~";
+  static const uniqueShare = '团队分享';
+  static const discussion = '闲杂讨论';
+  // report
   static const reportTitle = '我的report';
   static const postReportTitle = '发布report';
   static const pleaseInput = '请输入正文';
+  // 帖子列表
+  static const loadMore = '查看更多';
+  static const noMoreForum = "再往下拉也没有啦~";
+  // 帖子浏览
+  static const comment = '评论';
+  static const edit = '编辑';
+  static const delete = '删除';
+  static const comments = '最新评论';
+  static const noComment = '快来评论吧';
   // 网络异常页
   static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
   // 登陆页
@@ -103,40 +120,53 @@ class StringConstant {
   static const noQuote = "-1";
   static const jwtExpired = "jwt expired";
   static const jwtMalformed = "jwt malformed";
+  static const notImpl = "此功能尚待开发";
 }
 
+// svg 图片按界面划分
 class SvgIcon {
-  static const _base = 'images/';
-  // 主页
-  static const notification = _base + 'notification.svg';
-  static const message = _base + 'message.svg';
-  static const person = _base + 'person.svg';
-  static const search = _base + 'search.svg';
-  static const file = _base + 'file.svg';
-  static const freshmanTask = _base + 'freshman_task.svg';
-  static const projectTask = _base + 'project_task.svg';
-  static const share = _base + 'share.svg';
-  static const homeBottomBg = _base + 'home_bottom_bg.svg';
-  static const broadcast = _base + 'broadcast.svg';
-  static const postReport = _base + 'post_report.svg';
-  static const moduleChooseTag = _base + 'module_choose_tag.svg';
+  static const _base = 'images';
+  static const _home = '$_base/home';
+  static const _me = '$_base/me';
+  static const _post = '$_base/post';
 
-  static const loginLogo = _base + "login_logo.svg";
-  static const doubt = _base + "jyr_doubt.svg";
-  static const setInfo = _base + "set_info.svg";
-  static const error = _base + "no_phone_number.svg";
-  // 选择发帖板块页
-  static const selectPlateIcon = _base + 'select_plate_icon.svg';
-  static const selectPlateCancel = _base + 'select_plate_cancel.svg';
+  // 主页
+  static const notification = '$_home/notification.svg';
+  static const message = '$_home/message.svg';
+  static const person = '$_home/person.svg';
+  static const search = '$_home/search.svg';
+  static const file = '$_home/file.svg';
+  static const market = '$_home/market.svg';
+  static const report = '$_home/report.svg';
+  static const freshmanTask = '$_home/freshman_task.svg';
+  static const projectTask = '$_home/project_task.svg';
+  static const share = '$_home/share.svg';
+  static const homeBottomBg = '$_home/home_bottom_bg.svg';
+  static const homeBottomBtn = '$_home/home_bottom_btn.svg';
+  static const broadcast = '$_home/broadcast.svg';
   // 我的
-  static const phoneNumber = _base + 'phone_icon.svg';
-  static const weChat = _base + 'wechat_icon.svg';
-  static const mailbox = _base + 'mailbox_icon.svg';
-  static const birthday = _base + 'birthday_icon.svg';
+  static const phoneNumber = '$_me/phone_icon.svg';
+  static const weChat = '$_me/wechat_icon.svg';
+  static const mailbox = '$_me/mailbox_icon.svg';
+  static const birthday = '$_me/birthday_icon.svg';
+  // 帖子
+  static const like = '$_post/like.svg';
+  static const comment = '$_post/comment.svg';
+  static const star = '$_post/star.svg';
+  // report
+  static const postReport = _base + '/post_report.svg';
+  static const moduleChooseTag = _base + '/fmodule_choose_tag.svg';
+
+  static const loginLogo = _base + "/login_logo.svg";
+  static const doubt = _base + "/jyr_doubt.svg";
+  static const setInfo = _base + "/set_info.svg";
+  static const error = _base + "/no_phone_number.svg";
+  // 选择发帖板块页
+  static const selectPlateIcon = _base + '/select_plate_icon.svg';
   // splash 界面
-  static const splashLogo = _base + 'logo.svg';
+  static const splashLogo = _base + '/logo.svg';
   // 其他
-  static const defaultAvatar = _base + 'default_avatar.svg';
+  static const defaultAvatar = _base + '/default_avatar.svg';
 }
 
 class HyperParam {

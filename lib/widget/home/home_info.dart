@@ -24,17 +24,13 @@ const _titleStyle = TextStyle(
 );
 const _subtitleStyle = TextStyle(fontSize: 12, color: ColorConstant.textGrey);
 
-// 查看 report 部分的常量
-const _showReportRadius = 28.0;
-const _showReportTextStyle =
-    TextStyle(fontSize: 18, color: ColorConstant.textWhite);
-const _reportButtonHeight = 45.0;
-// final gradients = transAngle2Alignments(28);
-
 // 下方 gridView 部分常量
-const _gridSpacing = 15.0;
+const _gridHorizontalSpacing = 50.0;
+const _gridVerticalSpacing = 15.0;
 const _gridBorderRadius = 26.0;
 final _gridTextStyle = TextStyle(fontSize: 18, color: ColorConstant.textBlack);
+// 底部留出空间
+const _bottomOffset = 50.0;
 
 class HomeInfoWidget extends StatefulWidget {
   @override
@@ -138,25 +134,6 @@ Widget _buildBroadcast() {
   );
 }
 
-Widget _buildReport(BuildContext context) {
-  return Container(
-    margin: EdgeInsets.symmetric(
-        vertical: _mainVerticalPadding, horizontal: _mainHorizontalPadding),
-    child: MaterialButton(
-      minWidth: double.infinity,
-      height: _reportButtonHeight,
-      onPressed: () {
-        Navigator.pushNamed(context, BBSRoute.reportPage);
-        print('report!');
-      },
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(_showReportRadius)),
-      color: ColorConstant.primaryColor,
-      child: Text(StringConstant.showReport, style: _showReportTextStyle),
-    ),
-  );
-}
-
 Widget _buildGridBlock(List<String> contents, BuildContext context) {
   return MaterialButton(
     onPressed: () {
@@ -186,12 +163,16 @@ Widget _buildGrid(BuildContext context) {
     child: GridView.count(
       crossAxisCount: 2,
       childAspectRatio: 1,
+      physics: BouncingScrollPhysics(),
       padding: EdgeInsets.symmetric(
-          horizontal: _mainHorizontalPadding, vertical: _mainVerticalPadding),
-      crossAxisSpacing: _gridSpacing,
-      mainAxisSpacing: _gridSpacing,
+          horizontal: _mainHorizontalPadding * 2,
+          vertical: _mainVerticalPadding * 2),
+      crossAxisSpacing: _gridHorizontalSpacing,
+      mainAxisSpacing: _gridVerticalSpacing,
       children: [
         [SvgIcon.projectTask, StringConstant.projectTask],
+        [SvgIcon.report, StringConstant.report],
+        [SvgIcon.market, StringConstant.uniqueMarket],
         [SvgIcon.freshmanTask, StringConstant.freshmanTask],
         [SvgIcon.file, StringConstant.fileData],
         [SvgIcon.share, StringConstant.share],
@@ -211,8 +192,8 @@ class _HomeInfoState extends State<HomeInfoWidget> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildBroadcast(),
-        _buildReport(context),
         _buildGrid(context),
+        Container(height: _bottomOffset),
       ],
     );
   }

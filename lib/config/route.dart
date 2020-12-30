@@ -1,11 +1,13 @@
+import 'package:UniqueBBSFlutter/data/bean/forum/thread.dart';
 import 'package:UniqueBBSFlutter/widget/forum_page.dart';
-import 'package:UniqueBBSFlutter/widget/home.dart';
-import 'package:UniqueBBSFlutter/widget/home_select.dart';
+import 'package:UniqueBBSFlutter/widget/home/home.dart';
+import 'package:UniqueBBSFlutter/widget/home/home_select.dart';
 import 'package:UniqueBBSFlutter/widget/login/info_set.dart';
 import 'package:UniqueBBSFlutter/widget/login/login.dart';
 import 'package:UniqueBBSFlutter/widget/report/report_page.dart';
 import 'package:UniqueBBSFlutter/widget/login/pw_set.dart';
 import 'package:UniqueBBSFlutter/widget/report/report_post_page.dart';
+import 'package:UniqueBBSFlutter/widget/post/detail/post_detail.dart';
 import 'package:flutter/material.dart';
 
 class BBSRoute {
@@ -48,6 +50,10 @@ class BBSRoute {
     }
     // used for build page with arguments
     // now only throw an exception
+    if (path == postDetail) {
+      return MaterialPageRoute(
+          builder: (context) => PostDetailWidget(arg as Thread));
+    }
     throw Exception("Route $path not found!");
   }
 }

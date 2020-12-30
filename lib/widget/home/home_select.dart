@@ -1,12 +1,13 @@
 import 'dart:math';
 
 import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBSFlutter/data/repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 // TODO: 这里大小最好是根据屏幕长宽去计算，可能会 overflow
-const _cancelIconSize = 25.0;
-const _cancelButtonHeight = 35.0;
+const _cancelButtonSize = 40.0;
 const _selectBtnSize = 80.0;
 const _selectBtnRadius = 130.0;
 const _animationDuration = 600;
@@ -20,21 +21,38 @@ final _selectTextStyle = TextStyle(
   color: ColorConstant.textGrey,
   decoration: TextDecoration.none,
 );
-const data = [
-  '项目\n任务',
-  '闲杂\n讨论',
-  '联创\n趣梗',
-  '知识\n分享',
-  '新人\n任务',
-  'report',
-  '通知\n公告',
-  '文件\n留存',
-  '奇思\n妙想',
+
+/// 展示的 item 名字以及对应的 forum
+const forumData = [
+  ['项目\n任务', StringConstant.uniqueProject],
+  ['闲杂\n讨论', StringConstant.discussion],
+  ['联创\n趣梗', StringConstant.notImpl],
+  ['知识\n分享', StringConstant.uniqueShare],
+  ['新人\n任务', StringConstant.freshmanTask],
+  ['report', StringConstant.report],
+  ['通知\n公告', StringConstant.broadcast],
+  ['文件\n留存', StringConstant.uniqueData],
+  ['奇思\n妙想', StringConstant.notImpl],
 ];
 
-Widget _wrapData(BuildContext context, String data) {
+Widget _wrapData(BuildContext context, String data, String name) {
   return MaterialButton(
-    onPressed: () => Navigator.of(context).pop(data),
+    onPressed: () {
+      if (name == StringConstant.notImpl || name == StringConstant.report) {
+        Fluttertoast.showToast(msg: name);
+        Navigator.of(context).pop();
+        return;
+      }
+      // 这里是直接从 repo 拿 forum 的数据的，其实不是很好
+      final model = Repo.instance.forumModel;
+      final forum = model.findByName(name);
+      if (forum == null) {
+        Fluttertoast.showToast(msg: StringConstant.networkError);
+      } else {
+        print(forum.toJson());
+      }
+      Navigator.of(context).pop();
+    },
     color: ColorConstant.backgroundWhite,
     shape: const CircleBorder(),
     height: _selectBtnSize,
@@ -53,10 +71,10 @@ Widget _wrapTransform(Widget child, double angle, double radius) {
 }
 
 Widget _buildCircularWidget(BuildContext context) {
-  var widgets = data.map((e) => _wrapData(context, e)).toList();
-  double deltaAngle = 2 * pi / (data.length - 1);
+  var widgets = forumData.map((e) => _wrapData(context, e[0], e[1])).toList();
+  double deltaAngle = 2 * pi / (forumData.length - 1);
   widgets[0] = _wrapTransform(widgets[0], 0, 0);
-  for (int i = 1; i < data.length; i++) {
+  for (int i = 1; i < forumData.length; i++) {
     widgets[i] =
         _wrapTransform(widgets[i], deltaAngle * (i - 1), _selectBtnRadius);
   }
@@ -74,27 +92,22 @@ Widget _buildCircularWidget(BuildContext context) {
 Widget _buildCancelButton(
     BuildContext context, AnimationController controller) {
   return Container(
-    height: _cancelButtonHeight,
     child: AnimatedBuilder(
       builder: (context, child) {
         final value = controller.value;
         final btnColor = Color.lerp(
             ColorConstant.backgroundWhite, ColorConstant.primaryColor, value);
-        final cancelColor = Color.lerp(
-            ColorConstant.textGrey, ColorConstant.backgroundWhite, value);
         return Hero(
           tag: StringConstant.selectPlateHero,
-          child: MaterialButton(
-            onPressed: () => Navigator.pop(context, ''),
-            shape: CircleBorder(),
-            color: btnColor,
-            elevation: 1,
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context, ''),
             child: Transform.rotate(
               angle: pi / 4 * value,
-              child: Icon(
-                Icons.add,
-                size: _cancelIconSize,
-                color: cancelColor,
+              child: SvgPicture.asset(
+                SvgIcon.homeBottomBtn,
+                height: _cancelButtonSize,
+                width: _cancelButtonSize,
+                color: btnColor,
               ),
             ),
           ),

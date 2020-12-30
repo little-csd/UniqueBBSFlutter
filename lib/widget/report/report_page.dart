@@ -66,7 +66,10 @@ class ReportPageState extends State<StatefulWidget> {
             ],
             title: Text(
               StringConstant.reportTitle,
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           body: _buildYearList()),
