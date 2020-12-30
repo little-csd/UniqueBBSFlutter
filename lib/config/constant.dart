@@ -10,6 +10,7 @@ class ColorConstant {
   static const textWhite = Colors.white;
   static const textRed = Color(0xFFFF7A7A);
   static const textLightPurPle = Color(0xff9b84fe);
+  static const textPostPurple = Color(0xffb4aafd);
   static const textGreyForComment = Color(0xFFD3CFE9);
   static const textGreyForNoComment = Color(0xFFE1DDF7);
 
@@ -22,6 +23,7 @@ class ColorConstant {
   static const weComButtonGray = Color(0xff707070);
   static const inputPurple = Color(0xfff0f0f6);
   static const inputHintPurple = Color(0xffcecae7);
+  static const textBackgroundLightPurple = Color(0xFFA598FF);
   static const invisibleBlack = Color(0x00FFFFFF);
 
   static const backgroundLightGrey = Color(0xFFFAFAFA);
@@ -46,6 +48,7 @@ class StringConstant {
   static const forum = '放飞';
   static const home = '首页';
   static const me = '我的';
+  static const post = '发布';
   static const broadcast = '通知公告';
   static const report = 'Report';
   static const uniqueMarket = '联创市场';
@@ -57,8 +60,13 @@ class StringConstant {
   static const share = '交流分享';
   static const uniqueShare = '团队分享';
   static const discussion = '闲杂讨论';
+  // report
+  static const reportTitle = '我的report';
+  static const postReportTitle = '发布report';
+  static const pleaseInput = '请输入正文';
   // 帖子列表
   static const loadMore = '查看更多';
+  static const noMoreForum = "再往下拉也没有啦~";
   // 帖子浏览
   static const comment = '评论';
   static const edit = '编辑';
@@ -121,6 +129,7 @@ class SvgIcon {
   static const _home = '$_base/home';
   static const _me = '$_base/me';
   static const _post = '$_base/post';
+
   // 主页
   static const notification = '$_home/notification.svg';
   static const message = '$_home/message.svg';
@@ -144,6 +153,9 @@ class SvgIcon {
   static const like = '$_post/like.svg';
   static const comment = '$_post/comment.svg';
   static const star = '$_post/star.svg';
+  // report
+  static const postReport = _base + '/post_report.svg';
+  static const moduleChooseTag = _base + '/fmodule_choose_tag.svg';
 
   static const loginLogo = _base + "/login_logo.svg";
   static const doubt = _base + "/jyr_doubt.svg";

@@ -10,6 +10,13 @@ class HomeForumWidget extends StatefulWidget {
 class _HomeForumState extends State<HomeForumWidget> {
   @override
   Widget build(BuildContext context) {
+    ForumListCard listCard = ForumListCard(
+      showLabel: true,
+      showLoadMore: true,
+      canScroll: false,
+      bodyHeight: null,
+    );
+
     return MediaQuery.removePadding(
         context: context,
         removeTop: true,
@@ -20,9 +27,9 @@ class _HomeForumState extends State<HomeForumWidget> {
               top: 20,
               left: 20,
             ),
-            child: ForumListCard(true, true),
+            child: listCard,
           ),
-          itemCount: 10,
+          itemCount: 1,
         ));
   }
 }

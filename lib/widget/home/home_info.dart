@@ -1,4 +1,5 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBSFlutter/config/route.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
 import 'package:UniqueBBSFlutter/data/model/forum_model.dart';
 import 'package:UniqueBBSFlutter/tool/helper.dart';
@@ -133,9 +134,11 @@ Widget _buildBroadcast() {
   );
 }
 
-Widget _buildGridBlock(List<String> contents) {
+Widget _buildGridBlock(List<String> contents, BuildContext context) {
   return MaterialButton(
-    onPressed: () => print(contents),
+    onPressed: () {
+      Navigator.pushNamed(context, BBSRoute.postList);
+    },
     color: ColorConstant.backgroundWhite,
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_gridBorderRadius)),
@@ -154,7 +157,7 @@ Widget _buildGridBlock(List<String> contents) {
   );
 }
 
-Widget _buildGrid() {
+Widget _buildGrid(BuildContext context) {
   return Expanded(
     flex: 1,
     child: GridView.count(
@@ -175,7 +178,7 @@ Widget _buildGrid() {
         [SvgIcon.share, StringConstant.share],
       ].map((e) {
         return GridTile(
-          child: _buildGridBlock(e),
+          child: _buildGridBlock(e, context),
         );
       }).toList(),
     ),
@@ -189,7 +192,7 @@ class _HomeInfoState extends State<HomeInfoWidget> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildBroadcast(),
-        _buildGrid(),
+        _buildGrid(context),
         Container(height: _bottomOffset),
       ],
     );
