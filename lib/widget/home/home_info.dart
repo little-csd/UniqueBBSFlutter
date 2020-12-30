@@ -137,7 +137,11 @@ Widget _buildBroadcast() {
 Widget _buildGridBlock(List<String> contents, BuildContext context) {
   return MaterialButton(
     onPressed: () {
-      Navigator.pushNamed(context, BBSRoute.postList);
+      if (contents[1] == 'Report') {
+        Navigator.pushNamed(context, BBSRoute.reportPage);
+      } else {
+        Navigator.pushNamed(context, BBSRoute.postList);
+      }
     },
     color: ColorConstant.backgroundWhite,
     shape: RoundedRectangleBorder(

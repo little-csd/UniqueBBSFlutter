@@ -155,7 +155,7 @@ class SvgIcon {
   static const star = '$_post/star.svg';
   // report
   static const postReport = _base + '/post_report.svg';
-  static const moduleChooseTag = _base + '/fmodule_choose_tag.svg';
+  static const moduleChooseTag = _base + '/module_choose_tag.svg';
 
   static const loginLogo = _base + "/login_logo.svg";
   static const doubt = _base + "/jyr_doubt.svg";
