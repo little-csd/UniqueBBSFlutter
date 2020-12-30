@@ -2,13 +2,23 @@ import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/config/route.dart';
 import 'package:UniqueBBSFlutter/data/bean/report/report.dart';
 import 'package:UniqueBBSFlutter/data/dio.dart';
+import 'package:UniqueBBSFlutter/data/model/report_model.dart';
 import 'package:UniqueBBSFlutter/data/repo.dart';
 import 'package:UniqueBBSFlutter/widget/report/report_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
-int _fetching = 0;
-int _idle = 1;
+const _yearListPadding = 20.0;
+const _yearListIconSize = 17.0;
+const _yearListIconTextGap = 4.0;
+const _itemListVerticalPadding = 20.0;
+const _itemListHorizonPadding = 5.0;
+const _dayHighPosition = 8;
+const _dayLowPosition = 9;
+const _monthHighPosition = 5;
+const _monthLowPosition = 6;
+const _monthText = '月';
 
 class ReportPageWidget extends StatefulWidget {
   @override
@@ -16,138 +26,128 @@ class ReportPageWidget extends StatefulWidget {
 }
 
 class ReportPageState extends State<StatefulWidget> {
-  var reportList = List();
-  var yearList = Map<int, List>();
-  int page = 1;
+  var model = ReportModel();
+  ScrollController scrollController = ScrollController();
   bool haveData = false;
-  int fetchState = _idle;
 
   void fetchData() {
-    if (fetchState == _fetching) {
-      return;
-    } else {
-      fetchState = _fetching;
-    }
-
-    Server.instance.reports(Repo.instance.uid, page).then((rsp) {
-      for (int i = 0; i < rsp.data.reports.length; i++) {
-        var data = rsp.data.reports[i];
-        var year = int.parse(data.createDate[0] +
-            data.createDate[1] +
-            data.createDate[2] +
-            data.createDate[3]);
-        if (yearList.keys.contains(year)) {
-          print("$year exists");
-          yearList[year].insert(yearList[year].length, data);
-        } else {
-          print("$year new");
-          yearList[year] = List();
-          yearList[year].insert(yearList[year].length, data);
-        }
-      }
-      haveData = true;
-      print(yearList.length);
-      page++;
-      setState(() {});
-      fetchState = _idle;
-    });
+    model.fetchData();
   }
 
   @override
   void initState() {
+    _initScrollController();
     super.initState();
     fetchData();
   }
 
+  void _initScrollController() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent) {
+        fetchData();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorConstant.backgroundLightGrey,
-        actions: <Widget>[
-          IconButton(
-            icon: SvgPicture.asset(SvgIcon.postReport),
-            onPressed: () {
-              Navigator.pushNamed(context, BBSRoute.postReport);
-            }
+    return ChangeNotifierProvider(
+      create: (context) => model,
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: ColorConstant.backgroundLightGrey,
+            actions: <Widget>[
+              IconButton(
+                  icon: SvgPicture.asset(SvgIcon.postReport),
+                  onPressed: () {
+                    Navigator.pushNamed(context, BBSRoute.postReport);
+                  }),
+            ],
+            title: Text(
+              StringConstant.reportTitle,
+              style: TextStyle(color: Colors.black),
+            ),
           ),
-        ],
-        title: Text(
-          StringConstant.reportTitle,
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
-      body: haveData ? _buildYearList() : null
+          body: _buildYearList()),
     );
   }
 
   _buildYearList() {
-    ScrollController scrollController = ScrollController();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent) {
-        fetchData();
-      }
+    return Consumer<ReportModel>(builder: (context, model, child) {
+      return ListView.builder(
+        itemCount: model.keysCount(),
+        shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
+        controller: scrollController,
+        itemBuilder: (context, index) {
+          var year = model.keysFirst() - index;
+          return _buildItemList(year, model);
+        },
+      );
     });
-
-    return ListView.builder(
-      itemCount: yearList.keys.length,
-      shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
-      controller: scrollController,
-      itemBuilder: (context, index) {
-        var year = yearList.keys.first - index;
-        return _buildItemList(year);
-      },
-    );
   }
 
-  _buildItemList(int year) {
+  _buildItemList(int year, ReportModel model) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: 20),
-            // todo: test data, refactor before push
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: ColorConstant.primaryColor,
-                    shape: BoxShape.circle,
-                  ),
-                  height: 17,
-                  width: 17,
-                ),
-                Container(
-                  width: 4,
-                ),
-                Text(
-                  year.toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
+          _buildItemListTitle(year),
+          _buildItemListBody(year, model),
+        ],
+      ),
+    );
+  }
+
+  _buildItemListBody(int year, ReportModel model) {
+    return ListView.builder(
+      itemCount: model.singleYearListLength(year),
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        var item = model.getItemData(year, index);
+        return Padding(
+            padding: EdgeInsets.fromLTRB(
+              _itemListVerticalPadding,
+              _itemListHorizonPadding,
+              _itemListVerticalPadding,
+              _itemListHorizonPadding,
             ),
+            child: ReportItem(
+              day: item.createDate[_dayHighPosition] +
+                  item.createDate[_dayLowPosition],
+              mouth: item.createDate[_monthHighPosition] +
+                  item.createDate[_monthLowPosition] +
+                  _monthText,
+              reportContent: item.message,
+              isWeekly: item.isWeek,
+            ));
+      },
+    );
+  }
+
+  Padding _buildItemListTitle(int year) {
+    return Padding(
+      padding: EdgeInsets.only(left: _yearListPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: ColorConstant.primaryColor,
+              shape: BoxShape.circle,
+            ),
+            height: _yearListIconSize,
+            width: _yearListIconSize,
           ),
-          ListView.builder(
-            itemCount: yearList[year].length,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Padding(
-                  padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-                  child: ReportItem(
-                    day: yearList[year][index].createDate[8] +
-                        yearList[year][index].createDate[9],
-                    mouth: yearList[year][index].createDate[5] +
-                        yearList[year][index].createDate[6] +
-                        "月",
-                    reportContent: yearList[year][index].message,
-                    isWeekly: yearList[year][index].isWeek,
-                  ));
-            },
+          Container(
+            width: _yearListIconTextGap,
+          ),
+          Text(
+            year.toString(),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
       ),

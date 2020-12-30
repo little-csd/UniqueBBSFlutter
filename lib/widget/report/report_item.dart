@@ -23,7 +23,7 @@ class ReportItem extends Container {
   @override
   Widget get child {
     return Container(
-      padding: EdgeInsets.only(top: 10, bottom: 20),
+      padding: EdgeInsets.only(top: 10, bottom: 20, right: 5),
       decoration: BoxDecoration(
         border: Border.all(
           color: ColorConstant.lightBorderPink,
