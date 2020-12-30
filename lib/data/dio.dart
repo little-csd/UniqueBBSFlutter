@@ -103,6 +103,7 @@ class Server {
 
   Future<String> init() async {
     // token 过期统一在 _get 和 _post 方法中处理
+    /// TODO: 更新 token 后再返回
     final sp = await SharedPreferences.getInstance();
     final uid = sp.getString(_UidKeyInSp);
     final token = sp.getString(_TokenKeyInSp);
@@ -475,7 +476,7 @@ class Server {
     }
   }
 
-  // 发送 Post 请求, 没有错误则返回 null, 并将结果填充到 json 这个 map 中
+  // 发送 Get 请求, 没有错误则返回 null, 并将结果填充到 json 这个 map 中
   // 若有错误则返回错误信息
   Future<String> _get(String url, Map<String, dynamic> json) async {
     try {

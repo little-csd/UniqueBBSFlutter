@@ -1,8 +1,15 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/widget/home_forum.dart';
-import 'package:UniqueBBSFlutter/widget/home_info.dart';
+import 'package:UniqueBBSFlutter/widget/home/home_forum.dart';
+import 'package:UniqueBBSFlutter/widget/home/home_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+const _tabHeight = 90.0;
+const _tabBarWidth = 140.0;
+const _indicatorPadding = 5.0;
+final _labelTextStyle = TextStyle(fontSize: 17);
+final _unLabelTextStyle = TextStyle(fontSize: 14);
 
 class HomeBodyWidget extends StatefulWidget {
   @override
@@ -29,7 +36,7 @@ class _HomeBodyState extends State<HomeBodyWidget>
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Container(
-          height: 90,
+          height: _tabHeight,
           alignment: Alignment.bottomCenter,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,18 +44,19 @@ class _HomeBodyState extends State<HomeBodyWidget>
             children: <Widget>[
               Container(
                 child: TabBar(
-                  labelStyle: TextStyle(fontSize: 16),
+                  labelStyle: _labelTextStyle,
                   labelColor: ColorConstant.primaryColor,
                   unselectedLabelColor: Theme.of(context).unselectedWidgetColor,
+                  unselectedLabelStyle: _unLabelTextStyle,
                   indicatorSize: TabBarIndicatorSize.label,
-                  indicatorPadding: EdgeInsets.only(bottom: 5),
+                  indicatorPadding: EdgeInsets.only(bottom: _indicatorPadding),
                   controller: _tabController,
                   tabs: <Widget>[
                     Tab(text: StringConstant.info),
                     Tab(text: StringConstant.forum)
                   ],
                 ),
-                width: 140,
+                width: _tabBarWidth,
               ),
               Expanded(
                 child: Row(
@@ -56,11 +64,15 @@ class _HomeBodyState extends State<HomeBodyWidget>
                   children: [
                     IconButton(
                       icon: SvgPicture.asset(SvgIcon.search),
-                      onPressed: () => print('search'),
+                      onPressed: () {
+                        Fluttertoast.showToast(msg: StringConstant.notImpl);
+                      },
                     ),
                     IconButton(
                       icon: SvgPicture.asset(SvgIcon.notification),
-                      onPressed: () => print('notification'),
+                      onPressed: () {
+                        Fluttertoast.showToast(msg: StringConstant.notImpl);
+                      },
                     ),
                   ],
                 ),

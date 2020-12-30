@@ -69,6 +69,9 @@ flutter:
 
   assets:
     - images/
+    - images/home/
+    - images/me/
+    - images/post/
 
   fonts:
     - family: PingFang
