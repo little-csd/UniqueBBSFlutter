@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/post_data.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/thread.dart';
@@ -223,7 +225,6 @@ Widget _buildComment(PostData data) {
 Widget _buildBody(ScrollController controller, PostModel model) {
   // 评论前面有多少个部件, 为了充分利用 ListView，将帖子内容也塞到里面
   // 没有评论时应该加一个空评论
-  final itemSize = 2 + (model.maxCount() <= 1 ? 1 : 0);
   return Consumer<PostModel>(
     builder: (context, model, child) {
       return ListView.builder(
@@ -231,7 +232,8 @@ Widget _buildBody(ScrollController controller, PostModel model) {
         controller: controller,
         padding: EdgeInsets.symmetric(horizontal: _mainHorizontalPadding),
         itemBuilder: (context, index) {
-          print('build $index');
+          // print('build $index');
+          final lastIndex = 2 + max(model.postCount(), 1);
           if (index == 0) {
             // 帖子主体
             String text = model.getFirstPost()?.post?.message;
@@ -245,18 +247,18 @@ Widget _buildBody(ScrollController controller, PostModel model) {
           } else if (index == 1) {
             // 最新评论这一部分，因为不会变化所以放到 child
             return child;
-          } else if (index == itemSize + model.maxCount() - 1) {
+          } else if (index == lastIndex) {
             // 最后一个位置空出一个底部栏高度
             return Container(height: _bottomHeight);
           }
           // 处理空评论的情况
-          if (model.maxCount() <= 1) {
+          if (model.postCount() <= 1) {
             return _buildEmptyComment();
           }
           // 处理实际的评论
-          return _buildComment(model.getPostData(index - itemSize + 1));
+          return _buildComment(model.getPostData(index - 2));
         },
-        itemCount: model.maxCount() + itemSize,
+        itemCount: 3 + max(model.postCount(), 1),
       );
     },
     child: Text(
@@ -397,7 +399,7 @@ class _PostDetailState extends State<PostDetailWidget> {
       }
       setState(() {});
     });
-    model = PostModel(widget.thread);
+    model = PostModel(widget.thread.thread);
   }
 
   @override
