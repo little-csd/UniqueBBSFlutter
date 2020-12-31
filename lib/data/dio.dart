@@ -46,7 +46,6 @@ class NetRsp<T> {
   NetRsp(this.success, {this.msg, this.data});
 }
 
-/// token 错误返回信息： {code: -1, msg: jwt malformed}
 class Server {
   static const _TAG = "Server";
   static const _LoginUrl = '/user/login/pwd';

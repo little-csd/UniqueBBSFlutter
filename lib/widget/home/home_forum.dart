@@ -37,18 +37,21 @@ class _HomeForumState extends State<HomeForumWidget> {
         threadModel.fetch();
       });
 
-      return Stack(
-        children: [
-          Positioned(
-            child: Container(
-              child: Image.asset(PngIcon.homeForumBg),
-              width: double.infinity,
+    return Stack(
+      children: [
+        Positioned(
+          child: Container(
+            child: Image.asset(
+              PngIcon.homeForumBg,
+              fit: BoxFit.fill,
             ),
-            bottom: 0,
-            left: 0,
-            right: 0,
+            width: double.infinity,
           ),
-          MediaQuery.removePadding(
+          bottom: 0,
+          left: 0,
+          right: 0,
+        ),
+        MediaQuery.removePadding(
             context: context,
             removeTop: true,
             child: ListView.builder(
