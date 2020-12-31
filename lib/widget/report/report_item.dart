@@ -1,5 +1,6 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/data/repo.dart';
+import 'package:UniqueBBSFlutter/widget/common/filled_background_text.dart';
 import 'package:flutter/material.dart';
 
 var _tagWeekly = "WEEKLY";
@@ -43,7 +44,7 @@ class ReportItem extends Container {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              _buildColorBackgroundText(isWeekly ? _tagWeekly : _tagDaily),
+              buildFilledBackgroundText(isWeekly ? _tagWeekly : _tagDaily, 50),
               Container(
                 width: 10,
               ),
@@ -84,22 +85,3 @@ class ReportItem extends Container {
   }
 }
 
-_buildColorBackgroundText(String text) {
-  return Container(
-    alignment: Alignment.center,
-    width: 50,
-    height: 12,
-    decoration: BoxDecoration(
-      color: ColorConstant.textBackgroundLightPurple,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Text(
-      text,
-      style: TextStyle(
-        fontSize: 10,
-        color: Colors.white,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  );
-}

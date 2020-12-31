@@ -1,18 +1,37 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
+import 'package:UniqueBBSFlutter/data/bean/user/user_info.dart';
+import 'package:UniqueBBSFlutter/tool/helper.dart';
+import 'package:UniqueBBSFlutter/widget/common/common_avatar.dart';
 import 'package:flutter/material.dart';
 
-// todo : refactor
+const _publish = "发布";
+const _broadcastRadius = 25.0;
+
+// todo : 这里是直接复制的旧代码，需要重构
 class ForumItem2 extends StatelessWidget {
+
+  String subject;
+  String message;
+
+  ThreadInfo data;
+  UserInfo creator;
+
+  ForumItem2(this.data, this.creator);
+
+  _initData() {
+    subject = data.subject;
+    message = getDayString(data.createDate) + " " +  creator.username + " " + _publish;
+  }
 
   @override
   Widget build(BuildContext context) {
+    _initData();
     return Row(
       children: <Widget>[
-        CircleAvatar(
-          radius: 28,
-          backgroundImage: NetworkImage(
-              'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/'
-                  'it/u=1336318030,2258820972&fm=26&gp=0.jpg'),
+        BBSAvatar(
+          creator.avatar,
+          radius: _broadcastRadius,
         ),
         Container(
           margin: EdgeInsets.only(left: 8),
@@ -25,15 +44,19 @@ class ForumItem2 extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  Text(
-                    "2020年举办全球Hackday吧",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    width: MediaQuery.of(context).size.width - 180,
+                    child:
+                    Text(
+                      data.subject,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
-                    overflow: TextOverflow.fade,
-                    maxLines: 1,
                   ),
                   Text(
                     " HOT",
@@ -46,7 +69,7 @@ class ForumItem2 extends StatelessWidget {
                 ],
               ),
               Text(
-                "2020.01.19 肖宇轩 发布",
+                message,
                 style: TextStyle(
                   color: ColorConstant.textGrey,
                   fontSize: 12,
