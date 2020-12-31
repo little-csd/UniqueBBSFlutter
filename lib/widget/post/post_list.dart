@@ -1,8 +1,9 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
+import 'package:UniqueBBSFlutter/data/model/thread_model.dart';
 import 'package:UniqueBBSFlutter/widget/post/post_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 
 final divider = Container(
   height: 1,
@@ -16,21 +17,22 @@ class ForumListCard extends StatefulWidget {
   final bool showLabel;
   final bool showLoadMore;
   final bool canScroll;
-  final double bodyHeight;
+  final ThreadModel model;
 
   ForumListCard(
-      {this.showLoadMore, this.showLabel, this.canScroll, this.bodyHeight});
+      {this.showLoadMore, this.showLabel, this.canScroll,  this.model});
 
   @override
   State<StatefulWidget> createState() => ForumListCardState();
-
 }
 
 class ForumListCardState extends State<ForumListCard> {
   var _words = <String>['loading'];
+  ThreadModel model;
 
   @override
   void initState() {
+    model = widget.model;
     super.initState();
   }
 
@@ -87,10 +89,10 @@ class ForumListCardState extends State<ForumListCard> {
                   padding: EdgeInsets.only(
                     bottom: 5,
                   ),
-                  child: ForumItem2(),
+                  child: ForumItem2(model.getThreadInfo(index), model.getUserInfo(index)),
                 );
               },
-              itemCount: widget.showLoadMore ? 3 : _words.length,
+              itemCount: model.threadCount,
               separatorBuilder: (BuildContext context, int index) {
                 return divider;
               },

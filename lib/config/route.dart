@@ -1,5 +1,6 @@
+import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/thread.dart';
-import 'package:UniqueBBSFlutter/widget/forum_page.dart';
+import 'package:UniqueBBSFlutter/widget/post/thread_page.dart';
 import 'package:UniqueBBSFlutter/widget/home/home.dart';
 import 'package:UniqueBBSFlutter/widget/home/home_select.dart';
 import 'package:UniqueBBSFlutter/widget/login/info_set.dart';
@@ -39,7 +40,6 @@ class BBSRoute {
     login: (context) => LoginWidget(),
     pwSet: (context) => PasswordSetWidget(),
     infoSet: (context) => InfoSetWidget(),
-    postList: (context) => ForumPageWidget(),
     reportPage: (context) => ReportPageWidget(),
     postReport: (context) => ReportPostPageWidget(),
   };
@@ -55,7 +55,7 @@ class BBSRoute {
         return MaterialPageRoute(
             builder: (context) => PostDetailWidget(arg as Thread));
       case postList:
-        return MaterialPageRoute(builder: (context) => ForumPageWidget());
+        return MaterialPageRoute(builder: (context) => ThreadPageWidget(arg as FullForum));
     }
     throw Exception("Route $path not found!");
   }

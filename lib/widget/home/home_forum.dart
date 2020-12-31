@@ -7,7 +7,7 @@ class HomeForumWidget extends StatefulWidget {
   State createState() => _HomeForumState();
 }
 
-// TODO: store forum data here and deliver to @ForumItem
+// todo : refactor
 class _HomeForumState extends State<HomeForumWidget> {
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,6 @@ class _HomeForumState extends State<HomeForumWidget> {
       showLabel: true,
       showLoadMore: true,
       canScroll: false,
-      bodyHeight: null,
     );
 
     return Stack(
