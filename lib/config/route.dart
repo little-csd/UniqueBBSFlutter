@@ -1,12 +1,12 @@
 import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/thread.dart';
-import 'package:UniqueBBSFlutter/widget/post/thread_page.dart';
 import 'package:UniqueBBSFlutter/widget/home/home.dart';
 import 'package:UniqueBBSFlutter/widget/home/home_select.dart';
 import 'package:UniqueBBSFlutter/widget/login/info_set.dart';
 import 'package:UniqueBBSFlutter/widget/login/login.dart';
 import 'package:UniqueBBSFlutter/widget/login/pw_set.dart';
 import 'package:UniqueBBSFlutter/widget/post/detail/post_detail.dart';
+import 'package:UniqueBBSFlutter/widget/post/thread_page.dart';
 import 'package:UniqueBBSFlutter/widget/report/report_page.dart';
 import 'package:UniqueBBSFlutter/widget/report/report_post_page.dart';
 import 'package:flutter/material.dart';
@@ -49,13 +49,13 @@ class BBSRoute {
       return MaterialPageRoute(builder: routes[path]);
     }
     // used for build page with arguments
-    // now only throw an exception
     switch (path) {
       case postDetail:
         return MaterialPageRoute(
             builder: (context) => PostDetailWidget(arg as Thread));
       case postList:
-        return MaterialPageRoute(builder: (context) => ThreadPageWidget(arg as FullForum));
+        return MaterialPageRoute(
+            builder: (context) => ThreadPageWidget(arg as FullForum));
     }
     throw Exception("Route $path not found!");
   }

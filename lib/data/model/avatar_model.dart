@@ -26,7 +26,9 @@ class AvatarModel extends ChangeNotifier {
   Image find(String path) {
     final name = path.split('/').last;
     Image image = _avatarMap[name];
-    if (image == null) {
+
+    /// 这里判断 pendingSet 是防止下载中还去读取文件，导致读取异常
+    if (image == null && !_pendingSet.contains(name)) {
       image = _findInLocal(path, name);
     }
     return image;
