@@ -76,12 +76,13 @@ class ThreadItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (data.closed) return Container();
+    if (!data.active) return Container();
     final maxTextWidth = MediaQuery.of(context).size.width - 150;
     double maxTitleWidth = maxTextWidth - computeTextOffset();
     return GestureDetector(
       onTap: () {
         Thread thread = Thread(data, creator, []);
+        print(thread.thread.toJson());
         Navigator.of(context).pushNamed(BBSRoute.postDetail, arguments: thread);
       },
       child: Row(

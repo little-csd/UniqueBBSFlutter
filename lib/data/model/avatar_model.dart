@@ -24,6 +24,7 @@ class AvatarModel extends ChangeNotifier {
   }
 
   Image find(String path) {
+    if (path == null) return null;
     final name = path.split('/').last;
     Image image = _avatarMap[name];
 

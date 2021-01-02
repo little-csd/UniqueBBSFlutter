@@ -1,11 +1,9 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
 import 'package:UniqueBBSFlutter/data/model/thread_model.dart';
-import 'package:UniqueBBSFlutter/widget/post/post_list.dart';
+import 'package:UniqueBBSFlutter/widget/post/thread_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-const pageSize = 20;
 
 // todo : refactor
 class ThreadPageWidget extends StatefulWidget {
@@ -23,9 +21,9 @@ class ThreadPageState extends State<ThreadPageWidget> {
 
   @override
   void initState() {
-    _initScrollController();
-    model = ThreadModel(widget.forum, isMe: false);
     super.initState();
+    _initScrollController();
+    model = ThreadModel(widget.forum, isMe: widget.forum == null);
     _fetchData();
   }
 
@@ -50,7 +48,7 @@ class ThreadPageState extends State<ThreadPageWidget> {
         appBar: AppBar(
           backgroundColor: ColorConstant.backgroundLightGrey,
           title: Text(
-            widget.forum.name,
+            widget.forum != null ? widget.forum.name : StringConstant.myThreads,
             style: TextStyle(color: Colors.black),
           ),
         ),
@@ -63,18 +61,14 @@ class ThreadPageState extends State<ThreadPageWidget> {
     return Consumer<ThreadModel>(builder: (context, model, child) {
       return SingleChildScrollView(
         controller: _scrollController,
+        physics: BouncingScrollPhysics(),
         child: Container(
             padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ForumListCard(
-                  model: model,
-                  showLabel: false,
-                  showLoadMore: false,
-                  canScroll: false,
-                ),
-                _buildBottomText()
+                ThreadListCard(model),
+                _buildBottomText(),
               ],
             )),
       );

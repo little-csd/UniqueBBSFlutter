@@ -61,7 +61,9 @@ class PostModel extends ChangeNotifier {
   }
 
   void _fetch() async {
-    if (_fetching || _postData.length >= _maxPost || _killed) return;
+    if (_fetching ||
+        _killed ||
+        (_postData.length >= _maxPost && _firstPost != null)) return;
     _fetching = true;
     // 拉取下一页
     Logger.v(_TAG, 'fetching page ${_fetchedPage + 1}');

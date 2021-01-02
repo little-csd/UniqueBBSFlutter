@@ -243,12 +243,14 @@ Widget _buildPersonalData(User me) {
   );
 }
 
-Widget _buildShowMyPost(BuildContext context) {
+Widget _buildShowMyPost(BuildContext context, User user) {
   return FlatButton(
     minWidth: double.infinity,
     onPressed: () {
       print('查看帖子');
-      // Logger.i('HomeMe', 'hello');
+      if (user != null) {
+        Navigator.of(context).pushNamed(BBSRoute.postList, arguments: null);
+      }
     },
     shape: _buttonRoundedBorder,
     color: ColorConstant.primaryColor,
@@ -319,6 +321,7 @@ class _HomeMeState extends State<HomeMeWidget> {
     return Consumer<UserModel>(
       builder: (context, userModel, child) {
         User me = userModel.find(Repo.instance.uid);
+        Repo.instance.me = me;
         return Column(
           children: [
             _buildNotification(),
@@ -340,7 +343,7 @@ class _HomeMeState extends State<HomeMeWidget> {
                     Container(height: 20),
                     _buildPersonalData(me),
                     Container(height: 30),
-                    _buildShowMyPost(context),
+                    _buildShowMyPost(context, me),
                     Container(height: 10),
                     _buildChangPwd(context),
                     Container(height: 10),

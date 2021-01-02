@@ -2,6 +2,7 @@ import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
 import 'package:UniqueBBSFlutter/data/bean/user/user_info.dart';
+import 'package:UniqueBBSFlutter/tool/helper.dart';
 import 'package:UniqueBBSFlutter/tool/logger.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +28,9 @@ class ThreadModel extends ChangeNotifier {
   // 不要在外部修改这个变量
   bool isMe;
 
-  ThreadModel(this._forum, {this.isMe = false}) : assert(_forum != null) {
-    _maxThread = _forum.threadCount;
+  ThreadModel(this._forum, {this.isMe = false})
+      : assert(_forum != null || isMe) {
+    _maxThread = _forum != null ? _forum.threadCount : maxInt;
   }
 
   get threadCount => _threadList.length;
@@ -36,7 +38,7 @@ class ThreadModel extends ChangeNotifier {
   // 第几个 item(从零开始计)
   // "我的"帖子信息不要调用此接口!
   UserInfo getUserInfo(int index) {
-    if (isMe) return null;
+    if (isMe) return Repo.instance.me?.user;
     if (index >= _maxThread || index >= _userList.length) return null;
     return _userList[index];
   }
@@ -57,6 +59,7 @@ class ThreadModel extends ChangeNotifier {
       Server.instance.threadsForUser(uid, _fetchedPage + 1).then((rsp) {
         if (rsp.success) {
           _threadList.addAll(rsp.data.threads);
+          _maxThread = rsp.data.count;
           _onFetchedSuccess();
         } else {
           Future.delayed(Duration(seconds: HyperParam.requestInterval))

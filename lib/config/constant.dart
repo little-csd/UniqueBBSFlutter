@@ -9,8 +9,9 @@ class ColorConstant {
   static const textBlack = Colors.black;
   static const textWhite = Colors.white;
   static const textRed = Color(0xFFFF7A7A);
-  static const textLightPurPle = Color(0xff9b84fe);
-  static const textPostPurple = Color(0xffb4aafd);
+  static const textLightPurPle = Color(0xFF9B84FE);
+  static const textPostPurple = Color(0xFFB4AAFD);
+  static const textLightBlack = Color(0xFF555555);
   static const textGreyForComment = Color(0xFFD3CFE9);
   static const textGreyForNoComment = Color(0xFFE1DDF7);
 
@@ -52,12 +53,9 @@ class StringConstant {
   static const broadcast = '通知公告';
   static const report = 'Report';
   static const uniqueMarket = '联创市场';
-  static const projectTask = '项目任务';
   static const uniqueProject = '团队项目';
   static const freshmanTask = '新人任务';
-  static const fileData = '文件留存';
   static const uniqueData = '团队资料';
-  static const share = '交流分享';
   static const uniqueShare = '团队分享';
   static const discussion = '闲杂讨论';
   // report
@@ -67,6 +65,7 @@ class StringConstant {
   // 帖子列表
   static const loadMore = '查看更多';
   static const noMoreForum = "再往下拉也没有啦~";
+  static const myThreads = '我的帖子';
   // 帖子浏览
   static const comment = '评论';
   static const edit = '编辑';

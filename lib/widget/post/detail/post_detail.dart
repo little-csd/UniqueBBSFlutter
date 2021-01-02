@@ -21,33 +21,40 @@ const _mainHorizontalPadding = 10.0;
 const _maxHeadHeight = 120.0;
 const _minHeadHeight = 72.0;
 const _headIconTextPadding = 10.0;
-const _headAvatarRadius = 30.0;
+const _headAvatarRadius = 26.0;
 const _titleFontSize = 20.0;
 final _headDataPadding = EdgeInsets.only(bottom: 20, left: 50);
 const _dividerThick = 1.0;
 // 内容
-const _mainTextSize = 18.0;
+final _mainTextStyle = TextStyle(
+  fontSize: 15,
+  color: ColorConstant.textLightBlack,
+);
 // 评论部分
 const _textOffset = 40.0;
 const _commentBoxRadius = 20.0;
 const _commentMargin = 10.0;
 const _commentInnerPaddingV = 15.0;
 const _commentInnerPaddingH = 10.0;
-const _commentAvatarRadius = 20.0;
+const _commentAvatarRadius = 18.0;
 const _commentTextOffset = 10.0;
 const _commentEmptyRadius = 20.0;
 const _commentEmptyMargin = 10.0;
 const _commentEmptyHeight = 35.0;
 final _commentNameTextStyle = TextStyle(
-  fontSize: 15,
+  fontSize: 12,
   color: ColorConstant.primaryColor,
 );
 final _commentTimeTextStyle = TextStyle(
-  fontSize: 12,
+  fontSize: 10,
   color: ColorConstant.textGrey,
 );
+final _commentMessageTextStyle = TextStyle(
+  fontSize: 12,
+  color: ColorConstant.textLightBlack,
+);
 final _noCommentTextStyle = TextStyle(
-  fontSize: 16,
+  fontSize: 15,
   fontWeight: FontWeight.bold,
   color: ColorConstant.textGreyForNoComment,
 );
@@ -83,17 +90,12 @@ Widget _buildHead(double height, Thread thread) {
   final bar = AppBar(
     leading: Icon(Icons.arrow_back_ios),
     bottom: PreferredSize(
-      child: Divider(
-        thickness: _dividerThick,
-      ),
+      child: Divider(thickness: _dividerThick),
       preferredSize: null,
     ),
     title: Opacity(
       opacity: _getOpacityByProgress(progress),
-      child: Text(
-        title,
-        style: TextStyle(color: ColorConstant.textBlack),
-      ),
+      child: Text(title, style: TextStyle(color: ColorConstant.textBlack)),
     ),
     flexibleSpace: Opacity(
       opacity: progress,
@@ -102,30 +104,27 @@ Widget _buildHead(double height, Thread thread) {
         padding: _headDataPadding,
         child: Row(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: _headIconTextPadding),
-              child: BBSAvatar(
-                avatar,
-                radius: _headAvatarRadius,
-              ),
-            ),
+            BBSAvatar(avatar, radius: _headAvatarRadius),
             Expanded(
-              child: Text.rich(
-                TextSpan(
-                  children: [
+              child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: _headIconTextPadding),
+                  child: Text.rich(
                     TextSpan(
-                      text: title + '\n',
-                      style: TextStyle(fontSize: _titleFontSize),
+                      children: [
+                        TextSpan(
+                          text: title + '\n',
+                          style: TextStyle(fontSize: _titleFontSize),
+                        ),
+                        TextSpan(text: getDayString(date)),
+                        TextSpan(
+                            text: ' $author',
+                            style: TextStyle(color: ColorConstant.primaryColor))
+                      ],
                     ),
-                    TextSpan(text: getDayString(date)),
-                    TextSpan(
-                        text: ' $author',
-                        style: TextStyle(color: ColorConstant.primaryColor))
-                  ],
-                ),
-                overflow: TextOverflow.clip,
-                maxLines: 3,
-              ),
+                    overflow: TextOverflow.clip,
+                    maxLines: 3,
+                  )),
               flex: 1,
             ),
           ],
@@ -149,7 +148,7 @@ Widget _wrapCommentBox(Widget child) {
         )
       ],
     ),
-    margin: EdgeInsets.symmetric(vertical: _commentMargin),
+    margin: EdgeInsets.only(top: _commentMargin),
     padding: EdgeInsets.symmetric(
         vertical: _commentInnerPaddingV, horizontal: _commentInnerPaddingH),
     child: child,
@@ -159,22 +158,22 @@ Widget _wrapCommentBox(Widget child) {
 Widget _buildEmptyComment() {
   final widget = Row(
     children: [
-      BBSAvatar(
-        null,
-        radius: _commentAvatarRadius,
-      ),
+      BBSAvatar(null, radius: _commentAvatarRadius),
       Expanded(
-        child: Container(
-          height: _commentEmptyHeight,
-          alignment: Alignment.centerLeft,
-          margin: EdgeInsets.symmetric(horizontal: _commentEmptyMargin),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(_commentEmptyRadius),
-            color: ColorConstant.backgroundLightGrey,
-          ),
-          child: Text(
-            '  ${StringConstant.noComment}',
-            style: _noCommentTextStyle,
+        child: GestureDetector(
+          onTap: () => Fluttertoast.showToast(msg: StringConstant.notImpl),
+          child: Container(
+            height: _commentEmptyHeight,
+            alignment: Alignment.centerLeft,
+            margin: EdgeInsets.symmetric(horizontal: _commentEmptyMargin),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(_commentEmptyRadius),
+              color: ColorConstant.backgroundLightGrey,
+            ),
+            child: Text(
+              '  ${StringConstant.noComment}',
+              style: _noCommentTextStyle,
+            ),
           ),
         ),
         flex: 1,
@@ -185,7 +184,7 @@ Widget _buildEmptyComment() {
 }
 
 Widget _buildComment(PostData data) {
-  // 暂时找不到数据或者帖子被删除
+  // 暂时找不到数据或者 post 被删除
   if (data == null || !data.post.active) {
     return Container();
   }
@@ -212,7 +211,7 @@ Widget _buildComment(PostData data) {
                   ),
                 ],
               )),
-              Text(data.post.message),
+              Text(data.post.message, style: _commentMessageTextStyle),
             ],
           ),
         ),
@@ -239,17 +238,14 @@ Widget _buildBody(ScrollController controller, PostModel model) {
             String text = model.getFirstPost()?.post?.message;
             return Container(
               margin: EdgeInsets.only(bottom: _textOffset),
-              child: Text(
-                text == null ? "" : text,
-                style: TextStyle(fontSize: _mainTextSize),
-              ),
+              child: Text(text == null ? "" : text, style: _mainTextStyle),
             );
           } else if (index == 1) {
             // 最新评论这一部分，因为不会变化所以放到 child
             return child;
           } else if (index == lastIndex) {
             // 最后一个位置空出一个底部栏高度
-            return Container(height: _bottomHeight);
+            return Container(height: _bottomHeight + _commentMargin);
           }
           // 处理空评论的情况
           if (model.postCount() <= 1) {

@@ -7,6 +7,7 @@ import 'package:UniqueBBSFlutter/widget/common/common_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 const _mainHorizontalPadding = 20.0;
@@ -144,6 +145,8 @@ Widget _buildGridBlock(List<String> contents, BuildContext context) {
         if (forum == null) {
           if (contents[1] == "Report") {
             Navigator.pushNamed(context, BBSRoute.reportPage);
+          } else {
+            Fluttertoast.showToast(msg: StringConstant.networkError);
           }
         } else {
           Navigator.pushNamed(context, BBSRoute.postList, arguments: forum);
@@ -181,12 +184,12 @@ Widget _buildGrid(BuildContext context) {
       crossAxisSpacing: _gridHorizontalSpacing,
       mainAxisSpacing: _gridVerticalSpacing,
       children: [
-        [SvgIcon.projectTask, StringConstant.projectTask],
+        [SvgIcon.projectTask, StringConstant.uniqueProject],
         [SvgIcon.report, StringConstant.report],
         [SvgIcon.market, StringConstant.uniqueMarket],
         [SvgIcon.freshmanTask, StringConstant.freshmanTask],
-        [SvgIcon.file, StringConstant.fileData],
-        [SvgIcon.share, StringConstant.share],
+        [SvgIcon.file, StringConstant.uniqueData],
+        [SvgIcon.share, StringConstant.uniqueShare],
       ].map((e) {
         return GridTile(
           child: _buildGridBlock(e, context),
