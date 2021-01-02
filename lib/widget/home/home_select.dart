@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/repo.dart';
+import 'package:UniqueBBSFlutter/config/route.dart';
+import 'package:UniqueBBSFlutter/data/model/forum_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 // TODO: 这里大小最好是根据屏幕长宽去计算，可能会 overflow
 const _cancelButtonSize = 40.0;
@@ -35,22 +37,15 @@ const forumData = [
   ['奇思\n妙想', StringConstant.notImpl],
 ];
 
-Widget _wrapData(BuildContext context, String data, String name) {
+Widget _wrapData(
+    BuildContext context, String data, String name, ForumModel model) {
   return MaterialButton(
     onPressed: () {
-      if (name == StringConstant.notImpl || name == StringConstant.report) {
-        Fluttertoast.showToast(msg: name);
-        Navigator.of(context).pop();
+      if (name == StringConstant.report) {
+        Navigator.of(context).popAndPushNamed(BBSRoute.postReport);
         return;
       }
-      // 这里是直接从 repo 拿 forum 的数据的，其实不是很好
-      final model = Repo.instance.forumModel;
-      final forum = model.findByName(name);
-      if (forum == null) {
-        Fluttertoast.showToast(msg: StringConstant.networkError);
-      } else {
-        print(forum.toJson());
-      }
+      Fluttertoast.showToast(msg: StringConstant.notImpl);
       Navigator.of(context).pop();
     },
     color: ColorConstant.backgroundWhite,
@@ -71,21 +66,22 @@ Widget _wrapTransform(Widget child, double angle, double radius) {
 }
 
 Widget _buildCircularWidget(BuildContext context) {
-  var widgets = forumData.map((e) => _wrapData(context, e[0], e[1])).toList();
-  double deltaAngle = 2 * pi / (forumData.length - 1);
-  widgets[0] = _wrapTransform(widgets[0], 0, 0);
-  for (int i = 1; i < forumData.length; i++) {
-    widgets[i] =
-        _wrapTransform(widgets[i], deltaAngle * (i - 1), _selectBtnRadius);
-  }
   final size = MediaQuery.of(context).size;
   return Container(
     width: size.width,
     height: size.width,
     alignment: Alignment.center,
-    child: Stack(
-      children: widgets,
-    ),
+    child: Consumer<ForumModel>(builder: (context, model, child) {
+      var widgets =
+          forumData.map((e) => _wrapData(context, e[0], e[1], model)).toList();
+      double deltaAngle = 2 * pi / (forumData.length - 1);
+      widgets[0] = _wrapTransform(widgets[0], 0, 0);
+      for (int i = 1; i < forumData.length; i++) {
+        widgets[i] =
+            _wrapTransform(widgets[i], deltaAngle * (i - 1), _selectBtnRadius);
+      }
+      return Stack(children: widgets);
+    }),
   );
 }
 
