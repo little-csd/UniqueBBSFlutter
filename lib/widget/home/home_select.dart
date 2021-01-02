@@ -49,7 +49,7 @@ Widget _wrapData(BuildContext context, String data, String name) {
       if (forum == null) {
         Fluttertoast.showToast(msg: StringConstant.networkError);
       } else {
-        print(forum.toJson());
+        Fluttertoast.showToast(msg: StringConstant.notImpl);
       }
       Navigator.of(context).pop();
     },
