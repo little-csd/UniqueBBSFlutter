@@ -1,5 +1,6 @@
 import 'package:UniqueBBSFlutter/data/model/avatar_model.dart';
 import 'package:UniqueBBSFlutter/data/model/forum_model.dart';
+import 'package:UniqueBBSFlutter/data/model/thread_model.dart';
 import 'package:UniqueBBSFlutter/tool/logger.dart';
 
 import 'model/user_model.dart';
@@ -34,4 +35,8 @@ class Repo {
   final UserModel userModel = UserModel();
   final ForumModel forumModel = ForumModel();
   final AvatarModel avatarModel = AvatarModel();
+
+  /// TODO: 这里为了论坛那个界面可以用到 threadModel, 还是把 thread 缓存到内存中了
+  /// 后面实现数据库后，就不要在这里 threadModel 了
+  final Map<String, ThreadModel> cacheThreadModels = Map();
 }

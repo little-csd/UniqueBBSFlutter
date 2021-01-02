@@ -1,9 +1,8 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/config/route.dart';
 import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
 import 'package:UniqueBBSFlutter/data/model/thread_model.dart';
-import 'package:UniqueBBSFlutter/widget/post/post_item.dart';
+import 'package:UniqueBBSFlutter/widget/post/thread_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -121,7 +120,7 @@ class ForumListCardState extends State<ForumListCard> {
                   padding: EdgeInsets.only(
                     bottom: _listInternalBottomPadding,
                   ),
-                  child: ForumItem2(
+                  child: ThreadItem(
                       model.getThreadInfo(index), model.getUserInfo(index)),
                 );
               },

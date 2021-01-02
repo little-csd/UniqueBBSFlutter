@@ -27,7 +27,7 @@ class ThreadModel extends ChangeNotifier {
   // 不要在外部修改这个变量
   bool isMe;
 
-  ThreadModel(this._forum, this.isMe) : assert(_forum != null) {
+  ThreadModel(this._forum, {this.isMe = false}) : assert(_forum != null) {
     _maxThread = _forum.threadCount;
   }
 

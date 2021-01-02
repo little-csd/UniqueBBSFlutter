@@ -24,7 +24,7 @@ class ThreadPageState extends State<ThreadPageWidget> {
   @override
   void initState() {
     _initScrollController();
-    model = ThreadModel(widget.forum, false);
+    model = ThreadModel(widget.forum, isMe: false);
     super.initState();
     _fetchData();
   }
