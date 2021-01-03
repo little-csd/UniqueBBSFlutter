@@ -1,7 +1,10 @@
 import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:UniqueBBSFlutter/data/dio.dart';
+import 'package:UniqueBBSFlutter/widget/common/network_error_bottom_sheet.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 const _weeklyTag = "weekly report";
 const _dailyTag = "daily report";
@@ -18,8 +21,14 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
 
   _createReport() {
     _content = _textEditingController.text;
-    Server.instance.createReport(_isWeekly, _content).then((value) {
-      Navigator.pop(context);
+    print(_isWeekly);
+    Server.instance.createReport(true, _content).then((value) {
+      if (value.success) {
+        Fluttertoast.showToast(msg: StringConstant.postReportSuccess);
+        Navigator.pop(context);
+      } else {
+          buildErrorBottomSheet(context, value.msg);
+      }
     });
   }
 
@@ -98,27 +107,9 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
                   border: Border.all(color: ColorConstant.borderGray)),
               child: FlatButton(
                 onPressed: () {
-                  return DropdownButton(
-                    items: [
-                      DropdownMenuItem(
-                        child: Text(
-                          _dailyTag,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        child: Text(
-                          _weeklyTag,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                    onChanged: (value) {},
-                  );
+                  _isWeekly = !_isWeekly;
+                  setState(() {
+                  });
                 },
                 splashColor: Colors.white,
                 highlightColor: Colors.white,
@@ -126,7 +117,7 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      _weeklyTag,
+                      _isWeekly ? _weeklyTag : _dailyTag,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),

@@ -62,6 +62,7 @@ class StringConstant {
   static const reportTitle = '我的report';
   static const postReportTitle = '发布report';
   static const pleaseInput = '请输入正文';
+  static const postReportSuccess = '发布成功';
   // 帖子列表
   static const loadMore = '查看更多';
   static const noMoreForum = "再往下拉也没有啦~";
@@ -76,9 +77,9 @@ class StringConstant {
   static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
   // 登陆页
   static const logo2Line = "UNIQUE\nSTUDIO";
-  static const phoneNumber = "手机号";
+  static const phoneNumber = "用户名";
   static const password = "密码";
-  static const noPhoneNumber = "手机号未注册，\n用企业微信登录试试吧？";
+  static const noPhoneNumber = "用户名未注册，\n用企业微信登录试试吧？";
   static const login = "登陆";
   static const iKnow = "我知道了";
   static const useWeComLogin = "使用企业微信扫码登录";

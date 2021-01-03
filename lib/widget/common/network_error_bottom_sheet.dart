@@ -2,17 +2,27 @@ import 'package:UniqueBBSFlutter/config/constant.dart';
 import 'package:flutter/material.dart';
 import 'normal_bottom_sheet.dart';
 
+buildErrorBottomSheet(BuildContext context, String content) {
+  showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return _buildErrorBottomSheetBody(context, content);
+      }
+  );
+}
+
 buildNetworkErrorBottomSheet(BuildContext context) {
   showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return _buildBottomSheetBody(context);
+        return _buildErrorBottomSheetBody(context, StringConstant.networkError);
       }
   );
 }
 
-_buildBottomSheetBody(BuildContext context) {
+_buildErrorBottomSheetBody(BuildContext context, String content) {
   return NormalBottomSheetContainer(
       bottomCardRadius: 30,
       totalHeight: 436,
@@ -27,7 +37,7 @@ _buildBottomSheetBody(BuildContext context) {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(StringConstant.networkError),
+            Text(content),
             Container(height: 67,),
             buildIKnowButton(context),
           ],
