@@ -27,7 +27,7 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
         Fluttertoast.showToast(msg: StringConstant.postReportSuccess);
         Navigator.pop(context);
       } else {
-        buildErrorBottomSheet(context, value.msg);
+          buildErrorBottomSheet(context, value.msg);
       }
     });
   }

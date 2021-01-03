@@ -88,7 +88,7 @@ class Server {
   static const _MessageReadAll = '/message/all/read';
   static const _MessageDeleteAll = '/message/all/delete';
 
-  static const NetworkError = '网络错误!';
+  static const NetworkError = '你的网络好像走丢了\n请试试重新连接吧？';
   static const UidError = '找不到用户信息!';
   static const TokenExpired = 'Token 已过期!';
   static const EmptyMsg = '收到空消息!';
