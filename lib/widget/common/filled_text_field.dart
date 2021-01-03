@@ -7,13 +7,15 @@ class FilledTextField extends TextField {
       this.hint,
       this.filledColor,
       this.hintColor,
-      this.onChanged});
+      this.onChanged,
+      this.obscureText});
 
   final Radius radius;
   final String hint;
   final Color filledColor;
   final Color hintColor;
   final ValueChanged<String> onChanged;
+  final bool obscureText;
 
   @override
   TextStyle get style => TextStyle(

@@ -32,12 +32,12 @@ class _LoginState extends State<LoginWidget> {
               height: 67,
             ),
             _buildLoginTextField(
-                StringConstant.phoneNumber, (str) => _username = str),
+                StringConstant.phoneNumber, false, (str) => _username = str),
             Container(
               height: 20,
             ),
             _buildLoginTextField(
-                StringConstant.password, (str) => _password = str),
+                StringConstant.password, true, (str) => _password = str),
             Container(
               height: 63,
             ),
@@ -136,12 +136,14 @@ _buildWeComLoginButton(BuildContext context) => SizedBox(
       ),
     );
 
-_buildLoginTextField(String hint, ValueChanged<String> callback) =>
+_buildLoginTextField(
+        String hint, bool obscure, ValueChanged<String> callback) =>
     FilledTextField(
       hint: hint,
       radius: Radius.circular(50),
       filledColor: ColorConstant.inputPurple,
       hintColor: ColorConstant.inputHintPurple,
+      obscureText: obscure,
       onChanged: callback,
     );
 
