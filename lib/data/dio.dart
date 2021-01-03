@@ -291,7 +291,7 @@ class Server {
 
   Future<NetRsp<String>> createReport(bool weekly, String msg) async {
     final req = {
-      'isWeeklyReport': weekly ? "1" : "0",
+      'isWeekReport': weekly ? "1" : "0",
       'message': msg,
     };
     Map<String, dynamic> json = HashMap();
