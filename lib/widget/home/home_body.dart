@@ -1,6 +1,6 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/widget/home/home_forum.dart';
-import 'package:UniqueBBSFlutter/widget/home/home_info.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/widget/home/home_forum.dart';
+import 'package:UniqueBBS/widget/home/home_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';

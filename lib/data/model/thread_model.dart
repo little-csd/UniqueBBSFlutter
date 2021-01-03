@@ -1,9 +1,8 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
-import 'package:UniqueBBSFlutter/data/bean/user/user_info.dart';
-import 'package:UniqueBBSFlutter/tool/helper.dart';
-import 'package:UniqueBBSFlutter/tool/logger.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
+import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
+import 'package:UniqueBBS/data/bean/user/user_info.dart';
+import 'package:UniqueBBS/tool/logger.dart';
 import 'package:flutter/material.dart';
 
 import '../dio.dart';
@@ -20,18 +19,17 @@ class ThreadModel extends ChangeNotifier {
   List<ThreadInfo> _threadList = List();
   List<UserInfo> _userList = List();
 
-  int _maxThread;
   int _fetchedPage = 0;
   bool _fetching = false;
+  bool _fetchComplete = false;
   FullForum _forum;
   bool _killed = false;
+
   // 不要在外部修改这个变量
   bool isMe;
 
   ThreadModel(this._forum, {this.isMe = false})
-      : assert(_forum != null || isMe) {
-    _maxThread = _forum != null ? _forum.threadCount : maxInt;
-  }
+      : assert(_forum != null || isMe);
 
   get threadCount => _threadList.length;
 
@@ -39,36 +37,44 @@ class ThreadModel extends ChangeNotifier {
   // "我的"帖子信息不要调用此接口!
   UserInfo getUserInfo(int index) {
     if (isMe) return Repo.instance.me?.user;
-    if (index >= _maxThread || index >= _userList.length) return null;
+    if (index >= _userList.length) return null;
     return _userList[index];
   }
 
   ThreadInfo getThreadInfo(int index) {
-    if (index >= _maxThread || index >= _threadList.length) return null;
+    if (index >= _threadList.length) return null;
     return _threadList[index];
   }
 
   /// Thread model 这里 fetch 方法暴露给外部，在 ui 界面可以自行确定拉取逻辑
   void fetch() async {
-    if (_fetching || _threadList.length >= _maxThread || _killed) return;
+    if (_fetching || _killed || _fetchComplete) return;
     _fetching = true;
     Logger.v(_TAG, "Fetching page ${_fetchedPage + 1}");
     // 我的帖子调用另一个接口获取
-    if (isMe) {
-      final uid = Repo.instance.uid;
-      Server.instance.threadsForUser(uid, _fetchedPage + 1).then((rsp) {
-        if (rsp.success) {
-          _threadList.addAll(rsp.data.threads);
-          _maxThread = rsp.data.count;
-          _onFetchedSuccess();
-        } else {
-          Future.delayed(Duration(seconds: HyperParam.requestInterval))
-              .then((_) => fetch());
-        }
-      });
-      return;
-    }
+    if (isMe)
+      _fetchUserThreads();
+    else
+      _fetchForumThreads();
+  }
 
+  void _fetchUserThreads() {
+    final uid = Repo.instance.uid;
+    Server.instance.threadsForUser(uid, _fetchedPage + 1).then((rsp) {
+      if (rsp.success) {
+        _threadList.addAll(rsp.data.threads);
+        if (rsp.data.threads.length < HyperParam.pageSize) {
+          _fetchComplete = true;
+        }
+        _onFetchedSuccess();
+      } else {
+        Future.delayed(Duration(seconds: HyperParam.requestInterval))
+            .then((_) => fetch());
+      }
+    });
+  }
+
+  void _fetchForumThreads() {
     Server.instance.threadsInForum(_forum.fid, _fetchedPage + 1).then((rsp) {
       if (rsp.success) {
         final threads = List<ThreadInfo>(), users = List<UserInfo>();
@@ -76,6 +82,9 @@ class ThreadModel extends ChangeNotifier {
           threads.add(data.thread);
           users.add(data.user);
         });
+        if (rsp.data.threads.length < HyperParam.pageSize) {
+          _fetchComplete = true;
+        }
         _threadList.addAll(threads);
         _userList.addAll(users);
         _onFetchedSuccess();

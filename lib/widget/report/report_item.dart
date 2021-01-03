@@ -1,25 +1,19 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/repo.dart';
-import 'package:UniqueBBSFlutter/widget/common/filled_background_text.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/widget/common/filled_background_text.dart';
 import 'package:flutter/material.dart';
 
 var _tagWeekly = "WEEKLY";
 var _tagDaily = "DAILY";
 
 class ReportItem extends Container {
-  String year ;
+  String year;
   String mouth;
   String day;
   String reportContent;
   bool isWeekly;
 
-  ReportItem({
-    this.year,
-    this.mouth,
-    this.day,
-    this.reportContent,
-    this.isWeekly
-  });
+  ReportItem(
+      {this.year, this.mouth, this.day, this.reportContent, this.isWeekly});
 
   @override
   Widget get child {
@@ -84,4 +78,3 @@ class ReportItem extends Container {
     );
   }
 }
-

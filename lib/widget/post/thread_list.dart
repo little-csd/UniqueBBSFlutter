@@ -1,6 +1,6 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/model/thread_model.dart';
-import 'package:UniqueBBSFlutter/widget/post/thread_item.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/data/model/thread_model.dart';
+import 'package:UniqueBBS/widget/post/thread_item.dart';
 import 'package:flutter/material.dart';
 
 // card

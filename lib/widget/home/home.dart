@@ -1,8 +1,8 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/config/route.dart';
-import 'package:UniqueBBSFlutter/data/dio.dart';
-import 'package:UniqueBBSFlutter/widget/home/home_body.dart';
-import 'package:UniqueBBSFlutter/widget/home/home_me.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/config/route.dart';
+import 'package:UniqueBBS/data/dio.dart';
+import 'package:UniqueBBS/widget/home/home_body.dart';
+import 'package:UniqueBBS/widget/home/home_me.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

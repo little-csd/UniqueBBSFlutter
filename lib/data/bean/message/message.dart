@@ -1,5 +1,5 @@
-import 'package:UniqueBBSFlutter/data/bean/message/message_item.dart';
-import 'package:UniqueBBSFlutter/data/bean/user/user_info.dart';
+import 'package:UniqueBBS/data/bean/message/message_item.dart';
+import 'package:UniqueBBS/data/bean/user/user_info.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'message.g.dart';

@@ -1,4 +1,4 @@
-import 'package:UniqueBBSFlutter/data/bean/user/user_info.dart';
+import 'package:UniqueBBS/data/bean/user/user_info.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_search_data.g.dart';

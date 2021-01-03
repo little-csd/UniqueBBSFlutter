@@ -1,10 +1,7 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/config/route.dart';
-import 'package:UniqueBBSFlutter/data/bean/report/report.dart';
-import 'package:UniqueBBSFlutter/data/dio.dart';
-import 'package:UniqueBBSFlutter/data/model/report_model.dart';
-import 'package:UniqueBBSFlutter/data/repo.dart';
-import 'package:UniqueBBSFlutter/widget/report/report_item.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/config/route.dart';
+import 'package:UniqueBBS/data/model/report_model.dart';
+import 'package:UniqueBBS/widget/report/report_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';

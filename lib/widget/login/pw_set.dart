@@ -1,6 +1,6 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/config/route.dart';
-import 'package:UniqueBBSFlutter/widget/common/filled_text_field.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/config/route.dart';
+import 'package:UniqueBBS/widget/common/filled_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -20,15 +20,25 @@ class _PasswordSetWidget extends State<PasswordSetWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(SvgIcon.doubt),
-            Container(height: 20,),
+            Container(
+              height: 20,
+            ),
             _buildLogoText(StringConstant.completePasswordLabel),
-            Container(height: 42,),
+            Container(
+              height: 42,
+            ),
             _buildPwSetTextField(StringConstant.password),
-            Container(height: 20,),
+            Container(
+              height: 20,
+            ),
             _buildPwSetTextField(StringConstant.confirmPassword),
-            Container(height: 15,),
+            Container(
+              height: 15,
+            ),
             _buildLogoText(StringConstant.passwordTips),
-            Container(height: 67,),
+            Container(
+              height: 67,
+            ),
             _buildFinishButton(context),
           ],
         ),
@@ -38,35 +48,34 @@ class _PasswordSetWidget extends State<PasswordSetWidget> {
 }
 
 _buildFinishButton(BuildContext context) => SizedBox(
-  width: double.infinity,
-  child: FlatButton(
-    height: 44,
-    shape:
-    RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-    color: ColorConstant.primaryColor,
-    child: Text(
-      StringConstant.complete,
-      style: TextStyle(color: Colors.white, letterSpacing: 10),
-    ),
-    onPressed: () {
-      Navigator.pushNamed(context, BBSRoute.infoSet);
-    },
-  ),
-);
+      width: double.infinity,
+      child: FlatButton(
+        height: 44,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        color: ColorConstant.primaryColor,
+        child: Text(
+          StringConstant.complete,
+          style: TextStyle(color: Colors.white, letterSpacing: 10),
+        ),
+        onPressed: () {
+          Navigator.pushNamed(context, BBSRoute.infoSet);
+        },
+      ),
+    );
 
-_buildPwSetTextField(String hint) => buildFilledTextField(
-    hint,
-    Radius.circular(50),
-    ColorConstant.inputPurple,
-    ColorConstant.inputHintPurple
-);
-
+_buildPwSetTextField(String hint) => FilledTextField(
+      hint: hint,
+      radius: Radius.circular(50),
+      filledColor: ColorConstant.inputPurple,
+      hintColor: ColorConstant.inputHintPurple,
+    );
 
 _buildLogoText(String text) => Text(
-  text,
-  style: TextStyle(
-    color: Color(0xff727272),
-    fontSize: 14,
-    letterSpacing: 4,
-  ),
-);
+      text,
+      style: TextStyle(
+        color: Color(0xff727272),
+        fontSize: 14,
+        letterSpacing: 4,
+      ),
+    );

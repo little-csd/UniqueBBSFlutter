@@ -1,15 +1,15 @@
 import 'dart:math';
 
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/post_data.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/thread.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
-import 'package:UniqueBBSFlutter/data/bean/user/user_info.dart';
-import 'package:UniqueBBSFlutter/data/model/post_model.dart';
-import 'package:UniqueBBSFlutter/tool/helper.dart';
-import 'package:UniqueBBSFlutter/tool/logger.dart';
-import 'package:UniqueBBSFlutter/widget/common/common_avatar.dart';
-import 'package:UniqueBBSFlutter/widget/common/custom_fab.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/data/bean/forum/post_data.dart';
+import 'package:UniqueBBS/data/bean/forum/thread.dart';
+import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
+import 'package:UniqueBBS/data/bean/user/user_info.dart';
+import 'package:UniqueBBS/data/model/post_model.dart';
+import 'package:UniqueBBS/tool/helper.dart';
+import 'package:UniqueBBS/tool/logger.dart';
+import 'package:UniqueBBS/widget/common/common_avatar.dart';
+import 'package:UniqueBBS/widget/common/custom_fab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -248,7 +248,7 @@ Widget _buildBody(ScrollController controller, PostModel model) {
             return Container(height: _bottomHeight + _commentMargin);
           }
           // 处理空评论的情况
-          if (model.postCount() <= 1) {
+          if (model.postCount() < 1) {
             return _buildEmptyComment();
           }
           // 处理实际的评论

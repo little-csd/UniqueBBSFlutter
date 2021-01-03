@@ -83,6 +83,8 @@ class StringConstant {
   static const login = "登陆";
   static const iKnow = "我知道了";
   static const useWeComLogin = "使用企业微信扫码登录";
+  static const usernameEmpty = "手机号不能为空";
+  static const passwordEmpty = "密码不能为空";
   // 完善信息页
   static const userInfoLabel = "请完善你的个人信息\n让我们更了解你吧";
   static const qq = "QQ";

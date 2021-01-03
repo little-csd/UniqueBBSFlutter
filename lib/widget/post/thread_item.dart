@@ -1,10 +1,10 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/config/route.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/thread.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
-import 'package:UniqueBBSFlutter/data/bean/user/user_info.dart';
-import 'package:UniqueBBSFlutter/tool/helper.dart';
-import 'package:UniqueBBSFlutter/widget/common/common_avatar.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/config/route.dart';
+import 'package:UniqueBBS/data/bean/forum/thread.dart';
+import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
+import 'package:UniqueBBS/data/bean/user/user_info.dart';
+import 'package:UniqueBBS/tool/helper.dart';
+import 'package:UniqueBBS/widget/common/common_avatar.dart';
 import 'package:flutter/material.dart';
 
 const _topText = "TOP";

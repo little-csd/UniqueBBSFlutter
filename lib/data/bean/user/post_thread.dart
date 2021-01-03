@@ -1,5 +1,5 @@
-import 'package:UniqueBBSFlutter/data/bean/forum/post_info.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/thread_info.dart';
+import 'package:UniqueBBS/data/bean/forum/post_info.dart';
+import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_thread.g.dart';

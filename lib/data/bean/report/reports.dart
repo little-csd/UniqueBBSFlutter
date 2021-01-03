@@ -1,4 +1,4 @@
-import 'package:UniqueBBSFlutter/data/bean/report/report.dart';
+import 'package:UniqueBBS/data/bean/report/report.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'reports.g.dart';

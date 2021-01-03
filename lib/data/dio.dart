@@ -3,18 +3,18 @@ import 'dart:collection';
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/basic_forum.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/post_list.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/thread_list.dart';
-import 'package:UniqueBBSFlutter/data/bean/group/group.dart';
-import 'package:UniqueBBSFlutter/data/bean/group/group_users.dart';
-import 'package:UniqueBBSFlutter/data/bean/user/mentee.dart';
-import 'package:UniqueBBSFlutter/data/bean/user/mentor.dart';
-import 'package:UniqueBBSFlutter/data/converter.dart';
-import 'package:UniqueBBSFlutter/tool/helper.dart';
-import 'package:UniqueBBSFlutter/tool/logger.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/data/bean/forum/basic_forum.dart';
+import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
+import 'package:UniqueBBS/data/bean/forum/post_list.dart';
+import 'package:UniqueBBS/data/bean/forum/thread_list.dart';
+import 'package:UniqueBBS/data/bean/group/group.dart';
+import 'package:UniqueBBS/data/bean/group/group_users.dart';
+import 'package:UniqueBBS/data/bean/user/mentee.dart';
+import 'package:UniqueBBS/data/bean/user/mentor.dart';
+import 'package:UniqueBBS/data/converter.dart';
+import 'package:UniqueBBS/tool/helper.dart';
+import 'package:UniqueBBS/tool/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -153,6 +153,12 @@ class Server {
         .setString(_TokenKeyInSp, token)
         .then((value) => Logger.i(_TAG, 'save uid $token $value'));
     return NetRsp(true, data: NoError);
+  }
+
+  void logout() async {
+    final sp = await SharedPreferences.getInstance();
+    sp.remove(_UidKeyInSp);
+    sp.remove(_TokenKeyInSp);
   }
 
   /// 下面部分为用户相关的 api

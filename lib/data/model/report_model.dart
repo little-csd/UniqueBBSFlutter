@@ -1,7 +1,7 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/bean/report/report.dart';
-import 'package:UniqueBBSFlutter/data/dio.dart';
-import 'package:UniqueBBSFlutter/data/repo.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/data/bean/report/report.dart';
+import 'package:UniqueBBS/data/dio.dart';
+import 'package:UniqueBBS/data/repo.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

@@ -1,7 +1,7 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBSFlutter/data/model/thread_model.dart';
-import 'package:UniqueBBSFlutter/widget/post/thread_list.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
+import 'package:UniqueBBS/data/model/thread_model.dart';
+import 'package:UniqueBBS/widget/post/thread_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

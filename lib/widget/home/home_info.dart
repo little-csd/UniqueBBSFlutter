@@ -1,9 +1,9 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/config/route.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBSFlutter/data/model/forum_model.dart';
-import 'package:UniqueBBSFlutter/tool/helper.dart';
-import 'package:UniqueBBSFlutter/widget/common/common_avatar.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/config/route.dart';
+import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
+import 'package:UniqueBBS/data/model/forum_model.dart';
+import 'package:UniqueBBS/tool/helper.dart';
+import 'package:UniqueBBS/widget/common/common_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';

@@ -1,14 +1,19 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBS/config/constant.dart';
 import 'package:flutter/material.dart';
 
-class _FilledTextField extends TextField {
-  const _FilledTextField(
-      {this.radius, this.hint, this.filledColor, this.hintColor});
+class FilledTextField extends TextField {
+  const FilledTextField(
+      {this.radius,
+      this.hint,
+      this.filledColor,
+      this.hintColor,
+      this.onChanged});
 
   final Radius radius;
   final String hint;
   final Color filledColor;
   final Color hintColor;
+  final ValueChanged<String> onChanged;
 
   @override
   TextStyle get style => TextStyle(
@@ -33,14 +38,4 @@ class _FilledTextField extends TextField {
         isDense: true,
         contentPadding: EdgeInsets.all(10),
       );
-}
-
-_FilledTextField buildFilledTextField(
-    String hint, Radius radius, Color filledColor, Color hintColor) {
-  return _FilledTextField(
-    hint: hint,
-    radius: radius,
-    filledColor: filledColor,
-    hintColor: hintColor,
-  );
 }

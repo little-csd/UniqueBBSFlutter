@@ -1,5 +1,5 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/model/avatar_model.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/data/model/avatar_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

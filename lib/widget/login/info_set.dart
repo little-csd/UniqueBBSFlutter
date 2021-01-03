@@ -1,5 +1,5 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/widget/common/filled_text_field.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/widget/common/filled_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -19,15 +19,25 @@ class InfoSetWidgetState extends State<InfoSetWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(SvgIcon.setInfo),
-            Container(height: 11,),
+            Container(
+              height: 11,
+            ),
             _buildLogoText(StringConstant.userInfoLabel),
-            Container(height: 41,),
+            Container(
+              height: 41,
+            ),
             _buildInfoSetTextField(StringConstant.password),
-            Container(height: 20,),
+            Container(
+              height: 20,
+            ),
             _buildInfoSetTextField(StringConstant.confirmPassword),
-            Container(height: 48,),
+            Container(
+              height: 48,
+            ),
             _buildNextStepButton(context),
-            Container(height: 14,),
+            Container(
+              height: 14,
+            ),
             _buildJumpOverButton(context),
           ],
         ),
@@ -37,52 +47,48 @@ class InfoSetWidgetState extends State<InfoSetWidget> {
 }
 
 _buildNextStepButton(BuildContext context) => SizedBox(
-  width: double.infinity,
-  child: FlatButton(
-    height: 44,
-    shape:
-    RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-    color: ColorConstant.primaryColor,
-    child: Text(
-      StringConstant.nextStep,
-      style: TextStyle(color: Colors.white, letterSpacing: 10),
-    ),
-    onPressed: () {
-
-    },
-  ),
-);
+      width: double.infinity,
+      child: FlatButton(
+        height: 44,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        color: ColorConstant.primaryColor,
+        child: Text(
+          StringConstant.nextStep,
+          style: TextStyle(color: Colors.white, letterSpacing: 10),
+        ),
+        onPressed: () {},
+      ),
+    );
 
 _buildJumpOverButton(BuildContext context) => SizedBox(
-  width: double.infinity,
-  child: FlatButton(
-    height: 44,
-    shape:
-    RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-    color: Colors.white,
-    child: Text(
-      StringConstant.jumpOver,
-      style: TextStyle(color: ColorConstant.textLightPurPle, letterSpacing: 10),
-    ),
-    onPressed: () {
+      width: double.infinity,
+      child: FlatButton(
+        height: 44,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        color: Colors.white,
+        child: Text(
+          StringConstant.jumpOver,
+          style: TextStyle(
+              color: ColorConstant.textLightPurPle, letterSpacing: 10),
+        ),
+        onPressed: () {},
+      ),
+    );
 
-    },
-  ),
-);
-
-_buildInfoSetTextField(String hint) => buildFilledTextField(
-    hint,
-    Radius.circular(50),
-    ColorConstant.inputPurple,
-    ColorConstant.inputHintPurple
-);
-
+_buildInfoSetTextField(String hint) => FilledTextField(
+      hint: hint,
+      radius: Radius.circular(50),
+      filledColor: ColorConstant.inputPurple,
+      hintColor: ColorConstant.inputHintPurple,
+    );
 
 _buildLogoText(String text) => Text(
-  text,
-  style: TextStyle(
-    color: Color(0xff727272),
-    fontSize: 14,
-    letterSpacing: 4,
-  ),
-);
+      text,
+      style: TextStyle(
+        color: Color(0xff727272),
+        fontSize: 14,
+        letterSpacing: 4,
+      ),
+    );

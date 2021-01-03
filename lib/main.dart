@@ -1,5 +1,5 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/widget/app_splash.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/widget/app_splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

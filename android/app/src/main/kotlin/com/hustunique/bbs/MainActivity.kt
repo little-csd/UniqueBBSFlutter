@@ -1,4 +1,4 @@
-package com.example.UniqueBBSFlutter
+package com.hustunique.bbs
 
 import io.flutter.embedding.android.FlutterActivity
 

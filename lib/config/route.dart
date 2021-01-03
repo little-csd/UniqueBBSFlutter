@@ -1,14 +1,14 @@
-import 'package:UniqueBBSFlutter/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBSFlutter/data/bean/forum/thread.dart';
-import 'package:UniqueBBSFlutter/widget/home/home.dart';
-import 'package:UniqueBBSFlutter/widget/home/home_select.dart';
-import 'package:UniqueBBSFlutter/widget/login/info_set.dart';
-import 'package:UniqueBBSFlutter/widget/login/login.dart';
-import 'package:UniqueBBSFlutter/widget/login/pw_set.dart';
-import 'package:UniqueBBSFlutter/widget/post/detail/post_detail.dart';
-import 'package:UniqueBBSFlutter/widget/post/thread_page.dart';
-import 'package:UniqueBBSFlutter/widget/report/report_page.dart';
-import 'package:UniqueBBSFlutter/widget/report/report_post_page.dart';
+import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
+import 'package:UniqueBBS/data/bean/forum/thread.dart';
+import 'package:UniqueBBS/widget/home/home.dart';
+import 'package:UniqueBBS/widget/home/home_select.dart';
+import 'package:UniqueBBS/widget/login/info_set.dart';
+import 'package:UniqueBBS/widget/login/login.dart';
+import 'package:UniqueBBS/widget/login/pw_set.dart';
+import 'package:UniqueBBS/widget/post/detail/post_detail.dart';
+import 'package:UniqueBBS/widget/post/thread_page.dart';
+import 'package:UniqueBBS/widget/report/report_page.dart';
+import 'package:UniqueBBS/widget/report/report_post_page.dart';
 import 'package:flutter/material.dart';
 
 class BBSRoute {

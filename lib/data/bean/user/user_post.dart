@@ -1,4 +1,4 @@
-import 'package:UniqueBBSFlutter/data/bean/user/post_thread.dart';
+import 'package:UniqueBBS/data/bean/user/post_thread.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_post.g.dart';

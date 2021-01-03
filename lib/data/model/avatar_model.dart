@@ -1,8 +1,8 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/tool/logger.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/tool/logger.dart';
 import 'package:flutter/material.dart';
 
 import '../dio.dart';

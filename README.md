@@ -1,4 +1,4 @@
-# UniqueBBSFlutter
+# UniqueBBS
 
 A new Flutter project.
 

@@ -1,7 +1,7 @@
 import 'dart:collection';
 
-import 'package:UniqueBBSFlutter/data/bean/user/user.dart';
-import 'package:UniqueBBSFlutter/tool/logger.dart';
+import 'package:UniqueBBS/data/bean/user/user.dart';
+import 'package:UniqueBBS/tool/logger.dart';
 import 'package:flutter/material.dart';
 
 import '../dio.dart';

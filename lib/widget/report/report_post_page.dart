@@ -1,7 +1,6 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/data/dio.dart';
-import 'package:UniqueBBSFlutter/widget/common/network_error_bottom_sheet.dart';
-import 'package:flutter/foundation.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/data/dio.dart';
+import 'package:UniqueBBS/widget/common/network_error_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -27,7 +26,7 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
         Fluttertoast.showToast(msg: StringConstant.postReportSuccess);
         Navigator.pop(context);
       } else {
-          buildErrorBottomSheet(context, value.msg);
+        buildErrorBottomSheet(context, value.msg);
       }
     });
   }
@@ -108,8 +107,7 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
               child: FlatButton(
                 onPressed: () {
                   _isWeekly = !_isWeekly;
-                  setState(() {
-                  });
+                  setState(() {});
                 },
                 splashColor: Colors.white,
                 highlightColor: Colors.white,

@@ -1,6 +1,6 @@
-import 'package:UniqueBBSFlutter/data/bean/forum/post_info.dart';
-import 'package:UniqueBBSFlutter/data/bean/group/group_info.dart';
-import 'package:UniqueBBSFlutter/data/bean/user/user_info.dart';
+import 'package:UniqueBBS/data/bean/forum/post_info.dart';
+import 'package:UniqueBBS/data/bean/group/group_info.dart';
+import 'package:UniqueBBS/data/bean/user/user_info.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_data.g.dart';

@@ -1,5 +1,6 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
+import 'package:UniqueBBS/config/constant.dart';
 import 'package:flutter/material.dart';
+
 import 'normal_bottom_sheet.dart';
 
 buildErrorBottomSheet(BuildContext context, String content) {
@@ -8,8 +9,7 @@ buildErrorBottomSheet(BuildContext context, String content) {
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return _buildErrorBottomSheetBody(context, content);
-      }
-  );
+      });
 }
 
 buildNetworkErrorBottomSheet(BuildContext context) {
@@ -18,8 +18,7 @@ buildNetworkErrorBottomSheet(BuildContext context) {
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return _buildErrorBottomSheetBody(context, StringConstant.networkError);
-      }
-  );
+      });
 }
 
 _buildErrorBottomSheetBody(BuildContext context, String content) {
@@ -38,21 +37,21 @@ _buildErrorBottomSheetBody(BuildContext context, String content) {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(content),
-            Container(height: 67,),
+            Container(
+              height: 67,
+            ),
             buildIKnowButton(context),
           ],
         ),
-      )
-  );
+      ));
 }
 
-buildIKnowButton(BuildContext context) =>
-    SizedBox(
+buildIKnowButton(BuildContext context) => SizedBox(
       width: double.infinity,
       child: FlatButton(
         height: 44,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
         color: ColorConstant.primaryColor,
         child: Text(
           StringConstant.iKnow,

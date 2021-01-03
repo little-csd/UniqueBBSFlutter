@@ -1,9 +1,10 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/config/route.dart';
-import 'package:UniqueBBSFlutter/data/bean/user/user.dart';
-import 'package:UniqueBBSFlutter/data/model/user_model.dart';
-import 'package:UniqueBBSFlutter/data/repo.dart';
-import 'package:UniqueBBSFlutter/widget/common/common_avatar.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/config/route.dart';
+import 'package:UniqueBBS/data/bean/user/user.dart';
+import 'package:UniqueBBS/data/dio.dart';
+import 'package:UniqueBBS/data/model/user_model.dart';
+import 'package:UniqueBBS/data/repo.dart';
+import 'package:UniqueBBS/widget/common/common_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -247,7 +248,6 @@ Widget _buildShowMyPost(BuildContext context, User user) {
   return FlatButton(
     minWidth: double.infinity,
     onPressed: () {
-      print('查看帖子');
       if (user != null) {
         Navigator.of(context).pushNamed(BBSRoute.postList, arguments: null);
       }
@@ -271,7 +271,10 @@ Widget _buildChangPwd(BuildContext context) {
     width: double.infinity,
     child: OutlineButton(
       color: ColorConstant.backgroundBlack,
-      onPressed: () => Navigator.of(context).pushNamed(BBSRoute.pwSet),
+      onPressed: () {
+        Fluttertoast.showToast(msg: StringConstant.notImpl);
+        // Navigator.of(context).pushNamed(BBSRoute.pwSet);
+      },
       shape: _buttonRoundedBorder,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: _buttonTextPadding),
@@ -291,7 +294,10 @@ Widget _buildChangPwd(BuildContext context) {
 Widget _buildLogout(BuildContext context) {
   return MaterialButton(
     padding: EdgeInsets.symmetric(vertical: _buttonTextPadding),
-    onPressed: () => Navigator.of(context).popAndPushNamed(BBSRoute.login),
+    onPressed: () {
+      Navigator.of(context).popAndPushNamed(BBSRoute.login);
+      Server.instance.logout();
+    },
     minWidth: double.infinity,
     shape: _buttonRoundedBorder,
     child: Text(

@@ -1,9 +1,9 @@
-import 'package:UniqueBBSFlutter/config/constant.dart';
-import 'package:UniqueBBSFlutter/config/route.dart';
-import 'package:UniqueBBSFlutter/data/dio.dart';
-import 'package:UniqueBBSFlutter/widget/common/filled_text_field.dart';
-import 'package:UniqueBBSFlutter/widget/common/network_error_bottom_sheet.dart';
-import 'package:UniqueBBSFlutter/widget/common/normal_bottom_sheet.dart';
+import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/config/route.dart';
+import 'package:UniqueBBS/data/dio.dart';
+import 'package:UniqueBBS/widget/common/filled_text_field.dart';
+import 'package:UniqueBBS/widget/common/network_error_bottom_sheet.dart';
+import 'package:UniqueBBS/widget/common/normal_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -14,6 +14,9 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginWidget> {
+  String _username = '';
+  String _password = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,15 +31,17 @@ class _LoginState extends State<LoginWidget> {
             Container(
               height: 67,
             ),
-            _buildLoginTextField(StringConstant.phoneNumber),
+            _buildLoginTextField(
+                StringConstant.phoneNumber, (str) => _username = str),
             Container(
               height: 20,
             ),
-            _buildLoginTextField(StringConstant.password),
+            _buildLoginTextField(
+                StringConstant.password, (str) => _password = str),
             Container(
               height: 63,
             ),
-            _buildLoginButton(context),
+            _buildLoginButton(context, _onLogin),
             Container(
               height: 15,
             ),
@@ -45,6 +50,26 @@ class _LoginState extends State<LoginWidget> {
         ),
       ),
     );
+  }
+
+  void _onLogin() async {
+    if (_username.isEmpty) {
+      Fluttertoast.showToast(msg: StringConstant.usernameEmpty);
+      return;
+    } else if (_password.isEmpty) {
+      Fluttertoast.showToast(msg: StringConstant.passwordEmpty);
+      return;
+    }
+
+    /// 'ssski', 'Conceited67'
+    Server.instance.login(_username, _password).then((rsp) {
+      if (!rsp.success) {
+        Fluttertoast.showToast(msg: rsp.msg);
+      } else {
+        Fluttertoast.showToast(msg: StringConstant.loginSuccess);
+        Navigator.of(context).popAndPushNamed(BBSRoute.home);
+      }
+    });
   }
 }
 
@@ -82,7 +107,7 @@ _buildNoNumberBottomSheet(BuildContext context) {
       });
 }
 
-_buildLoginButton(BuildContext context) => SizedBox(
+_buildLoginButton(BuildContext context, VoidCallback callback) => SizedBox(
       width: double.infinity,
       child: FlatButton(
         height: 44,
@@ -93,17 +118,7 @@ _buildLoginButton(BuildContext context) => SizedBox(
           StringConstant.login,
           style: TextStyle(color: Colors.white, letterSpacing: 22),
         ),
-        onPressed: () {
-          Server.instance.login('ssski', 'Conceited67').then((rsp) {
-            if (!rsp.success) {
-              Fluttertoast.showToast(msg: rsp.msg);
-            } else {
-              Fluttertoast.showToast(msg: StringConstant.loginSuccess);
-              Navigator.of(context).popAndPushNamed(BBSRoute.home);
-            }
-          });
-          // buildNetworkErrorBottomSheet(context);
-        },
+        onPressed: callback,
       ),
     );
 
@@ -121,11 +136,14 @@ _buildWeComLoginButton(BuildContext context) => SizedBox(
       ),
     );
 
-_buildLoginTextField(String hint) => buildFilledTextField(
-    hint,
-    Radius.circular(50),
-    ColorConstant.inputPurple,
-    ColorConstant.inputHintPurple);
+_buildLoginTextField(String hint, ValueChanged<String> callback) =>
+    FilledTextField(
+      hint: hint,
+      radius: Radius.circular(50),
+      filledColor: ColorConstant.inputPurple,
+      hintColor: ColorConstant.inputHintPurple,
+      onChanged: callback,
+    );
 
 _buildLogoText(String text) => Text(
       text,
