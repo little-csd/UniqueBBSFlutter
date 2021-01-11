@@ -35,28 +35,42 @@ class BBSRoute {
 
   // TODO: 不需要传参的路由在这里进行声明
   static final routes = {
-    home: (context) => HomeWidget(),
-    selectPlate: (context) => HomeSelectWidget(),
-    login: (context) => LoginWidget(),
-    pwSet: (context) => PasswordSetWidget(),
-    infoSet: (context) => InfoSetWidget(),
-    reportPage: (context) => ReportPageWidget(),
-    postReport: (context) => ReportPostPageWidget(),
+    home: HomeWidget(),
+    selectPlate: HomeSelectWidget(),
+    login: LoginWidget(),
+    pwSet: PasswordSetWidget(),
+    infoSet: InfoSetWidget(),
+    reportPage: ReportPageWidget(),
+    postReport: ReportPostPageWidget(),
   };
+
+  // 用来给给所有 route 添加特性
+  // 目前只有一个 safeArea
+  static WidgetBuilder generateBuilder(Widget child) {
+    return (context) => Container(
+      color: Colors.white,
+      child: SafeArea(
+        top: false,
+        child: child,
+      ),
+    );
+  }
 
   static Route buildPage(String path, dynamic arg) {
     if (routes.containsKey(path)) {
-      return MaterialPageRoute(builder: routes[path]);
+      return MaterialPageRoute(
+          builder: generateBuilder(routes[path]));
     }
     // used for build page with arguments
     switch (path) {
       case postDetail:
         return MaterialPageRoute(
-            builder: (context) => PostDetailWidget(arg as Thread));
+            builder: generateBuilder(PostDetailWidget(arg as Thread)));
       case postList:
         return MaterialPageRoute(
-            builder: (context) => ThreadPageWidget(arg as FullForum));
+            builder: generateBuilder(ThreadPageWidget(arg as FullForum)));
     }
     throw Exception("Route $path not found!");
   }
+
 }
