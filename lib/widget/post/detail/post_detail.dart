@@ -79,7 +79,7 @@ final _bottomCommentTextStyle = TextStyle(
 double _getOpacityByProgress(double progress) =>
     (1 - progress) * (1 - progress);
 
-Widget _buildHead(double height, Thread thread) {
+Widget _buildHead(BuildContext context, double height, Thread thread) {
   ThreadInfo threadInfo = thread.thread;
   UserInfo userInfo = thread.user;
   String title = threadInfo?.subject == null ? "" : threadInfo.subject;
@@ -89,7 +89,10 @@ Widget _buildHead(double height, Thread thread) {
   double progress =
       (height - _minHeadHeight) / (_maxHeadHeight - _minHeadHeight);
   final bar = AppBar(
-    leading: Icon(Icons.arrow_back_ios),
+    leading: GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Icon(Icons.arrow_back_ios),
+    ),
     bottom: PreferredSize(
       child: Divider(thickness: _dividerThick),
       preferredSize: null,
@@ -375,7 +378,7 @@ class _PostDetailState extends State<PostDetailWidget> {
     return ChangeNotifierProvider(
       create: (_) => model,
       child: Scaffold(
-        appBar: _buildHead(_headHeight, widget.thread),
+        appBar: _buildHead(context, _headHeight, widget.thread),
         // 这里使用 stack 是为了预防后面界面要改底部透明啥的
         body: Stack(
           alignment: Alignment.bottomRight,
