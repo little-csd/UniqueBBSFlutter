@@ -14,6 +14,7 @@ class ColorConstant {
   static const textLightBlack = Color(0xFF555555);
   static const textGreyForComment = Color(0xFFD3CFE9);
   static const textGreyForNoComment = Color(0xFFE1DDF7);
+  static const textPurpleForReply = Color(0xFF6B6BA1);
 
   // 前景色/背景色颜色常量
   static const primaryColor = Color(0xFF7966FF);
@@ -73,6 +74,8 @@ class StringConstant {
   static const delete = '删除';
   static const comments = '最新评论';
   static const noComment = '快来评论吧';
+  static const sendPostSuccess = '发帖成功';
+  static const sendPostFail = '发帖失败: ';
   // 网络异常页
   static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
   // 登陆页

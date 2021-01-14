@@ -48,18 +48,17 @@ class BBSRoute {
   // 目前只有一个 safeArea
   static WidgetBuilder generateBuilder(Widget child) {
     return (context) => Container(
-      color: Colors.white,
-      child: SafeArea(
-        top: false,
-        child: child,
-      ),
-    );
+          color: Colors.white,
+          child: SafeArea(
+            top: false,
+            child: child,
+          ),
+        );
   }
 
   static Route buildPage(String path, dynamic arg) {
     if (routes.containsKey(path)) {
-      return MaterialPageRoute(
-          builder: generateBuilder(routes[path]));
+      return MaterialPageRoute(builder: generateBuilder(routes[path]));
     }
     // used for build page with arguments
     switch (path) {
@@ -72,5 +71,4 @@ class BBSRoute {
     }
     throw Exception("Route $path not found!");
   }
-
 }

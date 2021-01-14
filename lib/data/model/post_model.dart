@@ -4,6 +4,7 @@ import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
 import 'package:UniqueBBS/data/bean/other/attach_data.dart';
 import 'package:UniqueBBS/tool/logger.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../dio.dart';
 
@@ -57,6 +58,18 @@ class PostModel extends ChangeNotifier {
       _fetch();
     }
     return _postData[index];
+  }
+
+  void sendPost(String msg, String quote) {
+    if (msg == null || msg.isEmpty) {
+      return;
+    }
+    Server.instance.threadReply(_threadInfo.tid, msg, quote).then((rsp) {
+      Fluttertoast.showToast(
+          msg: rsp.success
+              ? StringConstant.sendPostSuccess
+              : '${StringConstant.sendPostFail}${rsp.msg}');
+    });
   }
 
   void _fetch() async {

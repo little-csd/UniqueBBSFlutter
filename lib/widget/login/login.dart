@@ -20,6 +20,7 @@ class _LoginState extends State<LoginWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       body: Container(
         padding: EdgeInsets.only(left: 20, right: 20),
         child: Column(

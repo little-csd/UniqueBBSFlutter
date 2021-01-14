@@ -9,6 +9,7 @@ import 'package:UniqueBBS/data/model/post_model.dart';
 import 'package:UniqueBBS/tool/helper.dart';
 import 'package:UniqueBBS/tool/logger.dart';
 import 'package:UniqueBBS/widget/common/common_avatar.dart';
+import 'package:UniqueBBS/widget/common/common_popup_input_widget.dart';
 import 'package:UniqueBBS/widget/common/custom_fab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -303,7 +304,7 @@ Widget _buildIconWithNumber(String url, int count) {
   );
 }
 
-Widget _buildBottom() {
+Widget _buildBottom(BuildContext context, PostModel model) {
   return Container(
     height: _bottomHeight,
     width: double.infinity,
@@ -312,7 +313,14 @@ Widget _buildBottom() {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
-          onTap: () => Fluttertoast.showToast(msg: StringConstant.notImpl),
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => CommonPopupInputWidget(
+              hint: StringConstant.comment,
+              maxLines: 5,
+              onSubmitted: (msg) => model.sendPost(msg, StringConstant.noQuote),
+            ),
+          ),
           child: Container(
             width: _bottomCommentWidth,
             height: _bottomCommentHeight,
@@ -374,7 +382,7 @@ class _PostDetailState extends State<PostDetailWidget> {
           children: [
             _buildBody(_controller, model),
             _buildFAB(),
-            _buildBottom(),
+            _buildBottom(context, model),
           ],
         ),
       ),
@@ -387,7 +395,8 @@ class _PostDetailState extends State<PostDetailWidget> {
     _controller = ScrollController();
     _controller.addListener(() {
       Logger.v(_TAG, 'offset ${_controller.offset}');
-      // 优化: 超过范围后就不要再触发重新 build 了
+
+      /// 优化: 超过范围后就不要再触发重新 build 了
       if ((_controller.offset > (_maxHeadHeight - _minHeadHeight) &&
               _headHeight == _minHeadHeight) ||
           (_controller.offset < 0 && _headHeight == _maxHeadHeight)) {
