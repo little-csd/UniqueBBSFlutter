@@ -167,6 +167,21 @@ Widget _buildHead(BuildContext context, double height, Thread thread) {
   return PreferredSize(child: bar, preferredSize: Size.fromHeight(height));
 }
 
+void _tryComment(BuildContext context, PostModel model) {
+  if (!model.canPost()) {
+    Fluttertoast.showToast(msg: StringConstant.threadClosed);
+    return;
+  }
+  showDialog(
+    context: context,
+    builder: (context) => CommonPopupInputWidget(
+      hint: StringConstant.comment,
+      maxLines: 5,
+      onSubmitted: (msg) => model.sendPost(msg, StringConstant.noQuote),
+    ),
+  );
+}
+
 Widget _wrapCommentBox(Widget child) {
   return Container(
     decoration: BoxDecoration(
@@ -187,13 +202,13 @@ Widget _wrapCommentBox(Widget child) {
   );
 }
 
-Widget _buildEmptyComment() {
+Widget _buildEmptyComment(BuildContext context, PostModel model) {
   final widget = Row(
     children: [
       BBSAvatar(null, radius: _commentAvatarRadius),
       Expanded(
         child: GestureDetector(
-          onTap: () => Fluttertoast.showToast(msg: StringConstant.notImpl),
+          onTap: () => _tryComment(context, model),
           child: Container(
             height: _commentEmptyHeight,
             alignment: Alignment.centerLeft,
@@ -281,7 +296,7 @@ Widget _buildBody(ScrollController controller, PostModel model) {
           }
           // 处理空评论的情况
           if (model.postCount() < 1) {
-            return _buildEmptyComment();
+            return _buildEmptyComment(context, model);
           }
           // 处理实际的评论
           return _buildComment(model.getPostData(index - 2));
@@ -343,21 +358,7 @@ Widget _buildBottom(BuildContext context, PostModel model) {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
-          onTap: () {
-            if (!model.canPost()) {
-              Fluttertoast.showToast(msg: StringConstant.threadClosed);
-              return;
-            }
-            showDialog(
-              context: context,
-              builder: (context) => CommonPopupInputWidget(
-                hint: StringConstant.comment,
-                maxLines: 5,
-                onSubmitted: (msg) =>
-                    model.sendPost(msg, StringConstant.noQuote),
-              ),
-            );
-          },
+          onTap: () => _tryComment(context, model),
           child: Container(
             width: _bottomCommentWidth,
             height: _bottomCommentHeight,

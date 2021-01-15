@@ -3,6 +3,7 @@ import 'package:UniqueBBS/config/route.dart';
 import 'package:UniqueBBS/data/dio.dart';
 import 'package:UniqueBBS/data/repo.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -28,42 +29,46 @@ class AppSplashWidget extends StatelessWidget {
   }
 
   final uniqueStudioTextStyle = TextStyle(
-    fontSize: 20,
+    fontSize: 18,
     color: ColorConstant.textBlack,
     decoration: TextDecoration.none,
+    fontWeight: FontWeight.normal,
     letterSpacing: 2,
   );
   final bottomTextStyle = TextStyle(
-    fontSize: 20,
+    fontSize: 13,
     color: ColorConstant.textBlack,
     decoration: TextDecoration.none,
-    letterSpacing: 10,
+    fontWeight: FontWeight.normal,
+    letterSpacing: 8,
   );
 
   @override
   Widget build(BuildContext context) {
     _init(context);
     final size = MediaQuery.of(context).size.width;
-    return Container(
-      color: ColorConstant.backgroundLightGrey,
-      alignment: Alignment.bottomCenter,
-      padding: EdgeInsets.only(bottom: _bottomPadding),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Image.asset(
-                PngIcon.splashLogo,
-                width: size,
-                height: size,
-              ),
-              Text(StringConstant.logo2Line, style: uniqueStudioTextStyle),
-            ],
-          ),
-          Text(StringConstant.uniqueStudio, style: bottomTextStyle),
-        ],
+    return Scaffold(
+      body: Container(
+        color: ColorConstant.backgroundForAppSplash,
+        alignment: Alignment.bottomCenter,
+        padding: EdgeInsets.only(bottom: _bottomPadding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Image.asset(
+                  PngIcon.splashLogo,
+                  height: size,
+                  fit: BoxFit.fitHeight,
+                ),
+                Text(StringConstant.logo2Line, style: uniqueStudioTextStyle),
+              ],
+            ),
+            Text(StringConstant.uniqueStudio, style: bottomTextStyle),
+          ],
+        ),
       ),
     );
   }

@@ -34,6 +34,7 @@ class ColorConstant {
   static const invisibleWhite = Color(0x00FFFFFF);
   static const invisible = Colors.transparent;
 
+  static const backgroundForAppSplash = Color(0xFFF7F7F7);
   static const backgroundLightGrey = Color(0xFFFAFAFA);
   static const backgroundGreyForComment = Color(0xFFF0F0F6);
   static const backgroundGrey = Color(0xFFCCCBD8);

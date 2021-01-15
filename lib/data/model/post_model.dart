@@ -61,7 +61,7 @@ class PostModel extends ChangeNotifier {
   }
 
   bool canPost() {
-    return !(_threadInfo.active || _threadInfo.closed);
+    return _threadInfo.active && !_threadInfo.closed;
   }
 
   void sendPost(String msg, String quote) {
