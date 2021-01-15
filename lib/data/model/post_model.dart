@@ -60,8 +60,12 @@ class PostModel extends ChangeNotifier {
     return _postData[index];
   }
 
+  bool canPost() {
+    return !(_threadInfo.active || _threadInfo.closed);
+  }
+
   void sendPost(String msg, String quote) {
-    if (msg == null || msg.isEmpty) {
+    if (msg == null || msg.isEmpty || !canPost()) {
       return;
     }
     Server.instance.threadReply(_threadInfo.tid, msg, quote).then((rsp) {

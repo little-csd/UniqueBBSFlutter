@@ -13,7 +13,7 @@ buildFilledBackgroundText(String text, double width) {
     child: Text(
       text,
       style: TextStyle(
-        fontSize: 10,
+        fontSize: 9,
         color: Colors.white,
         fontWeight: FontWeight.bold,
       ),

@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-const _yearListPadding = 20.0;
+const _yearListPaddingL = 20.0;
+const _yearListPaddingT = 17.0;
+const _yearListPaddingB = 7.0;
 const _yearListIconSize = 17.0;
 const _yearListIconTextGap = 4.0;
 const _itemListVerticalPadding = 20.0;
@@ -52,26 +54,35 @@ class ReportPageState extends State<StatefulWidget> {
     return ChangeNotifierProvider(
       create: (context) => model,
       child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: ColorConstant.backgroundLightGrey,
-            actions: <Widget>[
-              IconButton(
-                  icon: SvgPicture.asset(SvgIcon.postReport),
-                  onPressed: () {
-                    Navigator.pushNamed(context, BBSRoute.postReport);
-                  }),
-            ],
-            title: Text(
-              StringConstant.reportTitle,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          body: _buildYearList()),
+        appBar: _buildAppBar(context),
+        body: _buildYearList(),
+      ),
     );
   }
+
+  _buildAppBar(BuildContext context) => AppBar(
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Icon(Icons.arrow_back_ios),
+        ),
+        backgroundColor: ColorConstant.backgroundLightGrey,
+        actions: <Widget>[
+          IconButton(
+              icon: SvgPicture.asset(SvgIcon.postReport),
+              onPressed: () {
+                Navigator.pushNamed(context, BBSRoute.postReport);
+              }),
+        ],
+        title: Text(
+          StringConstant.reportTitle,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      );
 
   _buildYearList() {
     return Consumer<ReportModel>(builder: (context, model, child) {
@@ -117,7 +128,7 @@ class ReportPageState extends State<StatefulWidget> {
             child: ReportItem(
               day: item.createDate[_dayHighPosition] +
                   item.createDate[_dayLowPosition],
-              mouth: item.createDate[_monthHighPosition] +
+              month: item.createDate[_monthHighPosition] +
                   item.createDate[_monthLowPosition] +
                   _monthText,
               reportContent: item.message,
@@ -127,9 +138,13 @@ class ReportPageState extends State<StatefulWidget> {
     );
   }
 
-  Padding _buildItemListTitle(int year) {
+  _buildItemListTitle(int year) {
     return Padding(
-      padding: EdgeInsets.only(left: _yearListPadding),
+      padding: EdgeInsets.only(
+        left: _yearListPaddingL,
+        top: _yearListPaddingT,
+        bottom: _yearListPaddingB,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -147,7 +162,11 @@ class ReportPageState extends State<StatefulWidget> {
           ),
           Text(
             year.toString(),
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: ColorConstant.textBlack,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
           ),
         ],
       ),

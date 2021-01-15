@@ -17,19 +17,38 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-const _mainHorizontalPadding = 10.0;
+const _mainHorizontalPadding = 17.0;
 // 头部相关
 const _maxHeadHeight = 120.0;
 const _minHeadHeight = 72.0;
 const _headIconTextPadding = 10.0;
 const _headAvatarRadius = 26.0;
 const _titleFontSize = 20.0;
-final _headDataPadding = EdgeInsets.only(bottom: 20, left: 50);
+const _titleTextStyle = TextStyle(
+  fontSize: _titleFontSize,
+  letterSpacing: 1,
+  color: ColorConstant.textBlack,
+  fontWeight: FontWeight.bold,
+);
+const _titleDayTextStyle = TextStyle(
+  fontSize: 12,
+  letterSpacing: 0.5,
+  color: ColorConstant.textLightGrey,
+  fontWeight: FontWeight.bold,
+);
+const _titleNameTextStyle = TextStyle(
+  fontSize: 12,
+  letterSpacing: 0.5,
+  color: ColorConstant.primaryColor,
+  fontWeight: FontWeight.bold,
+);
+const _headDataPadding = EdgeInsets.only(bottom: 20, left: 50);
 const _dividerThick = 1.0;
 // 内容
-final _mainTextStyle = TextStyle(
-  fontSize: 15,
+const _mainTextStyle = TextStyle(
+  fontSize: 14,
   color: ColorConstant.textLightBlack,
+  letterSpacing: 1,
 );
 // 评论部分
 const _textOffset = 40.0;
@@ -37,7 +56,7 @@ const _commentBoxRadius = 20.0;
 const _commentMargin = 10.0;
 const _commentInnerPaddingV = 15.0;
 const _commentInnerPaddingH = 10.0;
-const _commentAvatarRadius = 18.0;
+const _commentAvatarRadius = 17.0;
 const _commentTextOffset = 10.0;
 const _commentEmptyRadius = 20.0;
 const _commentEmptyMargin = 10.0;
@@ -59,6 +78,12 @@ final _noCommentTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
   color: ColorConstant.textGreyForNoComment,
 );
+final _commentHeadTextStyle = TextStyle(
+  fontSize: 12,
+  letterSpacing: 1,
+  color: ColorConstant.textGrey,
+  fontWeight: FontWeight.bold,
+);
 // 编辑按钮
 const _fabPadding = 20.0;
 // 底部评论栏
@@ -70,10 +95,11 @@ const _bottomCircularRadius = 30.0;
 final _bottomIconTextStyle =
     TextStyle(fontSize: 10.0, color: ColorConstant.textGrey);
 final _bottomCommentTextStyle = TextStyle(
-    fontSize: 15,
-    color: ColorConstant.textGreyForComment,
-    letterSpacing: 1,
-    fontWeight: FontWeight.bold);
+  fontSize: 15,
+  color: ColorConstant.textGreyForComment,
+  letterSpacing: 1,
+  fontWeight: FontWeight.bold,
+);
 
 // 根据偏移进度获取透明度，平方看起来会和谐一点
 double _getOpacityByProgress(double progress) =>
@@ -110,27 +136,29 @@ Widget _buildHead(BuildContext context, double height, Thread thread) {
           children: <Widget>[
             BBSAvatar(avatar, radius: _headAvatarRadius),
             Expanded(
-              child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: _headIconTextPadding),
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: title + '\n',
-                          style: TextStyle(fontSize: _titleFontSize),
-                        ),
-                        TextSpan(text: getDayString(date)),
-                        TextSpan(
-                            text: ' $author',
-                            style: TextStyle(color: ColorConstant.primaryColor))
-                      ],
-                    ),
-                    overflow: TextOverflow.clip,
-                    maxLines: 3,
-                  )),
-              flex: 1,
-            ),
+                child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: _headIconTextPadding),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: title + '\n',
+                            style: _titleTextStyle,
+                          ),
+                          TextSpan(
+                            text: getDayString(date),
+                            style: _titleDayTextStyle,
+                          ),
+                          TextSpan(
+                            text: '  $author',
+                            style: _titleNameTextStyle,
+                          )
+                        ],
+                      ),
+                      overflow: TextOverflow.clip,
+                      maxLines: 3,
+                    ))),
           ],
         ),
       ),
@@ -146,7 +174,7 @@ Widget _wrapCommentBox(Widget child) {
       borderRadius: BorderRadius.circular(_commentBoxRadius),
       boxShadow: [
         BoxShadow(
-          color: ColorConstant.lightBackgroundPurple,
+          color: ColorConstant.backgroundLightPurple,
           blurRadius: 2,
           spreadRadius: 1,
         )
@@ -263,8 +291,7 @@ Widget _buildBody(ScrollController controller, PostModel model) {
     },
     child: Text(
       '   ${StringConstant.comments}',
-      style: TextStyle(
-          fontSize: 15, letterSpacing: 1, color: ColorConstant.textGrey),
+      style: _commentHeadTextStyle,
     ),
   );
 }
@@ -316,14 +343,21 @@ Widget _buildBottom(BuildContext context, PostModel model) {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
-          onTap: () => showDialog(
-            context: context,
-            builder: (context) => CommonPopupInputWidget(
-              hint: StringConstant.comment,
-              maxLines: 5,
-              onSubmitted: (msg) => model.sendPost(msg, StringConstant.noQuote),
-            ),
-          ),
+          onTap: () {
+            if (!model.canPost()) {
+              Fluttertoast.showToast(msg: StringConstant.threadClosed);
+              return;
+            }
+            showDialog(
+              context: context,
+              builder: (context) => CommonPopupInputWidget(
+                hint: StringConstant.comment,
+                maxLines: 5,
+                onSubmitted: (msg) =>
+                    model.sendPost(msg, StringConstant.noQuote),
+              ),
+            );
+          },
           child: Container(
             width: _bottomCommentWidth,
             height: _bottomCommentHeight,

@@ -3,7 +3,9 @@ import 'package:UniqueBBS/config/route.dart';
 import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
 import 'package:UniqueBBS/data/model/forum_model.dart';
 import 'package:UniqueBBS/tool/helper.dart';
+import 'package:UniqueBBS/tool/ui_helper.dart';
 import 'package:UniqueBBS/widget/common/common_avatar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,22 +16,43 @@ const _mainHorizontalPadding = 20.0;
 const _mainVerticalPadding = 10.0;
 
 // 通知公告部分常量
-const _broadcastHeight = 150.0;
+const _broadcastHeight = 125.0;
 const _innerHorizontalPadding = 15.0;
 const _innerVerticalPadding = 10.0;
-const _smallIconSize = 18.0;
-const _broadcastRadius = 25.0;
+const _smallIconSize = 15.0;
+const _broadcastAvatarRadius = 25.0;
+const _titleSubtitleOffset = 3.0;
+const _broadcastHeadTextStyle = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.bold,
+  color: ColorConstant.textLightBlack,
+  letterSpacing: 1.5,
+);
 const _titleStyle = TextStyle(
-  fontSize: 18,
+  fontSize: 16,
   color: ColorConstant.textBlack,
 );
-const _subtitleStyle = TextStyle(fontSize: 12, color: ColorConstant.textGrey);
+const _subtitleStyle = TextStyle(
+  fontSize: 12,
+  color: ColorConstant.textGrey,
+);
 
 // 下方 gridView 部分常量
 const _gridHorizontalSpacing = 50.0;
 const _gridVerticalSpacing = 15.0;
-const _gridBorderRadius = 26.0;
-final _gridTextStyle = TextStyle(fontSize: 18, color: ColorConstant.textBlack);
+const _gridTextStyle = TextStyle(
+  fontSize: 15,
+  color: ColorConstant.textLightBlack,
+  fontWeight: FontWeight.bold,
+  letterSpacing: 1.5,
+);
+
+const _commonBorderRadius = 26.0;
+const _commonBoxShadow = BoxShadow(
+  offset: Offset(0, 6),
+  color: ColorConstant.backgroundLighterShadow,
+  blurRadius: 10,
+);
 // 底部留出空间
 const _bottomOffset = 50.0;
 
@@ -41,18 +64,18 @@ class HomeInfoWidget extends StatefulWidget {
 Widget _buildBroadcastHead() {
   Widget head = Row(
     children: [
-      SvgPicture.asset(SvgIcon.broadcast),
+      SvgPicture.asset(SvgIcon.broadcast, color: ColorConstant.iconLightGrey),
       Expanded(
         child: Padding(
           padding: EdgeInsets.only(left: 10),
-          child: Text(StringConstant.broadcast),
+          child: Text(StringConstant.broadcast, style: _broadcastHeadTextStyle),
         ),
         flex: 1,
       ),
       Icon(
         Icons.arrow_forward_ios,
         size: _smallIconSize,
-        color: Colors.grey,
+        color: ColorConstant.iconLightGrey,
       ),
     ],
   );
@@ -69,7 +92,7 @@ Widget _buildBroadcastBodyWithData(FullForum forum) {
     children: [
       BBSAvatar(
         user?.avatar,
-        radius: _broadcastRadius,
+        radius: _broadcastAvatarRadius,
       ),
       Container(width: 10),
       Expanded(
@@ -83,6 +106,7 @@ Widget _buildBroadcastBodyWithData(FullForum forum) {
               overflow: TextOverflow.clip,
               maxLines: 1,
             ),
+            Container(height: _titleSubtitleOffset),
             Text(
               '$date $userName 发布',
               style: _subtitleStyle,
@@ -104,10 +128,13 @@ Widget _buildBroadcastBody() {
       Widget body;
       body = forum == null ? Container() : _buildBroadcastBodyWithData(forum);
       return Container(
-        height: 2 * _broadcastRadius,
-        padding: EdgeInsets.symmetric(
-            vertical: _innerVerticalPadding,
-            horizontal: _innerHorizontalPadding),
+        height: 2 * _broadcastAvatarRadius,
+        padding: EdgeInsets.only(
+          top: _innerVerticalPadding,
+          bottom: _innerVerticalPadding * 2,
+          left: _innerHorizontalPadding,
+          right: _innerHorizontalPadding,
+        ),
         child: body,
       );
     },
@@ -116,21 +143,22 @@ Widget _buildBroadcastBody() {
 
 Widget _buildBroadcast() {
   return Container(
-    padding: EdgeInsets.symmetric(
+    margin: EdgeInsets.symmetric(
         vertical: _mainVerticalPadding, horizontal: _mainHorizontalPadding),
     height: _broadcastHeight,
-    child: Card(
+    decoration: BoxDecoration(
       color: ColorConstant.backgroundWhite,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Column(
-        children: <Widget>[
-          _buildBroadcastHead(),
-          Expanded(
-            child: _buildBroadcastBody(),
-            flex: 1,
-          ),
-        ],
-      ),
+      boxShadow: [_commonBoxShadow],
+      borderRadius: BorderRadius.circular(_commonBorderRadius),
+    ),
+    child: Column(
+      children: <Widget>[
+        _buildBroadcastHead(),
+        Expanded(
+          child: _buildBroadcastBody(),
+          flex: 1,
+        ),
+      ],
     ),
   );
 }
@@ -139,33 +167,37 @@ Widget _buildBroadcast() {
 // contents[1] 是论坛的名字
 Widget _buildGridBlock(List<String> contents, BuildContext context) {
   return Consumer<ForumModel>(builder: (context, model, child) {
-    return MaterialButton(
-      onPressed: () {
-        final forum = model.findByName(contents[1]);
-        if (forum == null) {
-          if (contents[1] == "Report") {
-            Navigator.pushNamed(context, BBSRoute.reportPage);
+    return Container(
+      decoration: BoxDecoration(boxShadow: [_commonBoxShadow]),
+      child: MaterialButton(
+        onPressed: () {
+          final forum = model.findByName(contents[1]);
+          if (forum == null) {
+            if (contents[1] == "Report") {
+              Navigator.pushNamed(context, BBSRoute.reportPage);
+            } else {
+              Fluttertoast.showToast(msg: StringConstant.networkError);
+            }
           } else {
-            Fluttertoast.showToast(msg: StringConstant.networkError);
+            Navigator.pushNamed(context, BBSRoute.postList, arguments: forum);
           }
-        } else {
-          Navigator.pushNamed(context, BBSRoute.postList, arguments: forum);
-        }
-      },
-      color: ColorConstant.backgroundWhite,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(_gridBorderRadius)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(contents[0]),
-          Container(height: 10), // use for spacing
-          Text(
-            contents[1],
-            style: _gridTextStyle,
-          ),
-        ],
+        },
+        color: ColorConstant.backgroundWhite,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(_commonBorderRadius)),
+        elevation: 0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(contents[0]),
+            Container(height: 10), // use for spacing
+            Text(
+              contents[1],
+              style: _gridTextStyle,
+            ),
+          ],
+        ),
       ),
     );
   });

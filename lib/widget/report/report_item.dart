@@ -5,15 +5,29 @@ import 'package:flutter/material.dart';
 var _tagWeekly = "WEEKLY";
 var _tagDaily = "DAILY";
 
+const _contentTextStyle = TextStyle(
+  fontSize: 14,
+  letterSpacing: 0.5,
+);
+const _dayTextStyle = TextStyle(
+  fontSize: 27,
+  fontWeight: FontWeight.bold,
+);
+const _monthTextStyle = TextStyle(
+  fontSize: 12,
+  fontWeight: FontWeight.bold,
+  color: ColorConstant.textLightGrey,
+);
+
 class ReportItem extends Container {
-  String year;
-  String mouth;
-  String day;
-  String reportContent;
-  bool isWeekly;
+  final String year;
+  final String month;
+  final String day;
+  final String reportContent;
+  final bool isWeekly;
 
   ReportItem(
-      {this.year, this.mouth, this.day, this.reportContent, this.isWeekly});
+      {this.year, this.month, this.day, this.reportContent, this.isWeekly});
 
   @override
   Widget get child {
@@ -21,12 +35,12 @@ class ReportItem extends Container {
       padding: EdgeInsets.only(top: 10, bottom: 20, right: 5),
       decoration: BoxDecoration(
         border: Border.all(
-          color: ColorConstant.lightBorderPink,
+          color: ColorConstant.borderLightPink,
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: ColorConstant.lightBorderPink,
+            color: ColorConstant.borderLightPink,
             blurRadius: 10.0,
           ),
         ],
@@ -35,42 +49,25 @@ class ReportItem extends Container {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              buildFilledBackgroundText(isWeekly ? _tagWeekly : _tagDaily, 50),
-              Container(
-                width: 10,
-              ),
-            ],
-          ),
           Container(
-            height: 10,
+            padding: EdgeInsets.only(right: 10, bottom: 10),
+            alignment: Alignment.centerRight,
+            child: buildFilledBackgroundText(
+                isWeekly ? _tagWeekly : _tagDaily, 50),
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: 30,
+                padding: EdgeInsets.only(left: 22, right: 27),
+                child: Column(
+                  children: [
+                    Text(day, style: _dayTextStyle),
+                    Text(month, style: _monthTextStyle),
+                  ],
+                ),
               ),
-              Column(
-                children: [
-                  Text(
-                    day,
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(mouth),
-                ],
-              ),
-              Container(
-                width: 27,
-              ),
-              Expanded(
-                child: Text(reportContent),
-              ),
+              Expanded(child: Text(reportContent, style: _contentTextStyle)),
             ],
           )
         ],

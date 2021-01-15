@@ -8,8 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 const _tabHeight = 90.0;
 const _tabBarWidth = 140.0;
 const _indicatorPadding = 5.0;
-final _labelTextStyle = TextStyle(fontSize: 17);
-final _unLabelTextStyle = TextStyle(fontSize: 14);
+const _labelTextStyle = TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+const _unLabelTextStyle = TextStyle(fontSize: 15, fontWeight: FontWeight.bold);
 
 class HomeBodyWidget extends StatefulWidget {
   @override
