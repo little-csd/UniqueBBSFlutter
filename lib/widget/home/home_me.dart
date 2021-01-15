@@ -29,38 +29,53 @@ const _mainHorizontalPadding = 15.0;
 // 通知
 const _notificationHeight = 90.0;
 // 头像部分
-const _portraitRadius = 40.0;
+const _portraitRadius = 35.5;
 // 名字部分
-final _nameTextStyle = TextStyle(fontSize: 18, color: ColorConstant.textBlack);
+const _nameTextStyle = TextStyle(
+  fontSize: 17,
+  color: ColorConstant.textLightBlack,
+  fontWeight: FontWeight.bold,
+  letterSpacing: 1,
+);
 // 活跃积分
-final _activePointTextStyle =
-    TextStyle(fontSize: 14, color: ColorConstant.textGrey);
-final _activePointNumStyle =
-    TextStyle(fontSize: 14, color: ColorConstant.primaryColor);
+const _activePointTextStyle = TextStyle(
+  fontSize: 12,
+  color: ColorConstant.textGrey,
+  fontWeight: FontWeight.bold,
+);
+const _activePointNumStyle = TextStyle(
+  fontSize: 12,
+  color: ColorConstant.primaryColor,
+  fontWeight: FontWeight.bold,
+);
 // 标识卡片部分
-const _cardRadius = 30.0;
-const _cardTextVerticalPadding = 5.0;
+const _cardRadius = 25.0;
+const _cardTextVerticalPadding = 4.0;
 const _cardTextHorizontalPadding = 10.0;
-final _cardTextStyle = TextStyle(fontSize: 14, color: ColorConstant.textWhite);
+const _cardTextStyle = TextStyle(fontSize: 10, color: ColorConstant.textWhite);
 // 中间信息部分
-const _shadowBlueRadius = 1.0;
 const _iconSize = 20.0;
 const _iconTextOffset = 10.0;
 const _personalVerticalPadding = 14.0;
 const _maxSignLine = 10;
-final divider = Container(
+final _divider = Container(
   height: 0.2,
   margin: EdgeInsets.symmetric(vertical: 8.0),
   color: ColorConstant.backgroundGrey,
 );
-final _personalTextStyle = TextStyle(
+const _signatureTextStyle = TextStyle(
   color: ColorConstant.textBlack,
   fontSize: 15,
   fontWeight: FontWeight.bold,
 );
-final _personalDataTextStyle = TextStyle(
-  color: ColorConstant.textGrey,
+const _personalTextStyle = TextStyle(
+  color: ColorConstant.textBlack,
   fontSize: 13,
+  fontWeight: FontWeight.bold,
+);
+const _personalDataTextStyle = TextStyle(
+  color: ColorConstant.textGrey,
+  fontSize: 12,
 );
 
 // 底部几个按钮部分
@@ -124,14 +139,17 @@ Widget _buildCards(User me) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: me.groups.map((e) {
-      return Card(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(_cardRadius)),
-        color: ColorConstant.primaryColor,
+      return Container(
+        decoration: BoxDecoration(
+          color: ColorConstant.primaryColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(_cardRadius),
+        ),
         child: Padding(
           padding: EdgeInsets.symmetric(
-              vertical: _cardTextVerticalPadding,
-              horizontal: _cardTextHorizontalPadding),
+            vertical: _cardTextVerticalPadding,
+            horizontal: _cardTextHorizontalPadding,
+          ),
           child: Text(
             e.name,
             style: _cardTextStyle,
@@ -149,13 +167,8 @@ Widget _wrapBoxShadow(Widget child, double verticalPadding) {
         vertical: verticalPadding, horizontal: _buttonTextHorizontalPadding),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(_buttonRadius),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey,
-          blurRadius: _shadowBlueRadius,
-        ),
-      ],
-      color: ColorConstant.backgroundLightGrey,
+      border: Border.all(color: ColorConstant.borderLightPink),
+      color: ColorConstant.backgroundWhite,
     ),
     child: child,
   );
@@ -168,7 +181,7 @@ Widget _buildSignature(User me, bool isOpen, VoidCallback callback) {
     children: [
       Text(
         '${StringConstant.signature}   ',
-        style: _personalTextStyle,
+        style: _signatureTextStyle,
       ),
       Expanded(
         child: Container(
@@ -234,9 +247,9 @@ Widget _buildPersonalData(User me) {
       children: [
         _wrapPersonalDataLine(
             SvgIcon.phoneNumber, StringConstant.phoneNumber, mobile),
-        divider,
+        _divider,
         _wrapPersonalDataLine(SvgIcon.weChat, StringConstant.weChat, weChat),
-        divider,
+        _divider,
         _wrapPersonalDataLine(SvgIcon.mailbox, StringConstant.mailbox, email),
       ],
     ),
@@ -261,29 +274,30 @@ Widget _buildShowMyPost(BuildContext context, User user) {
         fontSize: _buttonTextFontSize,
         color: ColorConstant.textWhite,
         letterSpacing: _buttonTextSpacing,
+        fontWeight: FontWeight.bold,
       ),
     ),
   );
 }
 
-Widget _buildChangPwd(BuildContext context) {
+Widget _buildChangeInfo(BuildContext context) {
   return Container(
     width: double.infinity,
     child: OutlineButton(
       color: ColorConstant.backgroundBlack,
       onPressed: () {
         Fluttertoast.showToast(msg: StringConstant.notImpl);
-        // Navigator.of(context).pushNamed(BBSRoute.pwSet);
       },
       shape: _buttonRoundedBorder,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: _buttonTextPadding),
         child: Text(
-          StringConstant.changePassword,
+          StringConstant.changeInfo,
           style: const TextStyle(
             fontSize: _buttonTextFontSize,
             color: ColorConstant.textBlack,
             letterSpacing: _buttonTextSpacing,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -306,6 +320,7 @@ Widget _buildLogout(BuildContext context) {
         fontSize: _buttonTextFontSize,
         color: ColorConstant.textRed,
         letterSpacing: _buttonTextSpacing,
+        fontWeight: FontWeight.bold,
       ),
     ),
   );
@@ -338,20 +353,19 @@ class _HomeMeState extends State<HomeMeWidget> {
                 child: Column(
                   children: [
                     _buildHeadPortrait(me),
-                    Container(height: 7),
+                    Container(height: 8),
                     _buildName(me),
-                    Container(height: 5),
                     _buildActivePoint(),
-                    Container(height: 5),
+                    Container(height: 10),
                     _buildCards(me),
-                    Container(height: 15),
+                    Container(height: 23),
                     _buildSignature(me, _isSignOpen, signOpenCallback),
-                    Container(height: 20),
+                    Container(height: 11),
                     _buildPersonalData(me),
                     Container(height: 30),
                     _buildShowMyPost(context, me),
                     Container(height: 10),
-                    _buildChangPwd(context),
+                    _buildChangeInfo(context),
                     Container(height: 10),
                     _buildLogout(context),
                   ],

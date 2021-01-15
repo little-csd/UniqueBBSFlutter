@@ -13,15 +13,24 @@ const _cancelButtonSize = 40.0;
 const _selectBtnSize = 80.0;
 const _selectBtnRadius = 130.0;
 const _animationDuration = 600;
-final emptyContainer = Container(height: 15);
-final _btnTextStyle = TextStyle(
-  fontSize: 20,
-  color: ColorConstant.textBlack,
+final _emptyContainer = Container(height: 15);
+const _btnTextStyle = TextStyle(
+  fontSize: 18,
+  color: ColorConstant.textMediumBlack,
+  letterSpacing: 1,
+  fontWeight: FontWeight.bold,
 );
-final _selectTextStyle = TextStyle(
-  fontSize: 20,
-  color: ColorConstant.textGrey,
+const _selectTextStyle = TextStyle(
+  fontSize: 18,
+  color: ColorConstant.textLightGrey,
   decoration: TextDecoration.none,
+  letterSpacing: 2,
+  fontWeight: FontWeight.bold,
+);
+const _btnBoxShadow = BoxShadow(
+  offset: Offset(0, 3),
+  color: ColorConstant.borderPurple,
+  blurRadius: 10,
 );
 
 /// 展示的 item 名字以及对应的 forum
@@ -39,19 +48,24 @@ const forumData = [
 
 Widget _wrapData(
     BuildContext context, String data, String name, ForumModel model) {
-  return MaterialButton(
-    onPressed: () {
-      if (name == StringConstant.report) {
-        Navigator.of(context).popAndPushNamed(BBSRoute.postReport);
-        return;
-      }
-      Fluttertoast.showToast(msg: StringConstant.notImpl);
-      Navigator.of(context).pop();
-    },
-    color: ColorConstant.backgroundWhite,
-    shape: const CircleBorder(),
+  return Container(
     height: _selectBtnSize,
-    child: Text(data, style: _btnTextStyle),
+    decoration:
+        BoxDecoration(boxShadow: [_btnBoxShadow], shape: BoxShape.circle),
+    child: MaterialButton(
+      onPressed: () {
+        if (name == StringConstant.report) {
+          Navigator.of(context).popAndPushNamed(BBSRoute.postReport);
+          return;
+        }
+        Fluttertoast.showToast(msg: StringConstant.notImpl);
+        Navigator.of(context).pop();
+      },
+      color: ColorConstant.backgroundWhite,
+      shape: const CircleBorder(),
+      elevation: 0,
+      child: Text(data, style: _btnTextStyle),
+    ),
   );
 }
 
@@ -148,13 +162,12 @@ class _HomeSelectState extends State<HomeSelectWidget>
             StringConstant.selectBlockHint,
             style: _selectTextStyle,
           ),
-          emptyContainer,
+          _emptyContainer,
           SvgPicture.asset(SvgIcon.selectPlateIcon),
-          emptyContainer,
           _buildCircularWidget(context),
-          emptyContainer,
+          _emptyContainer,
           _buildCancelButton(context, _controller),
-          emptyContainer,
+          _emptyContainer,
         ],
       ),
     );

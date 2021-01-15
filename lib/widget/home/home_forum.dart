@@ -15,26 +15,32 @@ const _bottomOffset = 50.0;
 final _listSeparator = Container(height: 20);
 final _listViewPadding = EdgeInsets.only(left: 20, right: 20, top: 15);
 
-const _cardBorderRadius = 20.0;
-const _cardTitleIconSize = 40.0;
+const _cardBorderRadius = 16.0;
+const _cardTitleIconSize = 35.0;
 final _cardItemSeparator = Container(height: 20);
 final _cardPadding = EdgeInsets.only(left: 15, right: 19, top: 16, bottom: 18);
 final _cardTitleNameStyle = TextStyle(
   color: ColorConstant.primaryColor,
-  fontSize: 18,
+  fontSize: 16,
   fontWeight: FontWeight.bold,
-  letterSpacing: 1.5,
+  letterSpacing: 1,
+);
+const _cardItemOffset = 10.0;
+final _cardBoxShadow = BoxShadow(
+  color: ColorConstant.backgroundLighterShadow,
+  offset: Offset(0, 3),
+  blurRadius: 16,
 );
 
-const _loadMoreTextPaddingV = 3.0;
+const _loadMoreTextPaddingV = 4.0;
 const _loadMoreTextPaddingH = 20.0;
 const _loadMoreBorderRadius = 20.0;
 final _loadMoreTextStyle =
-    TextStyle(fontSize: 12, color: ColorConstant.textGrey, letterSpacing: 1);
+    TextStyle(fontSize: 10, color: ColorConstant.textGrey, letterSpacing: 1);
 
 /// forumData 每个元素为论坛的名字以及 svg 图标的 url
 const _forumMetaData = [
-  [StringConstant.discussion, SvgIcon.projectTask],
+  [StringConstant.discussion, SvgIcon.discussion],
 ];
 
 _buildForumBg() => Positioned(
@@ -86,6 +92,8 @@ _buildLoadMore(FullForum forum, BuildContext context) => GestureDetector(
 
 _buildCardItems() => Consumer<ThreadModel>(builder: (context, model, child) {
       final items = List<Widget>();
+
+      /// TODO: 这里如果出现前 _maxPreviewCount 中有被删除的，那么会出现问题
       for (int i = 0; i < _maxPreviewCount; i++) {
         final user = model.getUserInfo(i);
         final thread = model.getThreadInfo(i);
@@ -93,6 +101,7 @@ _buildCardItems() => Consumer<ThreadModel>(builder: (context, model, child) {
           model.fetch();
           break;
         }
+        if (i > 0) items.add(Container(height: _cardItemOffset));
         items.add(ThreadItem(thread, user));
       }
       return Column(children: items);
@@ -113,6 +122,7 @@ Widget _buildForumCard(
       decoration: BoxDecoration(
         color: ColorConstant.backgroundWhite,
         borderRadius: BorderRadius.circular(_cardBorderRadius),
+        boxShadow: [_cardBoxShadow],
       ),
       child: Column(
         children: [

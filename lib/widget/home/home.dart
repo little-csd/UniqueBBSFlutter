@@ -11,7 +11,7 @@ const _bottomMaskHeight = 120.0;
 const _bottomButtonOffset = 15.0;
 const _bottomButtonHeight = 40.0;
 final _bottomButtonShadow = BoxShadow(
-  color: ColorConstant.lightBackgroundShadow,
+  color: ColorConstant.backgroundLightShadow,
   spreadRadius: 1,
   blurRadius: 1.5,
   offset: Offset(0, 3),
@@ -28,8 +28,8 @@ Widget _buildBottomItem(
     String src, int index, int selectedIndex, _TapCallback callback) {
   return FlatButton(
     onPressed: () => callback(index),
-    splashColor: ColorConstant.invisibleBlack,
-    highlightColor: ColorConstant.invisibleBlack,
+    splashColor: ColorConstant.invisible,
+    highlightColor: ColorConstant.invisible,
     child: SvgPicture.asset(
       src,
       color: index == selectedIndex
@@ -69,8 +69,8 @@ Widget _buildMask() {
         end: Alignment.topCenter,
         stops: [0.0, 1.0],
         colors: [
-          ColorConstant.lightBackgroundPurple,
-          ColorConstant.invisibleBlack,
+          ColorConstant.backgroundLightPurple,
+          ColorConstant.invisibleWhite,
         ],
       ),
     ),

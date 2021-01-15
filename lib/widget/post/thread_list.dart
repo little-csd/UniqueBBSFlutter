@@ -52,12 +52,12 @@ class ThreadListCardState extends State<ThreadListCard> {
       padding: EdgeInsets.all(_listCardContainerPadding),
       decoration: BoxDecoration(
         border: Border.all(
-          color: ColorConstant.lightBorderPink,
+          color: ColorConstant.borderLightPink,
         ),
         borderRadius: BorderRadius.circular(_listCardContainerBorderRadius),
         boxShadow: [
           BoxShadow(
-            color: ColorConstant.lightBorderPink,
+            color: ColorConstant.borderLightPink,
             blurRadius: _listCardContainerShadowRadius,
           ),
         ],

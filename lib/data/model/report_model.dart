@@ -9,7 +9,7 @@ class ReportModel extends ChangeNotifier {
   Map<int, List> _yearList = Map<int, List>();
   int _pageNum = 1;
   bool _fetching = false;
-  int _maxCount = null;
+  int _maxCount;
   int _fetchedCount = 0;
 
   keysCount() => _yearList.keys.length;

@@ -20,7 +20,7 @@ class _LoginState extends State<LoginWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: EdgeInsets.only(left: 20, right: 20),
         child: Column(
@@ -29,23 +29,15 @@ class _LoginState extends State<LoginWidget> {
           children: <Widget>[
             SvgPicture.asset(SvgIcon.loginLogo),
             _buildLogoText(StringConstant.logo2Line),
-            Container(
-              height: 67,
-            ),
+            Container(height: 67),
             _buildLoginTextField(
                 StringConstant.phoneNumber, false, (str) => _username = str),
-            Container(
-              height: 20,
-            ),
+            Container(height: 20),
             _buildLoginTextField(
                 StringConstant.password, true, (str) => _password = str),
-            Container(
-              height: 63,
-            ),
+            Container(height: 63),
             _buildLoginButton(context, _onLogin),
-            Container(
-              height: 15,
-            ),
+            Container(height: 15),
             _buildWeComLoginButton(context),
           ],
         ),
@@ -117,7 +109,12 @@ _buildLoginButton(BuildContext context, VoidCallback callback) => SizedBox(
         color: ColorConstant.primaryColor,
         child: Text(
           StringConstant.login,
-          style: TextStyle(color: Colors.white, letterSpacing: 22),
+          style: TextStyle(
+            color: Colors.white,
+            letterSpacing: 22,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
         ),
         onPressed: callback,
       ),
@@ -130,7 +127,14 @@ _buildWeComLoginButton(BuildContext context) => SizedBox(
         shape: RoundedRectangleBorder(
             side: BorderSide(color: ColorConstant.weComButtonGray),
             borderRadius: BorderRadius.circular(20.0)),
-        child: Text(StringConstant.useWeComLogin),
+        child: Text(
+          StringConstant.useWeComLogin,
+          style: TextStyle(
+              fontSize: 15,
+              letterSpacing: 1,
+              color: ColorConstant.textLightBlack,
+              fontWeight: FontWeight.bold),
+        ),
         onPressed: () {
           Navigator.pushNamed(context, BBSRoute.pwSet);
         },
@@ -151,8 +155,8 @@ _buildLoginTextField(
 _buildLogoText(String text) => Text(
       text,
       style: TextStyle(
-        color: Color(0xff727272),
+        color: ColorConstant.textForLogo,
         fontSize: 18,
-        letterSpacing: 4,
+        letterSpacing: 2,
       ),
     );

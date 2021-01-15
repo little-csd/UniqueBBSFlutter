@@ -4,14 +4,7 @@ import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
-const maxInt = 2147483647;
-
-Widget wrapPadding(Widget child, double vertical, double horizontal) {
-  return Padding(
-    padding: EdgeInsets.symmetric(vertical: vertical, horizontal: horizontal),
-    child: child,
-  );
-}
+const maxInt = 0x7FFFFFFF;
 
 // 用于颜色的插值, 给定角度转化得到线性插值的起点+终点的 Alignment
 List<Alignment> transAngle2Alignments(double angle) {

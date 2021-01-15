@@ -9,9 +9,12 @@ class ColorConstant {
   static const textBlack = Colors.black;
   static const textWhite = Colors.white;
   static const textRed = Color(0xFFFF7A7A);
+  static const textForLogo = Color(0xFF727272);
   static const textLightPurPle = Color(0xFF9B84FE);
   static const textPostPurple = Color(0xFFB4AAFD);
+  static const textMediumBlack = Color(0xFF616161);
   static const textLightBlack = Color(0xFF555555);
+  static const textLightGrey = Color(0xFFB4B4B4);
   static const textGreyForComment = Color(0xFFD3CFE9);
   static const textGreyForNoComment = Color(0xFFE1DDF7);
   static const textPurpleForReply = Color(0xFF6B6BA1);
@@ -22,24 +25,30 @@ class ColorConstant {
   static const primaryColorTransparent = Color(0x1F7966FF);
   static const purpleColor = Color(0xFF7966FF);
   static const accentColor = Color(0xff555555);
-  static const weComButtonGray = Color(0xff707070);
-  static const inputPurple = Color(0xfff0f0f6);
-  static const inputHintPurple = Color(0xffcecae7);
+  static const weComButtonGray = Color(0xFF707070);
+  static const inputPurple = Color(0xFFF0F0F6);
+  static const inputHintPurple = Color(0xFFCECAE7);
   static const textBackgroundLightPurple = Color(0xFFA598FF);
-  static const invisibleBlack = Color(0x00FFFFFF);
+  static const iconLightGrey = Color(0xFFE3E3E3);
+  static const redPointColor = Color(0xFFFF1313);
+  static const invisibleWhite = Color(0x00FFFFFF);
+  static const invisible = Colors.transparent;
 
+  static const backgroundForAppSplash = Color(0xFFF7F7F7);
   static const backgroundLightGrey = Color(0xFFFAFAFA);
   static const backgroundGreyForComment = Color(0xFFF0F0F6);
   static const backgroundGrey = Color(0xFFCCCBD8);
   static const backgroundPurple = Color(0xFFCCC5EA);
-  static const lightBackgroundShadow = Color(0x7FCCC5EA);
-  static const lightBackgroundPurple = Color(0x50CCC5EA);
+  static const backgroundLightShadow = Color(0x7FCCC5EA);
+  static const backgroundLightPurple = Color(0x50CCC5EA);
+  static const backgroundLighterShadow = Color(0x29CCC5EA);
   static const backgroundWhite = Colors.white;
   static const backgroundBlack = Colors.black;
 
   // 阴影相关颜色常量
   static const borderGray = Color(0xFFE6E6E6);
-  static const lightBorderPink = Color(0xFFF8F3FF);
+  static const borderLightPink = Color(0xFFF8F3FF);
+  static const borderPurple = Color(0x297668AF);
 }
 
 // 字符串相关的资源常量
@@ -60,10 +69,11 @@ class StringConstant {
   static const uniqueShare = '团队分享';
   static const discussion = '闲杂讨论';
   // report
-  static const reportTitle = '我的report';
-  static const postReportTitle = '发布report';
+  static const reportTitle = '我的 report';
+  static const postReportTitle = '发布 report';
   static const pleaseInput = '请输入正文';
   static const postReportSuccess = '发布成功';
+  static const noPostEmpty = '请勿发布空消息';
   // 帖子列表
   static const loadMore = '查看更多';
   static const noMoreForum = "再往下拉也没有啦~";
@@ -83,7 +93,7 @@ class StringConstant {
   static const phoneNumber = "用户名";
   static const password = "密码";
   static const noPhoneNumber = "用户名未注册，\n用企业微信登录试试吧？";
-  static const login = "登陆";
+  static const login = "登录";
   static const iKnow = "我知道了";
   static const useWeComLogin = "使用企业微信扫码登录";
   static const usernameEmpty = "手机号不能为空";
@@ -104,6 +114,7 @@ class StringConstant {
   static const confirmPassword = "确认密码";
   static const complete = "完成";
   // 修改密码页
+  static const changeInfo = "修改我的资料";
   static const changePassword = "修改密码";
   static const confirm = "确认";
   static const inputPassword = "输入密码";
@@ -123,6 +134,7 @@ class StringConstant {
   static const selectPlateHero = "select plate";
   // 其他
   static const noQuote = "-1";
+  static const threadClosed = "帖子已关闭!";
   static const jwtExpired = "jwt expired";
   static const jwtMalformed = "jwt malformed";
   static const notImpl = "此功能尚待开发";
@@ -150,6 +162,7 @@ class SvgIcon {
   static const homeBottomBg = '$_home/home_bottom_bg.svg';
   static const homeBottomBtn = '$_home/home_bottom_btn.svg';
   static const broadcast = '$_home/broadcast.svg';
+  static const discussion = '$_home/discussion.svg';
   // 我的
   static const phoneNumber = '$_me/phone_icon.svg';
   static const weChat = '$_me/wechat_icon.svg';

@@ -21,16 +21,19 @@ class FilledTextField extends TextField {
   TextStyle get style => TextStyle(
         fontSize: 14,
         letterSpacing: 2,
+        fontWeight: FontWeight.bold,
       );
 
   @override
   InputDecoration get decoration => InputDecoration(
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: ColorConstant.inputPurple),
-            borderRadius: BorderRadius.all(radius)),
+          borderSide: BorderSide(color: ColorConstant.inputPurple),
+          borderRadius: BorderRadius.all(radius),
+        ),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: ColorConstant.inputPurple),
-            borderRadius: BorderRadius.all(radius)),
+          borderSide: BorderSide(color: ColorConstant.inputPurple),
+          borderRadius: BorderRadius.all(radius),
+        ),
         filled: true,
         fillColor: filledColor,
         hintText: hint,
@@ -38,6 +41,6 @@ class FilledTextField extends TextField {
           color: hintColor,
         ),
         isDense: true,
-        contentPadding: EdgeInsets.all(10),
+        contentPadding: EdgeInsets.symmetric(vertical: 11, horizontal: 22),
       );
 }

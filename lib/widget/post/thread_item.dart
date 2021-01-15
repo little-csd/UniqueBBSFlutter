@@ -11,17 +11,19 @@ const _topText = "TOP";
 const _hotText = "HOT";
 const _newText = "NEW";
 const _publish = "发布";
-const _avatarTextPadding = 8.0;
+const _avatarTextPadding = 12.0;
 const _textWidgetWidth = 35.0;
 final _messageTextStyle = TextStyle(
   color: ColorConstant.textGrey,
   fontSize: 12,
   fontWeight: FontWeight.bold,
+  letterSpacing: 0.5,
 );
 final _subjectTextStyle = TextStyle(
   color: Colors.black,
-  fontSize: 15,
+  fontSize: 16,
   fontWeight: FontWeight.bold,
+  letterSpacing: 0.5,
 );
 
 _buildTextWidget(String text) => Container(

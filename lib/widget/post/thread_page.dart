@@ -5,7 +5,12 @@ import 'package:UniqueBBS/widget/post/thread_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// todo : refactor
+const _titleTextStyle = TextStyle(
+  color: Colors.black,
+  fontWeight: FontWeight.bold,
+  fontSize: 18,
+);
+
 class ThreadPageWidget extends StatefulWidget {
   final FullForum forum;
 
@@ -46,11 +51,16 @@ class ThreadPageState extends State<ThreadPageWidget> {
       create: (context) => model,
       child: Scaffold(
         appBar: AppBar(
+          leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Icon(Icons.arrow_back_ios),
+          ),
           backgroundColor: ColorConstant.backgroundLightGrey,
           title: Text(
             widget.forum != null ? widget.forum.name : StringConstant.myThreads,
-            style: TextStyle(color: Colors.black),
+            style: _titleTextStyle,
           ),
+          centerTitle: true,
         ),
         body: _buildBody(context),
       ),

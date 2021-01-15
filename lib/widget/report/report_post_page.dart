@@ -20,7 +20,11 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
 
   _createReport() {
     _content = _textEditingController.text;
-    print(_isWeekly);
+    // print(_isWeekly);
+    if (_content == null || _content.isEmpty) {
+      Fluttertoast.showToast(msg: StringConstant.noPostEmpty);
+      return;
+    }
     Server.instance.createReport(true, _content).then((value) {
       if (value.success) {
         Fluttertoast.showToast(msg: StringConstant.postReportSuccess);
@@ -40,8 +44,17 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: _buildAppBar(context),
+      body: _buildBody(),
+    );
+  }
+
+  _buildAppBar(BuildContext context) => AppBar(
         backgroundColor: ColorConstant.backgroundLightGrey,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Icon(Icons.arrow_back_ios),
+        ),
         actions: <Widget>[
           FlatButton(
             onPressed: () {
@@ -52,7 +65,8 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: ColorConstant.textPostPurple,
-                fontSize: 18,
+                fontSize: 16,
+                letterSpacing: 1.5,
               ),
             ),
           ),
@@ -62,12 +76,11 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
+            fontSize: 18,
           ),
         ),
-      ),
-      body: _buildBody(),
-    );
-  }
+        centerTitle: true,
+      );
 
   _buildBody() {
     return Column(
@@ -90,7 +103,7 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
           Text(
             "板块",
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 15,
               fontWeight: FontWeight.bold,
               color: ColorConstant.textGrey,
             ),

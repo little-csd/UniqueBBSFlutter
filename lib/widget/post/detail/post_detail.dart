@@ -17,19 +17,38 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-const _mainHorizontalPadding = 10.0;
+const _mainHorizontalPadding = 17.0;
 // 头部相关
 const _maxHeadHeight = 120.0;
 const _minHeadHeight = 72.0;
 const _headIconTextPadding = 10.0;
 const _headAvatarRadius = 26.0;
 const _titleFontSize = 20.0;
-final _headDataPadding = EdgeInsets.only(bottom: 20, left: 50);
+const _titleTextStyle = TextStyle(
+  fontSize: _titleFontSize,
+  letterSpacing: 1,
+  color: ColorConstant.textBlack,
+  fontWeight: FontWeight.bold,
+);
+const _titleDayTextStyle = TextStyle(
+  fontSize: 12,
+  letterSpacing: 0.5,
+  color: ColorConstant.textLightGrey,
+  fontWeight: FontWeight.bold,
+);
+const _titleNameTextStyle = TextStyle(
+  fontSize: 12,
+  letterSpacing: 0.5,
+  color: ColorConstant.primaryColor,
+  fontWeight: FontWeight.bold,
+);
+const _headDataPadding = EdgeInsets.only(bottom: 20, left: 50);
 const _dividerThick = 1.0;
 // 内容
-final _mainTextStyle = TextStyle(
-  fontSize: 15,
+const _mainTextStyle = TextStyle(
+  fontSize: 14,
   color: ColorConstant.textLightBlack,
+  letterSpacing: 1,
 );
 // 评论部分
 const _textOffset = 40.0;
@@ -37,7 +56,7 @@ const _commentBoxRadius = 20.0;
 const _commentMargin = 10.0;
 const _commentInnerPaddingV = 15.0;
 const _commentInnerPaddingH = 10.0;
-const _commentAvatarRadius = 18.0;
+const _commentAvatarRadius = 17.0;
 const _commentTextOffset = 10.0;
 const _commentEmptyRadius = 20.0;
 const _commentEmptyMargin = 10.0;
@@ -59,6 +78,12 @@ final _noCommentTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
   color: ColorConstant.textGreyForNoComment,
 );
+final _commentHeadTextStyle = TextStyle(
+  fontSize: 12,
+  letterSpacing: 1,
+  color: ColorConstant.textGrey,
+  fontWeight: FontWeight.bold,
+);
 // 编辑按钮
 const _fabPadding = 20.0;
 // 底部评论栏
@@ -70,16 +95,17 @@ const _bottomCircularRadius = 30.0;
 final _bottomIconTextStyle =
     TextStyle(fontSize: 10.0, color: ColorConstant.textGrey);
 final _bottomCommentTextStyle = TextStyle(
-    fontSize: 15,
-    color: ColorConstant.textGreyForComment,
-    letterSpacing: 1,
-    fontWeight: FontWeight.bold);
+  fontSize: 15,
+  color: ColorConstant.textGreyForComment,
+  letterSpacing: 1,
+  fontWeight: FontWeight.bold,
+);
 
 // 根据偏移进度获取透明度，平方看起来会和谐一点
 double _getOpacityByProgress(double progress) =>
     (1 - progress) * (1 - progress);
 
-Widget _buildHead(double height, Thread thread) {
+Widget _buildHead(BuildContext context, double height, Thread thread) {
   ThreadInfo threadInfo = thread.thread;
   UserInfo userInfo = thread.user;
   String title = threadInfo?.subject == null ? "" : threadInfo.subject;
@@ -89,7 +115,10 @@ Widget _buildHead(double height, Thread thread) {
   double progress =
       (height - _minHeadHeight) / (_maxHeadHeight - _minHeadHeight);
   final bar = AppBar(
-    leading: Icon(Icons.arrow_back_ios),
+    leading: GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: Icon(Icons.arrow_back_ios),
+    ),
     bottom: PreferredSize(
       child: Divider(thickness: _dividerThick),
       preferredSize: null,
@@ -107,33 +136,50 @@ Widget _buildHead(double height, Thread thread) {
           children: <Widget>[
             BBSAvatar(avatar, radius: _headAvatarRadius),
             Expanded(
-              child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: _headIconTextPadding),
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: title + '\n',
-                          style: TextStyle(fontSize: _titleFontSize),
-                        ),
-                        TextSpan(text: getDayString(date)),
-                        TextSpan(
-                            text: ' $author',
-                            style: TextStyle(color: ColorConstant.primaryColor))
-                      ],
-                    ),
-                    overflow: TextOverflow.clip,
-                    maxLines: 3,
-                  )),
-              flex: 1,
-            ),
+                child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: _headIconTextPadding),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: title + '\n',
+                            style: _titleTextStyle,
+                          ),
+                          TextSpan(
+                            text: getDayString(date),
+                            style: _titleDayTextStyle,
+                          ),
+                          TextSpan(
+                            text: '  $author',
+                            style: _titleNameTextStyle,
+                          )
+                        ],
+                      ),
+                      overflow: TextOverflow.clip,
+                      maxLines: 3,
+                    ))),
           ],
         ),
       ),
     ),
   );
   return PreferredSize(child: bar, preferredSize: Size.fromHeight(height));
+}
+
+void _tryComment(BuildContext context, PostModel model) {
+  if (!model.canPost()) {
+    Fluttertoast.showToast(msg: StringConstant.threadClosed);
+    return;
+  }
+  showDialog(
+    context: context,
+    builder: (context) => CommonPopupInputWidget(
+      hint: StringConstant.comment,
+      maxLines: 5,
+      onSubmitted: (msg) => model.sendPost(msg, StringConstant.noQuote),
+    ),
+  );
 }
 
 Widget _wrapCommentBox(Widget child) {
@@ -143,7 +189,7 @@ Widget _wrapCommentBox(Widget child) {
       borderRadius: BorderRadius.circular(_commentBoxRadius),
       boxShadow: [
         BoxShadow(
-          color: ColorConstant.lightBackgroundPurple,
+          color: ColorConstant.backgroundLightPurple,
           blurRadius: 2,
           spreadRadius: 1,
         )
@@ -156,13 +202,13 @@ Widget _wrapCommentBox(Widget child) {
   );
 }
 
-Widget _buildEmptyComment() {
+Widget _buildEmptyComment(BuildContext context, PostModel model) {
   final widget = Row(
     children: [
       BBSAvatar(null, radius: _commentAvatarRadius),
       Expanded(
         child: GestureDetector(
-          onTap: () => Fluttertoast.showToast(msg: StringConstant.notImpl),
+          onTap: () => _tryComment(context, model),
           child: Container(
             height: _commentEmptyHeight,
             alignment: Alignment.centerLeft,
@@ -250,7 +296,7 @@ Widget _buildBody(ScrollController controller, PostModel model) {
           }
           // 处理空评论的情况
           if (model.postCount() < 1) {
-            return _buildEmptyComment();
+            return _buildEmptyComment(context, model);
           }
           // 处理实际的评论
           return _buildComment(model.getPostData(index - 2));
@@ -260,8 +306,7 @@ Widget _buildBody(ScrollController controller, PostModel model) {
     },
     child: Text(
       '   ${StringConstant.comments}',
-      style: TextStyle(
-          fontSize: 15, letterSpacing: 1, color: ColorConstant.textGrey),
+      style: _commentHeadTextStyle,
     ),
   );
 }
@@ -313,14 +358,7 @@ Widget _buildBottom(BuildContext context, PostModel model) {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
-          onTap: () => showDialog(
-            context: context,
-            builder: (context) => CommonPopupInputWidget(
-              hint: StringConstant.comment,
-              maxLines: 5,
-              onSubmitted: (msg) => model.sendPost(msg, StringConstant.noQuote),
-            ),
-          ),
+          onTap: () => _tryComment(context, model),
           child: Container(
             width: _bottomCommentWidth,
             height: _bottomCommentHeight,
@@ -375,7 +413,7 @@ class _PostDetailState extends State<PostDetailWidget> {
     return ChangeNotifierProvider(
       create: (_) => model,
       child: Scaffold(
-        appBar: _buildHead(_headHeight, widget.thread),
+        appBar: _buildHead(context, _headHeight, widget.thread),
         // 这里使用 stack 是为了预防后面界面要改底部透明啥的
         body: Stack(
           alignment: Alignment.bottomRight,
