@@ -1,5 +1,6 @@
 import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
 import 'package:UniqueBBS/data/bean/forum/thread.dart';
+import 'package:UniqueBBS/data/bean/report/report.dart';
 import 'package:UniqueBBS/widget/home/home.dart';
 import 'package:UniqueBBS/widget/home/home_select.dart';
 import 'package:UniqueBBS/widget/login/info_set.dart';
@@ -41,7 +42,6 @@ class BBSRoute {
     pwSet: PasswordSetWidget(),
     infoSet: InfoSetWidget(),
     reportPage: ReportPageWidget(),
-    postReport: ReportPostPageWidget(),
   };
 
   // 用来给给所有 route 添加特性
@@ -68,6 +68,9 @@ class BBSRoute {
       case postList:
         return MaterialPageRoute(
             builder: generateBuilder(ThreadPageWidget(arg as FullForum)));
+      case postReport:
+        return MaterialPageRoute(
+            builder: generateBuilder(ReportPostPageWidget(arg as Report)));
     }
     throw Exception("Route $path not found!");
   }
