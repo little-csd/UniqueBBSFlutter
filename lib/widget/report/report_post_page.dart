@@ -40,7 +40,7 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
         }
       });
     } else {
-      Server.instance.createReport(true, _content).then((value) {
+      Server.instance.createReport(_isWeekly, _content).then((value) {
         if (value.success) {
           Fluttertoast.showToast(msg: StringConstant.postReportSuccess);
           Navigator.pop(context);
