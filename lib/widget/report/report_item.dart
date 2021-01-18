@@ -49,30 +49,7 @@ class ReportItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(top: 10, bottom: 20, right: 5),
       decoration: _itemDecoration(),
-      child: _buildItemForTest(context),
-      // child: _buildItem(context),
-    );
-  }
-
-  _buildItemForTest(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        var nowDateTime = DateTime.now();
-        if (nowDateTime.year == int.parse(_year) &&
-            nowDateTime.month == int.parse(_month) &&
-            nowDateTime.day == int.parse(_day)) {
-          Navigator.of(context).pushNamed(BBSRoute.postReport, arguments: data);
-        } else {
-          return;
-        }
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildItemTypeTag(),
-          _buildItemBody(),
-        ],
-      ),
+      child: _buildItem(context),
     );
   }
 

@@ -11,6 +11,11 @@ class ReportModel extends ChangeNotifier {
   bool _fetching = false;
   int _maxCount;
   int _fetchedCount = 0;
+  List<int> _sortedYears;
+
+  isNoReport() => _sortedYears == null || _sortedYears.length == 0;
+
+  getYear(int index) => _sortedYears[index];
 
   keysCount() => _yearList.keys.length;
 
@@ -52,8 +57,14 @@ class ReportModel extends ChangeNotifier {
   _onFetchFinished() {
     _pageNum++;
     _fetching = false;
+    _generateAndSortYears();
     notifyListeners();
   }
 
   _generateYearNum(Report data) => int.parse(data.createDate.substring(0, 4));
+
+  _generateAndSortYears() {
+    _sortedYears = _yearList.keys.toList();
+    _sortedYears.sort((left, right) => right.compareTo(left));
+  }
 }
