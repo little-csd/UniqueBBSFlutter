@@ -81,7 +81,7 @@ class Converter {
 			case Thread:
 				return Thread.fromJson(json);
 		}
-		print('Type error! You may forgot to generate converter_gen.sh');
+		print('Type error! You probably forgot to run converter_gen.sh');
 		return null;
 	}
 }
