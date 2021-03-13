@@ -75,6 +75,7 @@ class StringConstant {
   static const postReportSuccess = '发布成功';
   static const updateReportSuccess = '修改成功';
   static const noPostEmpty = '请勿发布空消息';
+  static const noReportPost = '没有获取到你的日报噢~';
   // 帖子列表
   static const loadMore = '查看更多';
   static const noMoreForum = "再往下拉也没有啦~";

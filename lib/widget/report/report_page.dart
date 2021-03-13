@@ -65,7 +65,8 @@ class ReportPageState extends State<StatefulWidget> {
           IconButton(
               icon: SvgPicture.asset(SvgIcon.postReport),
               onPressed: () {
-                Navigator.of(context).pushNamed(BBSRoute.postReport, arguments: null);
+                Navigator.of(context)
+                    .pushNamed(BBSRoute.postReport, arguments: null);
               }),
         ],
         title: Text(
@@ -81,16 +82,20 @@ class ReportPageState extends State<StatefulWidget> {
 
   _buildYearList() {
     return Consumer<ReportModel>(builder: (context, model, child) {
-      return ListView.builder(
-        itemCount: model.keysCount(),
-        shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        controller: scrollController,
-        itemBuilder: (context, index) {
-          var year = model.keysFirst() - index;
-          return _buildItemList(year, model);
-        },
-      );
+      if (model.isNoReport()) {
+        return _buildEmptyListText();
+      } else {
+        return ListView.builder(
+          itemCount: model.keysCount(),
+          shrinkWrap: true,
+          physics: BouncingScrollPhysics(),
+          controller: scrollController,
+          itemBuilder: (context, index) {
+            var year = model.getYear(index);
+            return _buildItemList(year, model);
+          },
+        );
+      }
     });
   }
 
@@ -156,6 +161,20 @@ class ReportPageState extends State<StatefulWidget> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  _buildEmptyListText() {
+    return Container(
+      padding: EdgeInsets.all(20),
+      alignment: Alignment.center,
+      child: Text(
+        StringConstant.noReportPost,
+        style: TextStyle(
+            fontSize: 13,
+            color: ColorConstant.textLightPurPle,
+            letterSpacing: 3),
       ),
     );
   }
