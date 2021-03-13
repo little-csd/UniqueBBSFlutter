@@ -73,6 +73,7 @@ class StringConstant {
   static const postReportTitle = '发布 report';
   static const pleaseInput = '请输入正文';
   static const postReportSuccess = '发布成功';
+  static const updateReportSuccess = '修改成功';
   static const noPostEmpty = '请勿发布空消息';
   // 帖子列表
   static const loadMore = '查看更多';

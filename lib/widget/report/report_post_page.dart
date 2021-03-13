@@ -1,4 +1,5 @@
 import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/data/bean/report/report.dart';
 import 'package:UniqueBBS/data/dio.dart';
 import 'package:UniqueBBS/widget/common/network_error_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -9,35 +10,60 @@ const _weeklyTag = "weekly report";
 const _dailyTag = "daily report";
 
 class ReportPostPageWidget extends StatefulWidget {
+  Report report;
+
+  ReportPostPageWidget(this.report);
+
   @override
   State<StatefulWidget> createState() => ReportPostPageState();
 }
 
 class ReportPostPageState extends State<ReportPostPageWidget> {
   bool _isWeekly = true;
+  bool _isUpdating = false;
   String _content;
   TextEditingController _textEditingController;
 
   _createReport() {
     _content = _textEditingController.text;
-    // print(_isWeekly);
     if (_content == null || _content.isEmpty) {
       Fluttertoast.showToast(msg: StringConstant.noPostEmpty);
       return;
     }
-    Server.instance.createReport(true, _content).then((value) {
-      if (value.success) {
-        Fluttertoast.showToast(msg: StringConstant.postReportSuccess);
-        Navigator.pop(context);
-      } else {
-        buildErrorBottomSheet(context, value.msg);
-      }
-    });
+    if (_isUpdating) {
+      Server.instance.updateReport(widget.report.rid, _content).then((value) {
+        if (value.success) {
+          Fluttertoast.showToast(msg: StringConstant.updateReportSuccess);
+          Navigator.pop(context);
+        } else {
+          buildErrorBottomSheet(context, value.msg);
+        }
+      });
+    } else {
+      Server.instance.createReport(_isWeekly, _content).then((value) {
+        if (value.success) {
+          Fluttertoast.showToast(msg: StringConstant.postReportSuccess);
+          Navigator.pop(context);
+        } else {
+          buildErrorBottomSheet(context, value.msg);
+        }
+      });
+    }
   }
 
   @override
   void initState() {
-    _textEditingController = TextEditingController();
+    if (widget.report != null) {
+      _textEditingController = TextEditingController.fromValue(TextEditingValue(
+          text: widget.report.message,
+          selection: TextSelection.fromPosition(TextPosition(
+              affinity: TextAffinity.downstream,
+              offset: widget.report.message.length))));
+      _isWeekly == widget.report.isWeek;
+      _isUpdating = true;
+    } else {
+      _textEditingController = TextEditingController();
+    }
     super.initState();
   }
 
@@ -119,6 +145,9 @@ class ReportPostPageState extends State<ReportPostPageWidget> {
                   border: Border.all(color: ColorConstant.borderGray)),
               child: FlatButton(
                 onPressed: () {
+                  if (_isUpdating) {
+                    return;
+                  }
                   _isWeekly = !_isWeekly;
                   setState(() {});
                 },

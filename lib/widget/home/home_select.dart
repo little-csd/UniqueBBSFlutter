@@ -55,7 +55,7 @@ Widget _wrapData(
     child: MaterialButton(
       onPressed: () {
         if (name == StringConstant.report) {
-          Navigator.of(context).popAndPushNamed(BBSRoute.postReport);
+          Navigator.of(context).popAndPushNamed(BBSRoute.postReport, arguments: null);
           return;
         }
         Fluttertoast.showToast(msg: StringConstant.notImpl);

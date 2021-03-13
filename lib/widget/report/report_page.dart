@@ -13,11 +13,6 @@ const _yearListIconSize = 17.0;
 const _yearListIconTextGap = 4.0;
 const _itemListVerticalPadding = 20.0;
 const _itemListHorizonPadding = 5.0;
-const _dayHighPosition = 8;
-const _dayLowPosition = 9;
-const _monthHighPosition = 5;
-const _monthLowPosition = 6;
-const _monthText = '月';
 
 class ReportPageWidget extends StatefulWidget {
   @override
@@ -70,7 +65,7 @@ class ReportPageState extends State<StatefulWidget> {
           IconButton(
               icon: SvgPicture.asset(SvgIcon.postReport),
               onPressed: () {
-                Navigator.pushNamed(context, BBSRoute.postReport);
+                Navigator.of(context).pushNamed(BBSRoute.postReport, arguments: null);
               }),
         ],
         title: Text(
@@ -125,15 +120,7 @@ class ReportPageState extends State<StatefulWidget> {
               _itemListVerticalPadding,
               _itemListHorizonPadding,
             ),
-            child: ReportItem(
-              day: item.createDate[_dayHighPosition] +
-                  item.createDate[_dayLowPosition],
-              month: item.createDate[_monthHighPosition] +
-                  item.createDate[_monthLowPosition] +
-                  _monthText,
-              reportContent: item.message,
-              isWeekly: item.isWeek,
-            ));
+            child: ReportItem(item));
       },
     );
   }
