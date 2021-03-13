@@ -36,6 +36,8 @@ class Repo {
 
   get localPath => _localPath;
 
+  getPath(String type, String name) => '$_localPath/$type/$name';
+
   String uid = ''; // 当前用户的 uid
   User me;
   final UserModel userModel = UserModel();

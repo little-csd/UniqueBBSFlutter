@@ -13,6 +13,7 @@ import 'package:UniqueBBS/widget/common/common_popup_input_widget.dart';
 import 'package:UniqueBBS/widget/common/custom_fab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -283,9 +284,27 @@ Widget _buildBody(ScrollController controller, PostModel model) {
           if (index == 0) {
             // 帖子主体
             String text = model.getFirstPost()?.post?.message;
-            return Container(
-              margin: EdgeInsets.only(bottom: _textOffset),
-              child: Text(text == null ? "" : text, style: _mainTextStyle),
+            return Markdown(
+              data: text ?? '',
+              imageBuilder: (uri, title, alt) {
+                if (uri.scheme == StringConstant.uniqueScheme) {
+                  final file = model.getAttachData(uri.host);
+                  if (file != null) {
+                    final image = Image.file(file);
+                    if (image != null) return image;
+                  }
+                } else if (uri.scheme == StringConstant.networkProtocol) {
+                  return Image.network(uri.toString());
+                } else {
+                  Fluttertoast.showToast(
+                      msg: 'Not support scheme: ${uri.scheme}');
+                }
+                return Text(uri.toString());
+              },
+              onTapLink: (text, href, title) => launchBrowser(href),
+              shrinkWrap: true,
+              padding: EdgeInsets.only(bottom: _textOffset),
+              physics: BouncingScrollPhysics(),
             );
           } else if (index == 1) {
             // 最新评论这一部分，因为不会变化所以放到 child

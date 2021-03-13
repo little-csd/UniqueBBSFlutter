@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const maxInt = 0x7FFFFFFF;
 
@@ -48,4 +50,12 @@ String getDeltaTime(String time) {
     return "${delta.inMinutes}分钟前";
   else
     return "刚刚";
+}
+
+launchBrowser(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    Fluttertoast.showToast(msg: 'open for $url failed');
+  }
 }

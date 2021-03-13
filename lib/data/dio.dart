@@ -87,6 +87,8 @@ class Server {
   static const _MessageDelete = '/message/delete';
   static const _MessageReadAll = '/message/all/read';
   static const _MessageDeleteAll = '/message/all/delete';
+  // attach url
+  static const _AttachDownload = '/attach/download';
 
   static const NetworkError = '你的网络好像走丢了\n请试试重新连接吧？';
   static const UidError = '找不到用户信息!';
@@ -189,6 +191,22 @@ class Server {
         return NetRsp(false, msg: UnknownError);
       }
       return NetRsp(true, data: img);
+    } catch (e) {
+      String msg = e.toString();
+      Logger.w(_TAG, msg);
+      return NetRsp(false, msg: NetworkError);
+    }
+  }
+
+  Future<NetRsp<void>> attachDownload(String aid, String savePath) async {
+    try {
+      String token = dio.options.headers[HttpHeaders.authorizationHeader];
+      String url = '$_AttachDownload/$aid/$token';
+      Response response = await dio.download(url, savePath);
+      if (response.statusCode != HttpStatus.ok) {
+        return NetRsp(false, msg: NetworkError);
+      }
+      return NetRsp(true);
     } catch (e) {
       String msg = e.toString();
       Logger.w(_TAG, msg);

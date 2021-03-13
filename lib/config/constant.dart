@@ -138,6 +138,8 @@ class StringConstant {
   static const jwtExpired = "jwt expired";
   static const jwtMalformed = "jwt malformed";
   static const notImpl = "此功能尚待开发";
+  static const uniqueScheme = 'unique';
+  static const networkProtocol = 'https';
 }
 
 // 存放资源的一些常量

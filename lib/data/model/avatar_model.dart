@@ -11,6 +11,7 @@ import '../repo.dart';
 /// TODO: 读取某个 image 时做采样处理，防止头像占用过多内存空间
 class AvatarModel extends ChangeNotifier {
   static const _TAG = "AvatarModel";
+  static const _avatarType = 'avatar';
   Map<String, Image> _avatarMap = HashMap();
   Set<String> _pendingSet = HashSet();
 
@@ -37,12 +38,13 @@ class AvatarModel extends ChangeNotifier {
 
   void refresh(String url) {
     final name = url.split('/').last;
-    final savePath = '${Repo.instance.localPath}/$name';
+    final savePath = Repo.instance.getPath(_avatarType, name);
     _findInNetwork(url, savePath, name);
   }
 
   Image _findInLocal(String url, String name) {
-    final savePath = '${Repo.instance.localPath}/$name';
+    // TODO: 更改保存的目录
+    final savePath = Repo.instance.getPath(_avatarType, name);
     final file = File(savePath);
     if (file.existsSync()) {
       final image = Image.file(file);

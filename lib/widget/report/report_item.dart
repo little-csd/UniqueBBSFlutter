@@ -1,6 +1,9 @@
 import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/tool/helper.dart';
 import 'package:UniqueBBS/widget/common/filled_background_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 var _tagWeekly = "WEEKLY";
 var _tagDaily = "DAILY";
@@ -67,7 +70,23 @@ class ReportItem extends Container {
                   ],
                 ),
               ),
-              Expanded(child: Text(reportContent, style: _contentTextStyle)),
+              Expanded(
+                child: Markdown(
+                  data: reportContent ?? '',
+                  imageBuilder: (uri, title, alt) {
+                    if (uri.scheme == StringConstant.networkProtocol) {
+                      return Image.network(uri.toString());
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: 'Not support scheme: ${uri.scheme}');
+                    }
+                    return Text(uri.toString());
+                  },
+                  onTapLink: (text, href, title) => launchBrowser(href),
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                ),
+              ),
             ],
           )
         ],

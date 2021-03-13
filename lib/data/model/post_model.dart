@@ -1,7 +1,11 @@
+import 'dart:collection';
+import 'dart:io';
+
 import 'package:UniqueBBS/config/constant.dart';
 import 'package:UniqueBBS/data/bean/forum/post_data.dart';
 import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
 import 'package:UniqueBBS/data/bean/other/attach_data.dart';
+import 'package:UniqueBBS/data/repo.dart';
 import 'package:UniqueBBS/tool/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -17,6 +21,7 @@ import '../dio.dart';
 /// TODO: 后续添加数据库层缓存 & 处理浏览帖子的时候帖子被删除的情况
 class PostModel extends ChangeNotifier {
   static const _TAG = "PostModel";
+  static const _attachType = "attach";
   ThreadInfo _threadInfo;
   PostData _firstPost;
   List<AttachData> _attachArr;
@@ -26,6 +31,8 @@ class PostModel extends ChangeNotifier {
   int _fetchedPage = 0;
   bool _killed = false;
   bool _fetchComplete = false;
+
+  Map<String, bool> _attachFetchingSet = HashMap(); // attach id 对应的文件是否正在拉取
 
   PostModel(this._threadInfo) : assert(_threadInfo != null);
 
@@ -58,6 +65,23 @@ class PostModel extends ChangeNotifier {
       _fetch();
     }
     return _postData[index];
+  }
+
+  /// TODO: 后续有时间的话, 这里下载的逻辑还是要改下
+  File getAttachData(String aid) {
+    var attaches = getAllAttach();
+    if (attaches == null) return null;
+    for (AttachData attach in attaches) {
+      if (attach.aid == aid) {
+        final savePath = Repo.instance.getPath(_attachType, aid);
+        final file = File(savePath);
+        if (file.existsSync()) return file;
+        Server.instance
+            .attachDownload(aid, savePath)
+            .then((rsp) => notifyListeners());
+      }
+    }
+    return null;
   }
 
   bool canPost() {
