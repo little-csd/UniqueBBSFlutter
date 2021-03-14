@@ -61,17 +61,19 @@ Widget _buildBottomButton(BuildContext context) {
 }
 
 Widget _buildMask() {
-  return Container(
-    height: _bottomMaskHeight,
-    decoration: BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.bottomCenter,
-        end: Alignment.topCenter,
-        stops: [0.0, 1.0],
-        colors: [
-          ColorConstant.backgroundLightPurple,
-          ColorConstant.invisibleWhite,
-        ],
+  return IgnorePointer(
+    child: Container(
+      height: _bottomMaskHeight,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          stops: [0.0, 1.0],
+          colors: [
+            ColorConstant.backgroundLightPurple,
+            ColorConstant.invisibleWhite,
+          ],
+        ),
       ),
     ),
   );

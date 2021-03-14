@@ -1,7 +1,6 @@
 import 'package:UniqueBBS/config/constant.dart';
 import 'package:UniqueBBS/config/route.dart';
 import 'package:UniqueBBS/data/bean/user/user.dart';
-import 'package:UniqueBBS/data/dio.dart';
 import 'package:UniqueBBS/data/model/user_model.dart';
 import 'package:UniqueBBS/data/repo.dart';
 import 'package:UniqueBBS/widget/common/common_avatar.dart';
@@ -24,6 +23,8 @@ import 'package:provider/provider.dart';
 /// 修改密码
 /// 退出登录
 
+// 底部留出空间
+const _bottomOffset = 50.0;
 // 整体
 const _mainHorizontalPadding = 15.0;
 // 通知
@@ -350,6 +351,7 @@ class _HomeMeState extends State<HomeMeWidget> {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
                     horizontal: _mainHorizontalPadding),
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   children: [
                     _buildHeadPortrait(me),
@@ -368,6 +370,7 @@ class _HomeMeState extends State<HomeMeWidget> {
                     _buildChangeInfo(context),
                     Container(height: 10),
                     _buildLogout(context),
+                    Container(height: _bottomOffset),
                   ],
                 ),
               ),
