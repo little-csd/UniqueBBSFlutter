@@ -32,7 +32,7 @@ class PostModel extends ChangeNotifier {
   bool _killed = false;
   bool _fetchComplete = false;
 
-  Map<String, bool> _attachFetchingSet = HashMap(); // attach id 对应的文件是否正在拉取
+  Set<String> _attachFetchingSet = HashSet(); // attach id 对应的文件是否正在拉取
 
   PostModel(this._threadInfo) : assert(_threadInfo != null);
 
@@ -71,14 +71,19 @@ class PostModel extends ChangeNotifier {
   File getAttachData(String aid) {
     var attaches = getAllAttach();
     if (attaches == null) return null;
+    if (_attachFetchingSet.contains(aid)) return null;
+
     for (AttachData attach in attaches) {
       if (attach.aid == aid) {
         final savePath = Repo.instance.getPath(_attachType, aid);
         final file = File(savePath);
         if (file.existsSync()) return file;
-        Server.instance
-            .attachDownload(aid, savePath)
-            .then((rsp) => notifyListeners());
+        _attachFetchingSet.add(aid);
+        Server.instance.attachDownload(aid, savePath).then((rsp) {
+          _attachFetchingSet.remove(aid);
+          if (_killed) return;
+          notifyListeners();
+        });
       }
     }
     return null;

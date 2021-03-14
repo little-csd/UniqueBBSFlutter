@@ -32,20 +32,20 @@ const _monthTextStyle = TextStyle(
 );
 
 class ReportItem extends StatelessWidget {
-  Report data;
-  String _year;
-  String _month;
-  String _day;
-  String _reportContent;
-  bool _isWeekly;
+  final Report data;
+  final String _year;
+  final String _month;
+  final String _day;
+  final String _reportContent;
+  final bool _isWeekly;
 
-  ReportItem(this.data) {
-    _year = data.createDate.substring(_yearStartPosition, _yearEndPosition);
-    _day = data.createDate.substring(_dayStartPosition, _dayEndPosition);
-    _month = data.createDate.substring(_monthStartPosition, _monthEndPosition);
-    _reportContent = data.message;
-    _isWeekly = data.isWeek;
-  }
+  ReportItem(this.data)
+      : _year = data.createDate.substring(_yearStartPosition, _yearEndPosition),
+        _day = data.createDate.substring(_dayStartPosition, _dayEndPosition),
+        _month =
+            data.createDate.substring(_monthStartPosition, _monthEndPosition),
+        _reportContent = data.message,
+        _isWeekly = data.isWeek;
 
   @override
   Widget build(BuildContext context) {
@@ -117,36 +117,22 @@ class ReportItem extends StatelessWidget {
               ],
             ),
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 22, right: 27),
-                child: Column(
-                  children: [
-                    Text(_day, style: _dayTextStyle),
-                    Text(_month, style: _monthTextStyle),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Markdown(
-                  data: _reportContent ?? '',
-                  imageBuilder: (uri, title, alt) {
-                    if (uri.scheme == StringConstant.networkProtocol) {
-                      return Image.network(uri.toString());
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: 'Not support scheme: ${uri.scheme}');
-                    }
-                    return Text(uri.toString());
-                  },
-                  onTapLink: (text, href, title) => launchBrowser(href),
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                ),
-              ),
-            ],
+          Expanded(
+            child: Markdown(
+              data: _reportContent ?? '',
+              imageBuilder: (uri, title, alt) {
+                if (uri.scheme == StringConstant.networkProtocol) {
+                  return Image.network(uri.toString());
+                } else {
+                  Fluttertoast.showToast(
+                      msg: 'Not support scheme: ${uri.scheme}');
+                }
+                return Text(uri.toString());
+              },
+              onTapLink: (text, href, title) => launchBrowser(href),
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+            ),
           ),
         ],
       );

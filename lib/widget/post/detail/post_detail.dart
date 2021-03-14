@@ -288,11 +288,15 @@ Widget _buildBody(ScrollController controller, PostModel model) {
               data: text ?? '',
               imageBuilder: (uri, title, alt) {
                 if (uri.scheme == StringConstant.uniqueScheme) {
-                  final file = model.getAttachData(uri.host);
-                  if (file != null) {
-                    final image = Image.file(file);
-                    if (image != null) return image;
-                  }
+                  /// TODO: 这里后面还是新起一个 AttachModel 处理比较好
+                  return Consumer<PostModel>(builder: (context, model, child) {
+                    final file = model.getAttachData(uri.host);
+                    if (file != null) {
+                      final image = Image.file(file);
+                      if (image != null) return image;
+                    }
+                    return Text(uri.toString());
+                  });
                 } else if (uri.scheme == StringConstant.networkProtocol) {
                   return Image.network(uri.toString());
                 } else {
