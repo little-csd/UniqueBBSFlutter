@@ -136,7 +136,7 @@ _buildWeComLoginButton(BuildContext context) => SizedBox(
               fontWeight: FontWeight.bold),
         ),
         onPressed: () {
-          Navigator.pushNamed(context, BBSRoute.pwSet);
+          Fluttertoast.showToast(msg: StringConstant.notImpl);
         },
       ),
     );
