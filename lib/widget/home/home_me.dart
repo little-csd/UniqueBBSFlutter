@@ -288,7 +288,9 @@ Widget _buildChangeInfo(BuildContext context) {
     child: OutlineButton(
       color: ColorConstant.backgroundBlack,
       onPressed: () {
-        Fluttertoast.showToast(msg: StringConstant.notImpl);
+        //Fluttertoast.showToast(msg: StringConstant.notImpl);
+        Navigator.pushNamed(context, BBSRoute.userInfoUpdate);
+
       },
       shape: _buttonRoundedBorder,
       child: Padding(

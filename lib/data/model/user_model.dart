@@ -53,4 +53,6 @@ class UserModel extends ChangeNotifier {
     _userMap.clear();
     notifyListeners();
   }
+
 }
+

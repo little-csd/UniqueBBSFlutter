@@ -1,6 +1,7 @@
 import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
 import 'package:UniqueBBS/data/bean/forum/thread.dart';
 import 'package:UniqueBBS/data/bean/report/report.dart';
+import 'package:UniqueBBS/widget/home/check/update_user.dart';
 import 'package:UniqueBBS/widget/home/home.dart';
 import 'package:UniqueBBS/widget/home/home_select.dart';
 import 'package:UniqueBBS/widget/login/info_set.dart';
@@ -12,7 +13,7 @@ import 'package:UniqueBBS/widget/report/report_page.dart';
 import 'package:UniqueBBS/widget/report/report_post_page.dart';
 import 'package:flutter/material.dart';
 
-class BBSRoute {
+class  BBSRoute {
   static const main = '/'; // 主页
 
   static const home = 'home'; // 首页
@@ -33,6 +34,7 @@ class BBSRoute {
   static const infoSet = 'infoSet'; // 用户信息设置
 
   static const message = 'message'; // 消息页面
+  static const userInfoUpdate = 'userInfoUpdate';//更新用户信息页面
 
   // TODO: 不需要传参的路由在这里进行声明
   static final routes = {
@@ -42,6 +44,7 @@ class BBSRoute {
     pwSet: PasswordSetWidget(),
     infoSet: InfoSetWidget(),
     reportPage: ReportPageWidget(),
+    userInfoUpdate: UserUpdateWidget(),
   };
 
   // 用来给给所有 route 添加特性
