@@ -233,7 +233,7 @@ class Server {
 
   Future<NetRsp<bool>> updateUser(UserInfo user) async {
     final req = {
-      'studentId': user.studentID,
+      'studentID': user.studentID,
       'dormitory': user.dormitory,
       'qq': user.qq,
       'wechat': user.wechat,

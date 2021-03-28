@@ -19,6 +19,7 @@ class ColorConstant {
   static const textGreyForNoComment = Color(0xFFE1DDF7);
   static const textPurpleForReply = Color(0xFF6B6BA1);
   static const textPurpleForUpdate = Color(0xFF7966FF);
+  static const textGreyForUpdate = Color(0xFF555555);
 
   // 前景色/背景色颜色常量
   static const primaryColor = Color(0xFF7966FF);
