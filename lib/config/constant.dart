@@ -92,6 +92,11 @@ class StringConstant {
   static const sendPostFail = '发帖失败: ';
   // 网络异常页
   static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
+  // 个人信息修改页
+  static const saveString = "保存";
+  static const errorPost = '提交失败，是不是网络开小差了?';
+  static const infoWrong = '输入格式有问题，检查检查?';
+  static const successPost = '提交成功!';
   // 登陆页
   static const logo2Line = "UNIQUE\nSTUDIO";
   static const phoneNumber = "用户名";

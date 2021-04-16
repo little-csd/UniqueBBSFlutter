@@ -12,11 +12,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-/// 更新用户信息界面
+// 更新用户信息界面
 const _textFieldEdge = 16.0;
 const _textFieldCirAngle = 17.0;
 const _saveFontSize = 15.0;
-//用户更新信息最长字数
+// 用户更新信息最长字数
 const _maxSignaLength = 99;
 const _maxPhoneLength = 11;
 const _maxWechatLength = 20;
@@ -25,13 +25,18 @@ const _regEmail =
     r'^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$';
 // 手机号验证暂时不支持国外号码
 const _regPhone = r'^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$';
-const _saveString = "保存";
-const _errorPost = '提交失败，是不是网络开小差了?';
-const _infoWrong = '输入格式有问题，检查检查？';
-const _successPost = '提交成功！';
-//
-const _inputTextStyle = TextStyle(fontSize: 15.0,fontWeight: FontWeight.bold,color: ColorConstant.textGreyForUpdate);
-const _barTitleTextStyle = TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold,color: ColorConstant.textGreyForUpdate);
+
+// 字体样式
+const _inputTextStyle = TextStyle(
+    fontSize: 15.0,
+    fontWeight: FontWeight.bold,
+    color: ColorConstant.textGreyForUpdate,
+);
+const _barTitleTextStyle = TextStyle(
+  fontSize: 18.0,
+  fontWeight: FontWeight.bold,
+  color: ColorConstant.textGreyForUpdate,
+);
 
 class UserUpdateWidget extends StatefulWidget {
   @override
@@ -65,7 +70,7 @@ class _UserUpdateWidgetState extends State<UserUpdateWidget> {
               User me = userModel.find(Repo.instance.uid);
               return TextButton(
                 child: Text(
-                  _saveString,
+                  StringConstant.saveString,
                   style: TextStyle(
                     fontSize: _saveFontSize,
                     fontWeight: FontWeight.bold,
@@ -73,42 +78,7 @@ class _UserUpdateWidgetState extends State<UserUpdateWidget> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                onPressed: () {
-                  //判断信息是否格式正确
-                  if (_isInfoValid(
-                      _emailTextController.text, _userMobileController.text)) {
-                    // TODO 应当弃用这种方式保存
-                    var _tempMobile = me.user.mobile;
-                    var _tempWechat = me.user.wechat;
-                    var _tempEmail =  me.user.email;
-                    var _tempSigna = me.user.signature;
-
-                    me.user.mobile = _userMobileController.text;
-                    me.user.email = _emailTextController.text;
-                    me.user.wechat = _weChatTextController.text;
-                    me.user.signature = _signTextController.text;
-                    /// TODO : 更新重置界面
-                    Server.instance.updateUser(me.user).then((rsp) {
-                      if (rsp.success) {
-                        Fluttertoast.showToast(msg: _successPost);
-                        //更新返回后的userModel
-                        userModel.put(Repo.instance.uid, me);
-                        Navigator.pop(context);
-                      } else {
-                        /// 对网络失败后的操作进行还原处理
-                        /// 避免更改model中的数据
-                        Fluttertoast.showToast(msg: _errorPost);
-                        me.user.mobile = _tempMobile;
-                        me.user.email = _tempEmail;
-                        me.user.signature = _tempSigna;
-                        me.user.wechat = _tempWechat;
-                      }
-                    });
-                  } else {
-                    Fluttertoast.showToast(msg: _infoWrong);
-
-                  }
-                },
+                onPressed: () => _checkAndLogin(me, userModel),
               );
             }),
           ),
@@ -123,32 +93,32 @@ class _UserUpdateWidgetState extends State<UserUpdateWidget> {
   _buildUpdateList(BuildContext context) => Consumer<UserModel>(
         builder: (context, userModel, child) {
           User me = userModel.find(Repo.instance.uid);
-
           return Column(
             children: [
               _buildTextField(
                   controller: _signTextController,
                   length: _maxSignaLength,
-                  str: me.user.signature),
-
+                  str: me.user.signature,
+              ),
               Container(height: 11),
               _buildTextField(
                   controller: _userMobileController,
                   length: _maxPhoneLength,
                   str: me.user.mobile,
-                  inputType: TextInputType.phone),
+                  inputType: TextInputType.phone,
+              ),
               Container(height: 11),
-
               _buildTextField(
                   controller: _weChatTextController,
                   length: _maxWechatLength,
-                  str: me.user.wechat),
+                  str: me.user.wechat,
+              ),
               Container(height: 11),
-
               _buildTextField(
                   controller: _emailTextController,
                   length: _maxEmailLength,
-                  str: me.user.email),
+                  str: me.user.email,
+              ),
             ],
           );
         },
@@ -163,7 +133,7 @@ class _UserUpdateWidgetState extends State<UserUpdateWidget> {
     );
   }
 
-  /// 判断输入的邮箱是否合法
+  // 判断输入的邮箱是否合法
   bool _isInfoValid(email, phone) {
     RegExp regEmail = RegExp(_regEmail);
     RegExp regPhone = RegExp(_regPhone);
@@ -171,6 +141,46 @@ class _UserUpdateWidgetState extends State<UserUpdateWidget> {
       return true;
     }
     return false;
+  }
+
+  _checkAndLogin(me, userModel) {
+    if (_isInfoValid(_emailTextController.text, _userMobileController.text)) {
+      // TODO 应当弃用这种方式保存
+      var _tempMobile = me.user.mobile;
+      var _tempWechat = me.user.wechat;
+      var _tempEmail = me.user.email;
+      var _tempSigna = me.user.signature;
+      me.user.mobile = _userMobileController.text;
+      me.user.email = _emailTextController.text;
+      me.user.wechat = _weChatTextController.text;
+      me.user.signature = _signTextController.text;
+      // 发起网络请求
+      _updateUser(
+          me, userModel, _tempMobile, _tempEmail, _tempSigna, _tempWechat);
+    } else {
+      // 格式检验失败
+      Fluttertoast.showToast(msg: StringConstant.infoWrong);
+    }
+  }
+
+  // 格式检验成功发起网络请求
+  _updateUser(me, userModel, _tempMobile, _tempEmail, _tempSigna, _tempWechat) {
+    Server.instance.updateUser(me.user).then((rsp) {
+      if (rsp.success) {
+        Fluttertoast.showToast(msg: StringConstant.successPost);
+        //更新返回后的userModel
+        userModel.put(Repo.instance.uid, me);
+        Navigator.pop(context);
+      } else {
+        /// 对网络失败后的操作进行还原处理
+        /// 避免更改model中的数据
+        Fluttertoast.showToast(msg: StringConstant.errorPost);
+        me.user.mobile = _tempMobile;
+        me.user.email = _tempEmail;
+        me.user.signature = _tempSigna;
+        me.user.wechat = _tempWechat;
+      }
+    });
   }
 }
 
@@ -205,7 +215,7 @@ class _UpdateTextInputFieldState extends State<UpdateTextInputField> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //初始化Textfield默認值
+    //初始化 Textfield 默认值
     _controller.text = str;
   }
 
