@@ -13,26 +13,21 @@ import 'package:UniqueBBS/widget/report/report_page.dart';
 import 'package:UniqueBBS/widget/report/report_post_page.dart';
 import 'package:flutter/material.dart';
 
-class  BBSRoute {
+class BBSRoute {
   static const main = '/'; // 主页
-
   static const home = 'home'; // 首页
   static const information = 'information'; // 首页-情报
   static const forum = 'forum'; // 首页-论坛
   static const search = 'search'; // 首页-搜索
   static const selectPlate = 'select plate';
   static const reportPage = 'report';
-
   static const login = 'login'; // 登录
-
   static const postList = 'postList'; // 帖子列表：首页-情报-通知公告、首页-我的-我的帖子
   static const postDetail = 'postDetail'; // 帖子详情
   static const postReport = 'postReport'; // 发日报
-
   static const pwUpdate = 'pwUpdate'; // 修改密码
   static const pwSet = 'pwSet'; // 设置密码
   static const infoSet = 'infoSet'; // 用户信息设置
-
   static const message = 'message'; // 消息页面
   static const userInfoUpdate = 'userInfoUpdate';//更新用户信息页面
 
