@@ -122,7 +122,7 @@ Widget _buildHead(BuildContext context, double height, Thread thread) {
     ),
     bottom: PreferredSize(
       child: Divider(thickness: _dividerThick),
-      preferredSize: null,
+      preferredSize: Size.fromHeight(0),
     ),
     title: Opacity(
       opacity: _getOpacityByProgress(progress),
