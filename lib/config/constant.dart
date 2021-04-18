@@ -18,6 +18,8 @@ class ColorConstant {
   static const textGreyForComment = Color(0xFFD3CFE9);
   static const textGreyForNoComment = Color(0xFFE1DDF7);
   static const textPurpleForReply = Color(0xFF6B6BA1);
+  static const textPurpleForUpdate = Color(0xFF7966FF);
+  static const textGreyForUpdate = Color(0xFF555555);
 
   // 前景色/背景色颜色常量
   static const primaryColor = Color(0xFF7966FF);
@@ -115,6 +117,11 @@ class StringConstant {
   static const passwordTips = "6-10位数，支持大小写英文字符和数字";
   static const confirmPassword = "确认密码";
   static const complete = "完成";
+  // 个人信息修改页
+  static const saveString = "保存";
+  static const errorPost = '提交失败，是不是网络开小差了?';
+  static const infoWrong = '输入格式有问题，检查检查?';
+  static const successPost = '提交成功!';
   // 修改密码页
   static const changeInfo = "修改我的资料";
   static const changePassword = "修改密码";
