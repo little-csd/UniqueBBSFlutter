@@ -14,6 +14,18 @@ const _listCacheField = 100.0;
 const _perPageCount = 20;
 const _noDataSize = 200.0;
 const _noDataPadding = 200.0;
+const _userImgSize = 50.0;
+
+const _titleStyle = TextStyle(
+  color: ColorConstant.textBlack,
+  fontSize: 16,
+  fontWeight: FontWeight.bold,
+);
+const _subtitleStyle = TextStyle(
+  color: ColorConstant.textGrey,
+  fontSize: 13,
+  fontWeight: FontWeight.bold,
+);
 
 class SearchPage extends StatefulWidget {
   @override
@@ -25,7 +37,7 @@ class _SearchPageState extends State<SearchPage> {
   List<PostSearchData> res = [];
   TextEditingController controller;
   ScrollController scrollController;
-  PostSearch searchRes = null;
+  PostSearch searchRes;
   @override
   void initState() {
     initController();
@@ -68,28 +80,29 @@ class _SearchPageState extends State<SearchPage> {
       children: [
         Expanded(
           child: Padding(
-            padding: EdgeInsets.only(left: 16,right: 16),
+            padding: EdgeInsets.only(left: 16, right: 16),
             child: TextField(
+              cursorColor: ColorConstant.textPurpleForUpdate,
               style: TextStyle(
                 color: ColorConstant.textBlack,
                 fontSize: _searchSize,
               ),
+              onSubmitted: _searchRequest,
               maxLength: _maxInputLength,
               controller: controller,
               decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
+                contentPadding: EdgeInsets.symmetric(horizontal: 12),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
               ),
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 30,right: 15),
+          padding: const EdgeInsets.only(bottom: 30, right: 15),
           child: GestureDetector(
-            onTap: _searchRequest,
+            onTap: () => Navigator.pop(context),
             child: Text(
               StringConstant.cancel,
               style: TextStyle(
@@ -114,12 +127,13 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  _searchRequest() {
+  // 每次请求后都要置空结果
+  _searchRequest(str) {
     keyWord = controller.text;
+    res = [];
     Future<NetRsp<PostSearch>> search = Server().postSearch(keyWord, 1);
     search.then((value) {
       setState(() {
-        res = [];
         searchRes = value.data;
         res.addAll(searchRes.result);
       });
@@ -127,15 +141,26 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _buildSingleItem(PostSearchData data) {
-    return ListTile(
-      title: Text(data.subject),
-      leading: ClipOval(
-          child: Image.network(
-        data.user.avatar,
-        height: 50,
-        width: 50,
-      )),
-      subtitle: Text('${data.user.username} ${data.createDate} 发布'),
+    return InkWell(
+      onTap: (){
+        Fluttertoast.showToast(msg: StringConstant.notImpl);
+      },
+      child: ListTile(
+        title: Text(
+          data.subject,
+          style: _titleStyle,
+        ),
+        leading: ClipOval(
+            child: Image.network(
+          data.user.avatar,
+          height: _userImgSize,
+          width: _userImgSize,
+        )),
+        subtitle: Text(
+          '${data.user.username} ${data.createDate.substring(0, 10)} 发布',
+          style: _subtitleStyle,
+        ),
+      ),
     );
   }
 
