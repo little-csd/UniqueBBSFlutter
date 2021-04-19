@@ -7,6 +7,7 @@ import 'package:UniqueBBS/widget/home/home_select.dart';
 import 'package:UniqueBBS/widget/login/info_set.dart';
 import 'package:UniqueBBS/widget/login/login.dart';
 import 'package:UniqueBBS/widget/login/pw_set.dart';
+import 'package:UniqueBBS/widget/login/search/search.dart';
 import 'package:UniqueBBS/widget/post/detail/post_detail.dart';
 import 'package:UniqueBBS/widget/post/thread_page.dart';
 import 'package:UniqueBBS/widget/report/report_page.dart';
@@ -34,7 +35,7 @@ class BBSRoute {
   static const infoSet = 'infoSet'; // 用户信息设置
 
   static const message = 'message'; // 消息页面
-  static const userInfoUpdate = 'userInfoUpdate';
+  static const userInfoUpdate = 'userInfoUpdate'; // 修改个人信息界面
 
   // TODO: 不需要传参的路由在这里进行声明
   static final routes = {
@@ -45,6 +46,7 @@ class BBSRoute {
     infoSet: InfoSetWidget(),
     reportPage: ReportPageWidget(),
     userInfoUpdate: UserUpdateWidget(),
+    search: SearchPage(),
   };
 
   // 用来给给所有 route 添加特性

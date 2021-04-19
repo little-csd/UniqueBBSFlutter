@@ -1,4 +1,5 @@
 import 'package:UniqueBBS/config/constant.dart';
+import 'package:UniqueBBS/config/route.dart';
 import 'package:UniqueBBS/widget/home/home_forum.dart';
 import 'package:UniqueBBS/widget/home/home_info.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class _HomeBodyState extends State<HomeBodyWidget>
                     IconButton(
                       icon: SvgPicture.asset(SvgIcon.search),
                       onPressed: () {
-                        Fluttertoast.showToast(msg: StringConstant.notImpl);
+                        Navigator.pushNamed(context, BBSRoute.search);
                       },
                     ),
                     IconButton(

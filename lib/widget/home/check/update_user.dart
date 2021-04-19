@@ -37,7 +37,6 @@ const _barTitleTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
   color: ColorConstant.textGreyForUpdate,
 );
-
 class UserUpdateWidget extends StatefulWidget {
   @override
   _UserUpdateWidgetState createState() => _UserUpdateWidgetState();

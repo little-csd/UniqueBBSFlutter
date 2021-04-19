@@ -20,6 +20,7 @@ class ColorConstant {
   static const textPurpleForReply = Color(0xFF6B6BA1);
   static const textPurpleForUpdate = Color(0xFF7966FF);
   static const textGreyForUpdate = Color(0xFF555555);
+  static const textGreyForSearch = Color(0xFFABABAC);
 
   // 前景色/背景色颜色常量
   static const primaryColor = Color(0xFF7966FF);
@@ -141,6 +142,11 @@ class StringConstant {
   static const loginSuccess = '登录成功!';
   // hero tag
   static const selectPlateHero = "select plate";
+  // 搜索界面
+  static const cancel = '取消';
+  static const notFindStrOne = '找不到你想搜索的...';
+  static const notFindStrTwo = '试试换个关键词吧';
+  static const resAllFind = '已经到底啦';
   // 其他
   static const noQuote = "-1";
   static const threadClosed = "帖子已关闭!";
@@ -193,6 +199,8 @@ class SvgIcon {
   static const error = _base + "/no_phone_number.svg";
   // 选择发帖板块页
   static const selectPlateIcon = _base + '/select_plate_icon.svg';
+  // 搜索
+  static const noSearchRes = _base + '/no_phone_number.svg';
   // 其他
   static const defaultAvatar = _base + '/default_avatar.svg';
 }
