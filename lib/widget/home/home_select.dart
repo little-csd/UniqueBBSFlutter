@@ -135,7 +135,7 @@ class HomeSelectWidget extends StatefulWidget {
 
 class _HomeSelectState extends State<HomeSelectWidget>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {

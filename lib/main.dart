@@ -10,9 +10,9 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => Repo.instance.userModel),
-        ChangeNotifierProvider(create: (context) => Repo.instance.forumModel),
-        ChangeNotifierProvider(create: (context) => Repo.instance.avatarModel),
+        ChangeNotifierProvider(create: (context) => Repo.instance!.userModel),
+        ChangeNotifierProvider(create: (context) => Repo.instance!.forumModel),
+        ChangeNotifierProvider(create: (context) => Repo.instance!.avatarModel),
       ],
       child: UniqueStudioApp(),
     ),

@@ -4,24 +4,24 @@ part 'user_info.g.dart';
 
 @JsonSerializable()
 class UserInfo {
-  int joinTime;
-  String lastLogin;
-  String qq;
-  bool isAdmin;
-  String avatar;
-  String email;
-  String username;
-  int spaceQuota;
-  String dormitory;
-  String signature;
-  String id;
-  String className;
-  String wechat;
-  String mobile;
-  int threads;
-  String major;
-  String studentID;
-  bool active;
+  int? joinTime;
+  String? lastLogin;
+  String? qq;
+  bool? isAdmin;
+  String? avatar;
+  String? email;
+  String? username;
+  int? spaceQuota;
+  String? dormitory;
+  String? signature;
+  String? id;
+  String? className;
+  String? wechat;
+  String? mobile;
+  int? threads;
+  String? major;
+  String? studentID;
+  bool? active;
 
   factory UserInfo.fromJson(Map<String, dynamic> json) =>
       _$UserInfoFromJson(json);

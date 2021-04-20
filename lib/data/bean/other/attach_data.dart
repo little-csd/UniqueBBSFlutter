@@ -4,14 +4,14 @@ part 'attach_data.g.dart';
 
 @JsonSerializable()
 class AttachData {
-  String originalName;
+  String? originalName;
   @JsonKey(name: 'filesize')
-  int fileSize;
-  String createDate;
-  String fileName;
+  int? fileSize;
+  String? createDate;
+  String? fileName;
   @JsonKey(name: 'id')
-  String aid;
-  int downloads;
+  String? aid;
+  int? downloads;
 
   factory AttachData.fromJson(Map<String, dynamic> json) =>
       _$AttachDataFromJson(json);

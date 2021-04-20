@@ -8,11 +8,11 @@ part of 'message_item.dart';
 
 MessageItem _$MessageItemFromJson(Map<String, dynamic> json) {
   return MessageItem(
-    json['createDate'] as String,
-    json['url'] as String,
-    json['id'] as String,
-    json['isRead'] as bool,
-    json['message'] as String,
+    json['createDate'] as String?,
+    json['url'] as String?,
+    json['id'] as String?,
+    json['isRead'] as bool?,
+    json['message'] as String?,
   );
 }
 

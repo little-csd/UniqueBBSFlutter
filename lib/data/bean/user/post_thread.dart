@@ -6,8 +6,8 @@ part 'post_thread.g.dart';
 
 @JsonSerializable()
 class PostThread {
-  PostInfo post;
-  ThreadInfo thread;
+  PostInfo? post;
+  ThreadInfo? thread;
 
   factory PostThread.fromJson(Map<String, dynamic> json) =>
       _$PostThreadFromJson(json);

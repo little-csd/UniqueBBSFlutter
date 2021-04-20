@@ -54,7 +54,7 @@ _buildLimitWidthText(String text, TextStyle style, double maxWidth) =>
         ));
 
 class ThreadItem extends StatelessWidget {
-  final String subject;
+  final String? subject;
   final String message;
 
   final ThreadInfo data;
@@ -65,26 +65,26 @@ class ThreadItem extends StatelessWidget {
       : subject = data.subject,
         message = getDayString(data.createDate) +
             " " +
-            creator.username +
+            creator.username! +
             " " +
             _publish;
 
   /// 计算标题需要留的宽度(减去 hot/new/top 等标识)
   double computeTextOffset() {
     final count =
-        (data.diamond ? 1 : 0) + (data.top > 0 ? 1 : 0) + (isNew ? 1 : 0);
+        (data.diamond! ? 1 : 0) + (data.top! > 0 ? 1 : 0) + (isNew ? 1 : 0);
     return count * _textWidgetWidth;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!data.active) return Container();
+    if (!data.active!) return Container();
     final maxTextWidth = MediaQuery.of(context).size.width - 150;
     double maxTitleWidth = maxTextWidth - computeTextOffset();
     return GestureDetector(
       onTap: () {
         Thread thread = Thread(data, creator, []);
-        print(thread.thread.toJson());
+        print(thread.thread!.toJson());
         Navigator.of(context).pushNamed(BBSRoute.postDetail, arguments: thread);
       },
       child: Row(
@@ -99,9 +99,9 @@ class ThreadItem extends StatelessWidget {
               children: <Widget>[
                 Row(children: <Widget>[
                   _buildLimitWidthText(
-                      subject, _subjectTextStyle, maxTitleWidth),
-                  if (data.top > 0) _buildTextWidget(_topText),
-                  if (data.diamond) _buildTextWidget(_hotText),
+                      subject!, _subjectTextStyle, maxTitleWidth),
+                  if (data.top! > 0) _buildTextWidget(_topText),
+                  if (data.diamond!) _buildTextWidget(_hotText),
                   if (isNew) _buildTextWidget(_newText),
                 ]),
                 _buildLimitWidthText(message, _messageTextStyle, maxTextWidth),

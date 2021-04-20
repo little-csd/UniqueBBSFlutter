@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'normal_bottom_sheet.dart';
 
-buildErrorBottomSheet(BuildContext context, String content) {
+buildErrorBottomSheet(BuildContext context, String? content) {
   showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return _buildErrorBottomSheetBody(context, content);
+        return _buildErrorBottomSheetBody(context, content!);
       });
 }
 

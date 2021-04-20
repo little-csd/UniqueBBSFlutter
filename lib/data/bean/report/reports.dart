@@ -6,8 +6,8 @@ part 'reports.g.dart';
 @JsonSerializable()
 class Reports {
   @JsonKey(name: 'list')
-  List<Report> reports;
-  int count;
+  List<Report?>? reports;
+  int? count;
 
   factory Reports.fromJson(Map<String, dynamic> json) =>
       _$ReportsFromJson(json);

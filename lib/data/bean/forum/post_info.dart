@@ -4,13 +4,13 @@ part 'post_info.g.dart';
 
 @JsonSerializable()
 class PostInfo {
-  String createDate;
-  bool isFirst;
-  String quote;
+  String? createDate;
+  bool? isFirst;
+  String? quote;
   @JsonKey(name: 'id')
-  String pid;
-  String message;
-  bool active;
+  String? pid;
+  String? message;
+  bool? active;
 
   factory PostInfo.fromJson(Map<String, dynamic> json) =>
       _$PostInfoFromJson(json);

@@ -7,9 +7,9 @@ part 'thread.g.dart';
 
 @JsonSerializable()
 class Thread {
-  ThreadInfo thread;
-  UserInfo user;
-  List<PostInfo> lastReply;
+  ThreadInfo? thread;
+  UserInfo? user;
+  List<PostInfo?>? lastReply;
 
   factory Thread.fromJson(Map<String, dynamic> json) => _$ThreadFromJson(json);
   Map<String, dynamic> toJson() => _$ThreadToJson(this);

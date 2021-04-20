@@ -11,7 +11,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     json['user'] == null
         ? null
         : UserInfo.fromJson(json['user'] as Map<String, dynamic>),
-    (json['group'] as List)
+    (json['group'] as List?)
         ?.map((e) =>
             e == null ? null : GroupInfo.fromJson(e as Map<String, dynamic>))
         ?.toList(),

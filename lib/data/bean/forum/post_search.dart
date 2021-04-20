@@ -5,8 +5,8 @@ part 'post_search.g.dart';
 
 @JsonSerializable()
 class PostSearch {
-  List<PostSearchData> result;
-  int count;
+  List<PostSearchData?>? result;
+  int? count;
 
   factory PostSearch.fromJson(Map<String, dynamic> json) =>
       _$PostSearchFromJson(json);

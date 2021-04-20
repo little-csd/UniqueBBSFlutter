@@ -8,7 +8,7 @@ part of 'thread_list.dart';
 
 ThreadList _$ThreadListFromJson(Map<String, dynamic> json) {
   return ThreadList(
-    (json['list'] as List)
+    (json['list'] as List?)
         ?.map((e) =>
             e == null ? null : Thread.fromJson(e as Map<String, dynamic>))
         ?.toList(),

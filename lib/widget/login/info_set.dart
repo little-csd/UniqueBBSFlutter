@@ -82,6 +82,7 @@ _buildInfoSetTextField(String hint) => FilledTextField(
       radius: Radius.circular(50),
       filledColor: ColorConstant.inputPurple,
       hintColor: ColorConstant.inputHintPurple,
+      obscureText: false,
     );
 
 _buildLogoText(String text) => Text(

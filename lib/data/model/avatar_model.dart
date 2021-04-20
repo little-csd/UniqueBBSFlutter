@@ -15,7 +15,7 @@ class AvatarModel extends ChangeNotifier {
   Map<String, Image> _avatarMap = HashMap();
   Set<String> _pendingSet = HashSet();
 
-  void _put(String name, Image img) {
+  void _put(String name, Image? img) {
     if (img == null) {
       Logger.w(_TAG, 'Put a null img for $name');
       return;
@@ -24,10 +24,10 @@ class AvatarModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Image find(String path) {
+  Image? find(String? path) {
     if (path == null) return null;
     final name = path.split('/').last;
-    Image image = _avatarMap[name];
+    Image? image = _avatarMap[name];
 
     /// 这里判断 pendingSet 是防止下载中还去读取文件，导致读取异常
     if (image == null && !_pendingSet.contains(name)) {
@@ -38,13 +38,13 @@ class AvatarModel extends ChangeNotifier {
 
   void refresh(String url) {
     final name = url.split('/').last;
-    final savePath = Repo.instance.getPath(_avatarType, name);
+    final savePath = Repo.instance!.getPath(_avatarType, name);
     _findInNetwork(url, savePath, name);
   }
 
-  Image _findInLocal(String url, String name) {
+  Image? _findInLocal(String url, String name) {
     // TODO: 更改保存的目录
-    final savePath = Repo.instance.getPath(_avatarType, name);
+    final savePath = Repo.instance!.getPath(_avatarType, name);
     final file = File(savePath);
     if (file.existsSync()) {
       final image = Image.file(file);
@@ -60,7 +60,7 @@ class AvatarModel extends ChangeNotifier {
   void _findInNetwork(String url, String savePath, String name) async {
     if (_pendingSet.contains(name)) return;
     _pendingSet.add(name);
-    Server.instance.avatar(url, savePath).then((rsp) {
+    Server.instance!.avatar(url, savePath).then((rsp) {
       if (rsp.success) {
         _pendingSet.remove(name);
         _put(name, rsp.data);

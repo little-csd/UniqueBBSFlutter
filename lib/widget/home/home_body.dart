@@ -18,7 +18,7 @@ class HomeBodyWidget extends StatefulWidget {
 
 class _HomeBodyState extends State<HomeBodyWidget>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  TabController? _tabController;
 
   @override
   void initState() {

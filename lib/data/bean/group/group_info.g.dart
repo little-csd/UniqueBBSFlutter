@@ -8,10 +8,10 @@ part of 'group_info.dart';
 
 GroupInfo _$GroupInfoFromJson(Map<String, dynamic> json) {
   return GroupInfo(
-    json['id'] as String,
-    json['key'] as int,
-    json['name'] as String,
-    json['color'] as String,
+    json['id'] as String?,
+    json['key'] as int?,
+    json['name'] as String?,
+    json['color'] as String?,
   );
 }
 

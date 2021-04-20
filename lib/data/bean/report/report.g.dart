@@ -8,10 +8,10 @@ part of 'report.dart';
 
 Report _$ReportFromJson(Map<String, dynamic> json) {
   return Report(
-    json['id'] as String,
-    json['message'] as String,
-    json['createDate'] as String,
-    json['isWeek'] as bool,
+    json['id'] as String?,
+    json['message'] as String?,
+    json['createDate'] as String?,
+    json['isWeek'] as bool?,
   );
 }
 

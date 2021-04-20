@@ -27,7 +27,7 @@ String generateMD5(String input) {
   return md5.convert(utf8.encode(input)).toString();
 }
 
-String getDayString(String str) {
+String getDayString(String? str) {
   if (str == null) return "";
   final date = DateTime.parse(str);
   if (date == null) return "";
@@ -35,7 +35,7 @@ String getDayString(String str) {
 }
 
 // 用于自动处理 x 小时前这样的数据
-String getDeltaTime(String time) {
+String getDeltaTime(String? time) {
   if (time == null) return "";
   final date = DateTime.parse(time);
   if (date == null) return "";

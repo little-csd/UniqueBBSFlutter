@@ -12,9 +12,9 @@ const _reqInterval = 5;
 /// 使用 dio.dart 中的接口 user(uid) 获取
 class UserModel extends ChangeNotifier {
   static const _TAG = "UserModel";
-  Map<String, User> _userMap = HashMap();
+  Map<String?, User> _userMap = HashMap();
 
-  void put(String uid, User user) {
+  void put(String? uid, User? user) {
     if (user == null) {
       Logger.w(_TAG, 'Put a null user for uid: $uid');
       return;
@@ -28,19 +28,19 @@ class UserModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  User find(String uid) {
-    final User user = _userMap[uid];
+  User? find(String? uid) {
+    final User? user = _userMap[uid];
     if (user == null) {
       pull(uid);
     }
     return user;
   }
 
-  void pull(String uid) {
+  void pull(String? uid) {
     if (_userMap[uid] != null) {
       return;
     }
-    Server.instance.user(uid).then((rsp) {
+    Server.instance!.user(uid).then((rsp) {
       if (rsp.success) {
         put(uid, rsp.data);
       } else {

@@ -8,13 +8,13 @@ class FilledTextField extends TextField {
       this.filledColor,
       this.hintColor,
       this.onChanged,
-      this.obscureText});
+      required this.obscureText});
 
-  final Radius radius;
-  final String hint;
-  final Color filledColor;
-  final Color hintColor;
-  final ValueChanged<String> onChanged;
+  final Radius? radius;
+  final String? hint;
+  final Color? filledColor;
+  final Color? hintColor;
+  final ValueChanged<String>? onChanged;
   final bool obscureText;
 
   @override
@@ -28,11 +28,11 @@ class FilledTextField extends TextField {
   InputDecoration get decoration => InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: ColorConstant.inputPurple),
-          borderRadius: BorderRadius.all(radius),
+          borderRadius: BorderRadius.all(radius!),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: ColorConstant.inputPurple),
-          borderRadius: BorderRadius.all(radius),
+          borderRadius: BorderRadius.all(radius!),
         ),
         filled: true,
         fillColor: filledColor,

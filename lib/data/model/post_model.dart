@@ -23,9 +23,9 @@ class PostModel extends ChangeNotifier {
   static const _TAG = "PostModel";
   static const _attachType = "attach";
   ThreadInfo _threadInfo;
-  PostData _firstPost;
-  List<AttachData> _attachArr;
-  List<PostData> _postData = List();
+  PostData? _firstPost;
+  List<AttachData?>? _attachArr;
+  List<PostData?>? _postData = [];
 
   bool _fetching = false;
   int _fetchedPage = 0;
@@ -38,17 +38,17 @@ class PostModel extends ChangeNotifier {
 
   // 目前 post model 里面存在多少个 post 信息
   int postCount() {
-    return _postData.length;
+    return _postData!.length;
   }
 
-  PostData getFirstPost() {
+  PostData? getFirstPost() {
     if (_firstPost == null) {
       _fetch();
     }
     return _firstPost;
   }
 
-  List<AttachData> getAllAttach() {
+  List<AttachData?>? getAllAttach() {
     if (_attachArr == null) {
       _fetch();
     }
@@ -57,29 +57,29 @@ class PostModel extends ChangeNotifier {
 
   // 第几个 item(从零开始计)
   // "我的"帖子信息不要调用此接口!
-  PostData getPostData(int index) {
+  PostData? getPostData(int index) {
     // 拉取超过范围，正常情况下不会出现
-    if (index >= _postData.length) return null;
+    if (index >= _postData!.length) return null;
     // 拿最后一个并且还能拉取，则拉取下一页
-    if (index == _postData.length - 1 && !_fetchComplete) {
+    if (index == _postData!.length - 1 && !_fetchComplete) {
       _fetch();
     }
-    return _postData[index];
+    return _postData![index];
   }
 
   /// TODO: 后续有时间的话, 这里下载的逻辑还是要改下
-  File getAttachData(String aid) {
+  File? getAttachData(String aid) {
     var attaches = getAllAttach();
     if (attaches == null) return null;
     if (_attachFetchingSet.contains(aid)) return null;
 
-    for (AttachData attach in attaches) {
-      if (attach.aid == aid) {
-        final savePath = Repo.instance.getPath(_attachType, aid);
+    for (AttachData? attach in attaches) {
+      if (attach!.aid == aid) {
+        final savePath = Repo.instance!.getPath(_attachType, aid);
         final file = File(savePath);
         if (file.existsSync()) return file;
         _attachFetchingSet.add(aid);
-        Server.instance.attachDownload(aid, savePath).then((rsp) {
+        Server.instance!.attachDownload(aid, savePath).then((rsp) {
           _attachFetchingSet.remove(aid);
           if (_killed) return;
           notifyListeners();
@@ -90,14 +90,14 @@ class PostModel extends ChangeNotifier {
   }
 
   bool canPost() {
-    return _threadInfo.active && !_threadInfo.closed;
+    return _threadInfo.active! && !_threadInfo.closed!;
   }
 
   void sendPost(String msg, String quote) {
     if (msg == null || msg.isEmpty || !canPost()) {
       return;
     }
-    Server.instance.threadReply(_threadInfo.tid, msg, quote).then((rsp) {
+    Server.instance!.threadReply(_threadInfo.tid, msg, quote).then((rsp) {
       Fluttertoast.showToast(
           msg: rsp.success
               ? StringConstant.sendPostSuccess
@@ -110,18 +110,18 @@ class PostModel extends ChangeNotifier {
     _fetching = true;
     // 拉取下一页
     Logger.v(_TAG, 'fetching page ${_fetchedPage + 1}');
-    Server.instance
+    Server.instance!
         .postsInThread(_threadInfo.tid, _fetchedPage + 1)
         .then((rsp) {
       if (rsp.success) {
         _fetchedPage++;
         _fetching = false;
-        final data = rsp.data;
+        final data = rsp.data!;
         // 此处 group 传的是空值，可能会有影响
         _firstPost = PostData(data.firstPost, data.threadAuthor, [], null);
-        _attachArr = data.attachArr;
-        _postData.addAll(data.postArr);
-        if (data.postArr.length < HyperParam.pageSize) {
+        _attachArr = data.attachArr!;
+        _postData!.addAll(data.postArr!);
+        if (data.postArr!.length < HyperParam.pageSize) {
           _fetchComplete = true;
         }
         notifyListeners();

@@ -6,8 +6,8 @@ part 'user_thread.g.dart';
 @JsonSerializable()
 class UserThread {
   @JsonKey(name: 'list')
-  List<ThreadInfo> threads;
-  int count;
+  List<ThreadInfo?>? threads;
+  int? count;
 
   factory UserThread.fromJson(Map<String, dynamic> json) =>
       _$UserThreadFromJson(json);

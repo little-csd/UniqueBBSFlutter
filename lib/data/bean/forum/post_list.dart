@@ -10,12 +10,12 @@ part 'post_list.g.dart';
 
 @JsonSerializable()
 class PostList {
-  ThreadInfo threadInfo;
-  UserInfo threadAuthor;
-  PostInfo firstPost;
-  List<PostData> postArr;
-  List<AttachData> attachArr;
-  BasicForum forumInfo;
+  ThreadInfo? threadInfo;
+  UserInfo? threadAuthor;
+  PostInfo? firstPost;
+  List<PostData?>? postArr;
+  List<AttachData?>? attachArr;
+  BasicForum? forumInfo;
 
   factory PostList.fromJson(Map<String, dynamic> json) =>
       _$PostListFromJson(json);

@@ -8,11 +8,11 @@ part of 'basic_forum.dart';
 
 BasicForum _$BasicForumFromJson(Map<String, dynamic> json) {
   return BasicForum(
-    json['name'] as String,
-    json['description'] as String,
-    json['icon'] as String,
-    json['id'] as String,
-    json['threads'] as int,
+    json['name'] as String?,
+    json['description'] as String?,
+    json['icon'] as String?,
+    json['id'] as String?,
+    json['threads'] as int?,
   );
 }
 

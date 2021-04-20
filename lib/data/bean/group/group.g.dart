@@ -14,7 +14,7 @@ Group _$GroupFromJson(Map<String, dynamic> json) {
     json['master'] == null
         ? null
         : UserInfo.fromJson(json['master'] as Map<String, dynamic>),
-    json['count'] as int,
+    json['count'] as int?,
   );
 }
 

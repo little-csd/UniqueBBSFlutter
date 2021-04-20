@@ -8,11 +8,11 @@ part of 'reports.dart';
 
 Reports _$ReportsFromJson(Map<String, dynamic> json) {
   return Reports(
-    (json['list'] as List)
+    (json['list'] as List?)
         ?.map((e) =>
             e == null ? null : Report.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    json['count'] as int,
+    json['count'] as int?,
   );
 }
 

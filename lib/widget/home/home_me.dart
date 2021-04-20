@@ -102,15 +102,15 @@ Widget _buildNotification() {
   );
 }
 
-Widget _buildHeadPortrait(User user) {
+Widget _buildHeadPortrait(User? user) {
   return BBSAvatar(
     user?.user?.avatar,
     radius: _portraitRadius,
   );
 }
 
-Widget _buildName(User me) {
-  final name = me == null ? StringConstant.noData : me.user.username;
+Widget _buildName(User? me) {
+  final name = me == null ? StringConstant.noData : me.user!.username!;
   return Container(
     alignment: Alignment.center,
     child: Text(
@@ -134,13 +134,13 @@ Widget _buildActivePoint() {
 }
 
 /// 此处如果一个人同时位于很多个组，有可能会溢出
-Widget _buildCards(User me) {
+Widget _buildCards(User? me) {
   if (me == null) {
     return Container();
   }
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
-    children: me.groups.map((e) {
+    children: me.groups!.map((e) {
       return Container(
         decoration: BoxDecoration(
           color: ColorConstant.primaryColor,
@@ -153,7 +153,7 @@ Widget _buildCards(User me) {
             horizontal: _cardTextHorizontalPadding,
           ),
           child: Text(
-            e.name,
+            e!.name!,
             style: _cardTextStyle,
           ),
         ),
@@ -176,8 +176,8 @@ Widget _wrapBoxShadow(Widget child, double verticalPadding) {
   );
 }
 
-Widget _buildSignature(User me, bool isOpen, VoidCallback callback) {
-  final signature = me == null ? StringConstant.noData : me.user.signature;
+Widget _buildSignature(User? me, bool isOpen, VoidCallback callback) {
+  final signature = me == null ? StringConstant.noData : me.user!.signature!;
   final widget = Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -239,11 +239,11 @@ Widget _wrapPersonalDataLine(String iconSrc, String type, String data) {
   );
 }
 
-Widget _buildPersonalData(User me) {
+Widget _buildPersonalData(User? me) {
   // 这里将构建一行 UI 所需要的字符串都封装在一起, 后面直接传递给 _wrapPersonalDataLine
-  final mobile = me == null ? StringConstant.noData : me.user.mobile;
-  final weChat = me == null ? StringConstant.noData : me.user.wechat;
-  final email = me == null ? StringConstant.noData : me.user.email;
+  final mobile = me == null ? StringConstant.noData : me.user!.mobile!;
+  final weChat = me == null ? StringConstant.noData : me.user!.wechat!;
+  final email = me == null ? StringConstant.noData : me.user!.email!;
   return _wrapBoxShadow(
     Column(
       children: [
@@ -259,7 +259,7 @@ Widget _buildPersonalData(User me) {
   );
 }
 
-Widget _buildShowMyPost(BuildContext context, User user) {
+Widget _buildShowMyPost(BuildContext context, User? user) {
   return FlatButton(
     minWidth: double.infinity,
     onPressed: () {
@@ -312,7 +312,7 @@ Widget _buildLogout(BuildContext context) {
     padding: EdgeInsets.symmetric(vertical: _buttonTextPadding),
     onPressed: () {
       Navigator.of(context).popAndPushNamed(BBSRoute.login);
-      Server.instance.logout();
+      Server.instance!.logout();
     },
     minWidth: double.infinity,
     shape: _buttonRoundedBorder,
@@ -343,8 +343,8 @@ class _HomeMeState extends State<HomeMeWidget> {
         });
     return Consumer<UserModel>(
       builder: (context, userModel, child) {
-        User me = userModel.find(Repo.instance.uid);
-        Repo.instance.me = me;
+        User? me = userModel.find(Repo.instance!.uid);
+        Repo.instance!.me = me;
         return Column(
           children: [
             _buildNotification(),

@@ -95,7 +95,7 @@ class _HomeState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     // 初始化 server 的 token error callback, 以便 token 出现问题的时候可以回退到登录页
-    Server.instance.tokenErrCallback = () => _tokenErr(context);
+    Server.instance!.tokenErrCallback = () => _tokenErr(context);
     final tapIconCallback = (int index) {
       if (index == _index) return;
       setState(() {

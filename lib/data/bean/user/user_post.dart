@@ -6,8 +6,8 @@ part 'user_post.g.dart';
 @JsonSerializable()
 class UserPost {
   @JsonKey(name: 'list')
-  List<PostThread> posts;
-  int count;
+  List<PostThread?>? posts;
+  int? count;
 
   factory UserPost.fromJson(Map<String, dynamic> json) =>
       _$UserPostFromJson(json);

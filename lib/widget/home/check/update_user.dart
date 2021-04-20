@@ -67,7 +67,7 @@ class _UserUpdateWidgetState extends State<UserUpdateWidget> {
           Padding(
             padding: EdgeInsets.only(right: _textFieldEdge),
             child: Consumer<UserModel>(builder: (context, userModel, child) {
-              User me = userModel.find(Repo.instance.uid);
+              User? me = userModel.find(Repo.instance!.uid);
               return TextButton(
                 child: Text(
                   StringConstant.saveString,
@@ -92,32 +92,32 @@ class _UserUpdateWidgetState extends State<UserUpdateWidget> {
 
   _buildUpdateList(BuildContext context) => Consumer<UserModel>(
         builder: (context, userModel, child) {
-          User me = userModel.find(Repo.instance.uid);
+          User me = userModel.find(Repo.instance!.uid)!;
           return Column(
             children: [
               _buildTextField(
                   controller: _signTextController,
                   length: _maxSignaLength,
-                  str: me.user.signature,
+                  str: me.user!.signature,
               ),
               Container(height: 11),
               _buildTextField(
                   controller: _userMobileController,
                   length: _maxPhoneLength,
-                  str: me.user.mobile,
+                  str: me.user!.mobile,
                   inputType: TextInputType.phone,
               ),
               Container(height: 11),
               _buildTextField(
                   controller: _weChatTextController,
                   length: _maxWechatLength,
-                  str: me.user.wechat,
+                  str: me.user!.wechat,
               ),
               Container(height: 11),
               _buildTextField(
                   controller: _emailTextController,
                   length: _maxEmailLength,
-                  str: me.user.email,
+                  str: me.user!.email,
               ),
             ],
           );
@@ -165,11 +165,11 @@ class _UserUpdateWidgetState extends State<UserUpdateWidget> {
 
   // 格式检验成功发起网络请求
   _updateUser(me, userModel, _tempMobile, _tempEmail, _tempSigna, _tempWechat) {
-    Server.instance.updateUser(me.user).then((rsp) {
+    Server.instance!.updateUser(me.user).then((rsp) {
       if (rsp.success) {
         Fluttertoast.showToast(msg: StringConstant.successPost);
         //更新返回后的userModel
-        userModel.put(Repo.instance.uid, me);
+        userModel.put(Repo.instance!.uid, me);
         Navigator.pop(context);
       } else {
         /// 对网络失败后的操作进行还原处理
@@ -203,7 +203,7 @@ class UpdateTextInputField extends StatefulWidget {
 }
 
 class _UpdateTextInputFieldState extends State<UpdateTextInputField> {
-  final TextEditingController _controller;
+  final TextEditingController? _controller;
   final length;
   final str;
   final inputType;
@@ -216,7 +216,7 @@ class _UpdateTextInputFieldState extends State<UpdateTextInputField> {
     // TODO: implement initState
     super.initState();
     //初始化 Textfield 默认值
-    _controller.text = str;
+    _controller!.text = str;
   }
 
   @override
@@ -235,7 +235,7 @@ class _UpdateTextInputFieldState extends State<UpdateTextInputField> {
               iconSize: 23.0,
               onPressed: () {
                 setState(() {
-                  _controller.clear();
+                  _controller!.clear();
                 });
               },
             ),

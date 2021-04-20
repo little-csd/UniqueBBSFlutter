@@ -16,13 +16,13 @@ import '../repo.dart';
 /// TODO: 后续添加数据库层缓存
 class ThreadModel extends ChangeNotifier {
   static const _TAG = "ThreadModel";
-  List<ThreadInfo> _threadList = List();
-  List<UserInfo> _userList = List();
+  List<ThreadInfo?> _threadList = [];
+  List<UserInfo> _userList = [];
 
   int _fetchedPage = 0;
   bool _fetching = false;
   bool _fetchComplete = false;
-  FullForum _forum;
+  FullForum? _forum;
   bool _killed = false;
 
   // 不要在外部修改这个变量
@@ -35,13 +35,13 @@ class ThreadModel extends ChangeNotifier {
 
   // 第几个 item(从零开始计)
   // "我的"帖子信息不要调用此接口!
-  UserInfo getUserInfo(int index) {
-    if (isMe) return Repo.instance.me?.user;
+  UserInfo? getUserInfo(int index) {
+    if (isMe) return Repo.instance!.me?.user;
     if (index >= _userList.length) return null;
     return _userList[index];
   }
 
-  ThreadInfo getThreadInfo(int index) {
+  ThreadInfo? getThreadInfo(int index) {
     if (index >= _threadList.length) return null;
     return _threadList[index];
   }
@@ -59,11 +59,11 @@ class ThreadModel extends ChangeNotifier {
   }
 
   void _fetchUserThreads() {
-    final uid = Repo.instance.uid;
-    Server.instance.threadsForUser(uid, _fetchedPage + 1).then((rsp) {
+    final uid = Repo.instance!.uid;
+    Server.instance!.threadsForUser(uid, _fetchedPage + 1).then((rsp) {
       if (rsp.success) {
-        _threadList.addAll(rsp.data.threads);
-        if (rsp.data.threads.length < HyperParam.pageSize) {
+        _threadList.addAll(rsp.data!.threads!);
+        if (rsp.data!.threads!.length < HyperParam.pageSize) {
           _fetchComplete = true;
         }
         _onFetchedSuccess();
@@ -75,18 +75,18 @@ class ThreadModel extends ChangeNotifier {
   }
 
   void _fetchForumThreads() {
-    Server.instance.threadsInForum(_forum.fid, _fetchedPage + 1).then((rsp) {
+    Server.instance!.threadsInForum(_forum!.fid, _fetchedPage + 1).then((rsp) {
       if (rsp.success) {
-        final threads = List<ThreadInfo>(), users = List<UserInfo>();
-        rsp.data.threads.forEach((data) {
-          threads.add(data.thread);
-          users.add(data.user);
+        final threads = <ThreadInfo?>[], users = <UserInfo>[] as List<ThreadInfo?>;
+        rsp.data!.threads!.forEach((data) {
+          threads.add(data!.thread);
+          users.add(data.user as ThreadInfo?);
         });
-        if (rsp.data.threads.length < HyperParam.pageSize) {
+        if (rsp.data!.threads!.length < HyperParam.pageSize) {
           _fetchComplete = true;
         }
         _threadList.addAll(threads);
-        _userList.addAll(users);
+        _userList.addAll(users as Iterable<UserInfo>);
         _onFetchedSuccess();
       } else {
         Future.delayed(Duration(seconds: HyperParam.requestInterval))

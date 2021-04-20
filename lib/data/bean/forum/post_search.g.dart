@@ -8,12 +8,12 @@ part of 'post_search.dart';
 
 PostSearch _$PostSearchFromJson(Map<String, dynamic> json) {
   return PostSearch(
-    (json['result'] as List)
+    (json['result'] as List?)
         ?.map((e) => e == null
             ? null
             : PostSearchData.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    json['count'] as int,
+    json['count'] as int?,
   );
 }
 

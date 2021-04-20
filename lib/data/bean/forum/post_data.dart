@@ -7,10 +7,10 @@ part 'post_data.g.dart';
 
 @JsonSerializable()
 class PostData {
-  PostInfo post;
-  UserInfo user;
-  List<GroupInfo> group;
-  PostInfo quote;
+  PostInfo? post;
+  UserInfo? user;
+  List<GroupInfo?>? group;
+  PostInfo? quote;
 
   factory PostData.fromJson(Map<String, dynamic> json) =>
       _$PostDataFromJson(json);

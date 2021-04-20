@@ -12,7 +12,7 @@ const _titleTextStyle = TextStyle(
 );
 
 class ThreadPageWidget extends StatefulWidget {
-  final FullForum forum;
+  final FullForum? forum;
 
   ThreadPageWidget(this.forum);
 
@@ -21,7 +21,7 @@ class ThreadPageWidget extends StatefulWidget {
 }
 
 class ThreadPageState extends State<ThreadPageWidget> {
-  ThreadModel model;
+  ThreadModel? model;
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -42,7 +42,7 @@ class ThreadPageState extends State<ThreadPageWidget> {
   }
 
   _fetchData() {
-    model.fetch();
+    model!.fetch();
   }
 
   @override
@@ -57,7 +57,7 @@ class ThreadPageState extends State<ThreadPageWidget> {
           ),
           backgroundColor: ColorConstant.backgroundLightGrey,
           title: Text(
-            widget.forum != null ? widget.forum.name : StringConstant.myThreads,
+            widget.forum != null ? widget.forum!.name! : StringConstant.myThreads,
             style: _titleTextStyle,
           ),
           centerTitle: true,

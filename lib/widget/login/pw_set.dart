@@ -69,6 +69,7 @@ _buildPwSetTextField(String hint) => FilledTextField(
       radius: Radius.circular(50),
       filledColor: ColorConstant.inputPurple,
       hintColor: ColorConstant.inputHintPurple,
+      obscureText: true,
     );
 
 _buildLogoText(String text) => Text(

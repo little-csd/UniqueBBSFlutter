@@ -49,19 +49,19 @@ class BBSRoute {
 
   // 用来给给所有 route 添加特性
   // 目前只有一个 safeArea
-  static WidgetBuilder generateBuilder(Widget child) {
+  static WidgetBuilder generateBuilder(Widget? child) {
     return (context) => Container(
           color: Colors.white,
           child: SafeArea(
             top: false,
-            child: child,
+            child: child!,
           ),
         );
   }
 
-  static Route buildPage(String path, dynamic arg) {
+  static Route buildPage(String? path, dynamic arg) {
     if (routes.containsKey(path)) {
-      return MaterialPageRoute(builder: generateBuilder(routes[path]));
+      return MaterialPageRoute(builder: generateBuilder(routes[path!]));
     }
     // used for build page with arguments
     switch (path) {
@@ -70,10 +70,10 @@ class BBSRoute {
             builder: generateBuilder(PostDetailWidget(arg as Thread)));
       case postList:
         return MaterialPageRoute(
-            builder: generateBuilder(ThreadPageWidget(arg as FullForum)));
+            builder: generateBuilder(ThreadPageWidget(arg as FullForum?)));
       case postReport:
         return MaterialPageRoute(
-            builder: generateBuilder(ReportPostPageWidget(arg as Report)));
+            builder: generateBuilder(ReportPostPageWidget(arg as Report?)));
     }
     throw Exception("Route $path not found!");
   }

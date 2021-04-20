@@ -36,14 +36,14 @@ class ReportItem extends StatelessWidget {
   final String _year;
   final String _month;
   final String _day;
-  final String _reportContent;
-  final bool _isWeekly;
+  final String? _reportContent;
+  final bool? _isWeekly;
 
   ReportItem(this.data)
-      : _year = data.createDate.substring(_yearStartPosition, _yearEndPosition),
-        _day = data.createDate.substring(_dayStartPosition, _dayEndPosition),
+      : _year = data.createDate!.substring(_yearStartPosition, _yearEndPosition),
+        _day = data.createDate!.substring(_dayStartPosition, _dayEndPosition),
         _month =
-            data.createDate.substring(_monthStartPosition, _monthEndPosition),
+            data.createDate!.substring(_monthStartPosition, _monthEndPosition),
         _reportContent = data.message,
         _isWeekly = data.isWeek;
 
@@ -102,7 +102,7 @@ class ReportItem extends StatelessWidget {
         padding: EdgeInsets.only(right: 10, bottom: 10),
         alignment: Alignment.centerRight,
         child:
-            buildFilledBackgroundText(_isWeekly ? _tagWeekly : _tagDaily, 50),
+            buildFilledBackgroundText(_isWeekly! ? _tagWeekly : _tagDaily, 50),
       );
 
   _buildItemBody() => Row(
@@ -129,7 +129,7 @@ class ReportItem extends StatelessWidget {
                 }
                 return Text(uri.toString());
               },
-              onTapLink: (text, href, title) => launchBrowser(href),
+              onTapLink: (text, href, title) => launchBrowser(href!),
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
             ),

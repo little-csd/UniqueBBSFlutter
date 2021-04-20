@@ -16,8 +16,8 @@ class AppSplashWidget extends StatelessWidget {
   void _init(BuildContext context) {
     // 初始化本地文件存储路径
     getApplicationDocumentsDirectory()
-        .then((dir) => Repo.instance.localPath = dir.path);
-    Server.instance.init().then((errno) {
+        .then((dir) => Repo.instance!.localPath = dir.path);
+    Server.instance!.init().then((errno) {
       if (errno.isEmpty) {
         Navigator.popAndPushNamed(context, BBSRoute.home);
         Fluttertoast.showToast(msg: StringConstant.loginSuccess);

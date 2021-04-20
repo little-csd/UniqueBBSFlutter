@@ -4,16 +4,16 @@ part 'thread_info.g.dart';
 
 @JsonSerializable()
 class ThreadInfo {
-  int postCount;
-  String subject;
-  String createDate;
-  bool closed;
+  int? postCount;
+  String? subject;
+  String? createDate;
+  bool? closed;
   @JsonKey(name: 'id')
-  String tid;
-  String lastDate;
-  bool diamond;
-  int top;
-  bool active;
+  String? tid;
+  String? lastDate;
+  bool? diamond;
+  int? top;
+  bool? active;
 
   factory ThreadInfo.fromJson(Map<String, dynamic> json) =>
       _$ThreadInfoFromJson(json);

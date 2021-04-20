@@ -8,7 +8,7 @@ part of 'group_users.dart';
 
 GroupUsers _$GroupUsersFromJson(Map<String, dynamic> json) {
   return GroupUsers(
-    (json['list'] as List)
+    (json['list'] as List?)
         ?.map((e) =>
             e == null ? null : UserInfo.fromJson(e as Map<String, dynamic>))
         ?.toList(),

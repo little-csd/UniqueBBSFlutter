@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class BBSAvatar extends StatelessWidget {
-  final String url;
+  final String? url;
   final double radius;
 
   BBSAvatar(this.url, {this.radius = 25.0});
@@ -15,8 +15,8 @@ class BBSAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AvatarModel>(
       builder: (context, model, child) {
-        Widget child;
-        if (url == null || url.isEmpty || (child = model.find(url)) == null) {
+        Widget? child;
+        if (url == null || url!.isEmpty || (child = model.find(url)) == null) {
           child = SvgPicture.asset(
             SvgIcon.defaultAvatar,
             height: radius * 2,

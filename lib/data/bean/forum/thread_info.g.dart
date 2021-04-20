@@ -8,15 +8,15 @@ part of 'thread_info.dart';
 
 ThreadInfo _$ThreadInfoFromJson(Map<String, dynamic> json) {
   return ThreadInfo(
-    json['postCount'] as int,
-    json['subject'] as String,
-    json['createDate'] as String,
-    json['closed'] as bool,
-    json['id'] as String,
-    json['lastDate'] as String,
-    json['diamond'] as bool,
-    json['top'] as int,
-    json['active'] as bool,
+    json['postCount'] as int?,
+    json['subject'] as String?,
+    json['createDate'] as String?,
+    json['closed'] as bool?,
+    json['id'] as String?,
+    json['lastDate'] as String?,
+    json['diamond'] as bool?,
+    json['top'] as int?,
+    json['active'] as bool?,
   );
 }
 

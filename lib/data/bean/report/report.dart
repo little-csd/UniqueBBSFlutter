@@ -5,10 +5,10 @@ part 'report.g.dart';
 @JsonSerializable()
 class Report {
   @JsonKey(name: 'id')
-  String rid;
-  String message;
-  String createDate;
-  bool isWeek;
+  String? rid;
+  String? message;
+  String? createDate;
+  bool? isWeek;
 
   factory Report.fromJson(Map<String, dynamic> json) => _$ReportFromJson(json);
   Map<String, dynamic> toJson() => _$ReportToJson(this);

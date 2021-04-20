@@ -8,16 +8,16 @@ part of 'post_search_data.dart';
 
 PostSearchData _$PostSearchDataFromJson(Map<String, dynamic> json) {
   return PostSearchData(
-    json['id'] as String,
-    json['key'] as String,
-    json['subject'] as String,
+    json['id'] as String?,
+    json['key'] as String?,
+    json['subject'] as String?,
     json['user'] == null
         ? null
         : UserInfo.fromJson(json['user'] as Map<String, dynamic>),
-    json['message'] as String,
-    json['postCount'] as int,
-    json['createDate'] as String,
-    json['threadCreateDate'] as String,
+    json['message'] as String?,
+    json['postCount'] as int?,
+    json['createDate'] as String?,
+    json['threadCreateDate'] as String?,
   );
 }
 

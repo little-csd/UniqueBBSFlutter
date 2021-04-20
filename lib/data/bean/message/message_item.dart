@@ -4,12 +4,12 @@ part 'message_item.g.dart';
 
 @JsonSerializable()
 class MessageItem {
-  String createDate;
-  String url;
+  String? createDate;
+  String? url;
   @JsonKey(name: 'id')
-  String mid;
-  bool isRead;
-  String message;
+  String? mid;
+  bool? isRead;
+  String? message;
 
   factory MessageItem.fromJson(Map<String, dynamic> json) =>
       _$MessageItemFromJson(json);

@@ -28,7 +28,7 @@ class ThreadListCard extends StatefulWidget {
 }
 
 class ThreadListCardState extends State<ThreadListCard> {
-  ThreadModel model;
+  late ThreadModel model;
 
   @override
   void initState() {
@@ -38,12 +38,12 @@ class ThreadListCardState extends State<ThreadListCard> {
 
   @override
   Widget build(BuildContext context) {
-    final children = List<Widget>();
+    final children = <Widget>[];
     for (int i = 0; i < model.threadCount; i++) {
       final thread = model.getThreadInfo(i);
       final user = model.getUserInfo(i);
       if (thread == null || user == null) break;
-      if (!thread.active) continue;
+      if (!thread.active!) continue;
       if (i > 0) children.add(divider);
       children.add(ThreadItem(thread, user));
     }

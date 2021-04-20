@@ -4,13 +4,13 @@ part 'basic_forum.g.dart';
 
 @JsonSerializable()
 class BasicForum {
-  String name;
-  String description;
-  String icon;
+  String? name;
+  String? description;
+  String? icon;
   @JsonKey(name: 'id')
-  String fid;
+  String? fid;
   @JsonKey(name: 'threads')
-  int threadCount;
+  int? threadCount;
 
   factory BasicForum.fromJson(Map<String, dynamic> json) =>
       _$BasicForumFromJson(json);

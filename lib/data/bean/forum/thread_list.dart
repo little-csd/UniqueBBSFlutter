@@ -7,8 +7,8 @@ part 'thread_list.g.dart';
 @JsonSerializable()
 class ThreadList {
   @JsonKey(name: 'list')
-  List<Thread> threads;
-  BasicForum forum;
+  List<Thread?>? threads;
+  BasicForum? forum;
 
   factory ThreadList.fromJson(Map<String, dynamic> json) =>
       _$ThreadListFromJson(json);

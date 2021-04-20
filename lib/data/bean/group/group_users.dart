@@ -7,8 +7,8 @@ part 'group_users.g.dart';
 @JsonSerializable()
 class GroupUsers {
   @JsonKey(name: 'list')
-  List<UserInfo> users;
-  GroupInfo info;
+  List<UserInfo?>? users;
+  GroupInfo? info;
 
   factory GroupUsers.fromJson(Map<String, dynamic> json) =>
       _$GroupUsersFromJson(json);

@@ -9,26 +9,26 @@ import '../dio.dart';
 /// 只做了简单的防止重复拉取操作
 /// TODO: 后续添加数据库层缓存
 class ForumModel extends ChangeNotifier {
-  List<FullForum> _forums;
+  List<FullForum?>? _forums;
   bool _fetching = false;
   static const _fetchInterval = 5;
   static const _TAG = "ForumModel";
 
-  FullForum findByName(String name) {
+  FullForum? findByName(String name) {
     Logger.v(_TAG, 'find $name');
     if (_forums == null) {
       _fetch();
       return null;
     }
-    for (final forum in _forums) {
-      if (forum.name == name) {
+    for (final forum in _forums!) {
+      if (forum!.name == name) {
         return forum;
       }
     }
     return null;
   }
 
-  List<FullForum> getAll() {
+  List<FullForum?>? getAll() {
     if (_forums == null) _fetch();
     return _forums;
   }
@@ -37,7 +37,7 @@ class ForumModel extends ChangeNotifier {
     if (_fetching) return;
     Logger.v(_TAG, 'fetching');
     _fetching = true;
-    Server.instance.forums().then((rsp) {
+    Server.instance!.forums().then((rsp) {
       if (rsp.success) {
         _fetching = false;
         _forums = rsp.data;

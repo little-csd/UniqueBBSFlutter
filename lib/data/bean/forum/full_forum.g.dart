@@ -8,11 +8,11 @@ part of 'full_forum.dart';
 
 FullForum _$FullForumFromJson(Map<String, dynamic> json) {
   return FullForum(
-    json['id'] as String,
-    json['name'] as String,
-    json['threads'] as int,
-    json['icon'] as String,
-    json['description'] as String,
+    json['id'] as String?,
+    json['name'] as String?,
+    json['threads'] as int?,
+    json['icon'] as String?,
+    json['description'] as String?,
     json['lastPost'] == null
         ? null
         : PostInfo.fromJson(json['lastPost'] as Map<String, dynamic>),

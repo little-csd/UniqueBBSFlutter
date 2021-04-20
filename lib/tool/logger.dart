@@ -9,7 +9,7 @@ class Logger {
   }
 
   // debug, flag = 2
-  static void d(String tag, String msg) {
+  static void d(String tag, String? msg) {
     if (flag > 2) return;
     _printLog(tag, msg);
   }
@@ -32,7 +32,7 @@ class Logger {
     _printLog(tag, msg);
   }
 
-  static void _printLog(String tag, String msg) {
+  static void _printLog(String tag, String? msg) {
     final time = DateTime.now();
     print('$time $tag: $msg\n');
   }

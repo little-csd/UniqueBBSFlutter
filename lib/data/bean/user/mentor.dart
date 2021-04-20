@@ -5,8 +5,8 @@ part 'mentor.g.dart';
 
 @JsonSerializable()
 class Mentor {
-  UserInfo user;
-  UserInfo mentor;
+  UserInfo? user;
+  UserInfo? mentor;
 
   factory Mentor.fromJson(Map<String, dynamic> json) => _$MentorFromJson(json);
   Map<String, dynamic> toJson() => _$MentorToJson(this);

@@ -8,12 +8,12 @@ part of 'attach_data.dart';
 
 AttachData _$AttachDataFromJson(Map<String, dynamic> json) {
   return AttachData(
-    json['originalName'] as String,
-    json['filesize'] as int,
-    json['createDate'] as String,
-    json['fileName'] as String,
-    json['id'] as String,
-    json['downloads'] as int,
+    json['originalName'] as String?,
+    json['filesize'] as int?,
+    json['createDate'] as String?,
+    json['fileName'] as String?,
+    json['id'] as String?,
+    json['downloads'] as int?,
   );
 }
 

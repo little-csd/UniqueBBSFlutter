@@ -17,11 +17,11 @@ PostList _$PostListFromJson(Map<String, dynamic> json) {
     json['firstPost'] == null
         ? null
         : PostInfo.fromJson(json['firstPost'] as Map<String, dynamic>),
-    (json['postArr'] as List)
+    (json['postArr'] as List?)
         ?.map((e) =>
             e == null ? null : PostData.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    (json['attachArr'] as List)
+    (json['attachArr'] as List?)
         ?.map((e) =>
             e == null ? null : AttachData.fromJson(e as Map<String, dynamic>))
         ?.toList(),

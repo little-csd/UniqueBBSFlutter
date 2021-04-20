@@ -6,8 +6,8 @@ part 'last_post_info.g.dart';
 
 @JsonSerializable()
 class LastPostInfo {
-  UserInfo user;
-  ThreadInfo thread;
+  UserInfo? user;
+  ThreadInfo? thread;
 
   factory LastPostInfo.fromJson(Map<String, dynamic> json) =>
       _$LastPostInfoFromJson(json);

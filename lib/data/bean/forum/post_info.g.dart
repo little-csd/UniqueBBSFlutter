@@ -8,12 +8,12 @@ part of 'post_info.dart';
 
 PostInfo _$PostInfoFromJson(Map<String, dynamic> json) {
   return PostInfo(
-    json['createDate'] as String,
-    json['isFirst'] as bool,
-    json['quote'] as String,
-    json['id'] as String,
-    json['message'] as String,
-    json['active'] as bool,
+    json['createDate'] as String?,
+    json['isFirst'] as bool?,
+    json['quote'] as String?,
+    json['id'] as String?,
+    json['message'] as String?,
+    json['active'] as bool?,
   );
 }
 

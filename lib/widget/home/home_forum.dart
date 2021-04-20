@@ -91,7 +91,7 @@ _buildLoadMore(FullForum forum, BuildContext context) => GestureDetector(
     );
 
 _buildCardItems() => Consumer<ThreadModel>(builder: (context, model, child) {
-      final items = List<Widget>();
+      final items = <Widget>[];
 
       /// TODO: 这里如果出现前 _maxPreviewCount 中有被删除的，那么会出现问题
       for (int i = 0; i < _maxPreviewCount; i++) {
@@ -108,12 +108,12 @@ _buildCardItems() => Consumer<ThreadModel>(builder: (context, model, child) {
     });
 
 Widget _buildForumCard(
-    String name, String iconUrl, FullForum forum, BuildContext context) {
+    String name, String iconUrl, FullForum? forum, BuildContext context) {
   if (forum == null) return Container();
-  ThreadModel model = Repo.instance.cacheThreadModels[name];
+  ThreadModel? model = Repo.instance!.cacheThreadModels[name];
   if (model == null) {
     model = ThreadModel(forum);
-    Repo.instance.cacheThreadModels[name] = model;
+    Repo.instance!.cacheThreadModels[name] = model;
   }
   return ChangeNotifierProvider.value(
     value: model,

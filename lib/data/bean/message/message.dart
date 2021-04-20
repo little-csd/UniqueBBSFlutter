@@ -6,8 +6,8 @@ part 'message.g.dart';
 
 @JsonSerializable()
 class Message {
-  MessageItem messageItem;
-  UserInfo fromUser;
+  MessageItem? messageItem;
+  UserInfo? fromUser;
 
   factory Message.fromJson(Map<String, dynamic> json) =>
       _$MessageFromJson(json);

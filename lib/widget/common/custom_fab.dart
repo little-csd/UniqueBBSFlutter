@@ -33,8 +33,8 @@ class CustomFAB extends StatefulWidget {
 class _CustomFABState extends State<CustomFAB>
     with SingleTickerProviderStateMixin {
   bool isOpened = false;
-  AnimationController _animationController;
-  Animation<double> _translateButton;
+  late AnimationController _animationController;
+  late Animation<double> _translateButton;
   double _deltaAngle = 0;
   double _anglePadding = pi / 18;
 

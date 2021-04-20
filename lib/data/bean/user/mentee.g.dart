@@ -8,7 +8,7 @@ part of 'mentee.dart';
 
 Mentee _$MenteeFromJson(Map<String, dynamic> json) {
   return Mentee(
-    (json['students'] as List)
+    (json['students'] as List?)
         ?.map((e) =>
             e == null ? null : UserInfo.fromJson(e as Map<String, dynamic>))
         ?.toList(),

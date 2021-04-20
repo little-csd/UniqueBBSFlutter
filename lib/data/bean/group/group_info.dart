@@ -4,10 +4,10 @@ part 'group_info.g.dart';
 
 @JsonSerializable()
 class GroupInfo {
-  String id;
-  int key;
-  String name;
-  String color;
+  String? id;
+  int? key;
+  String? name;
+  String? color;
 
   factory GroupInfo.fromJson(Map<String, dynamic> json) =>
       _$GroupInfoFromJson(json);

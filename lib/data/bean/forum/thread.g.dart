@@ -14,7 +14,7 @@ Thread _$ThreadFromJson(Map<String, dynamic> json) {
     json['user'] == null
         ? null
         : UserInfo.fromJson(json['user'] as Map<String, dynamic>),
-    (json['lastReply'] as List)
+    (json['lastReply'] as List?)
         ?.map((e) =>
             e == null ? null : PostInfo.fromJson(e as Map<String, dynamic>))
         ?.toList(),
