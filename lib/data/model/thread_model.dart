@@ -77,16 +77,16 @@ class ThreadModel extends ChangeNotifier {
   void _fetchForumThreads() {
     Server.instance!.threadsInForum(_forum!.fid, _fetchedPage + 1).then((rsp) {
       if (rsp.success) {
-        final threads = <ThreadInfo?>[], users = <UserInfo>[] as List<ThreadInfo?>;
+        final threads = <ThreadInfo?>[], users = <UserInfo>[];
         rsp.data!.threads!.forEach((data) {
           threads.add(data!.thread);
-          users.add(data.user as ThreadInfo?);
+          users.add(data.user!);
         });
         if (rsp.data!.threads!.length < HyperParam.pageSize) {
           _fetchComplete = true;
         }
         _threadList.addAll(threads);
-        _userList.addAll(users as Iterable<UserInfo>);
+        _userList.addAll(users);
         _onFetchedSuccess();
       } else {
         Future.delayed(Duration(seconds: HyperParam.requestInterval))

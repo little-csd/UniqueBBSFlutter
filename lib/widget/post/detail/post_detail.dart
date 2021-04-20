@@ -1,3 +1,5 @@
+
+
 import 'dart:math';
 
 import 'package:UniqueBBS/config/constant.dart';
@@ -94,7 +96,7 @@ const _bottomCommentWidth = 130.0;
 const _bottomCommentHeight = 32.0;
 const _bottomCircularRadius = 30.0;
 final _bottomIconTextStyle =
-    TextStyle(fontSize: 10.0, color: ColorConstant.textGrey);
+TextStyle(fontSize: 10.0, color: ColorConstant.textGrey);
 final _bottomCommentTextStyle = TextStyle(
   fontSize: 15,
   color: ColorConstant.textGreyForComment,
@@ -139,7 +141,7 @@ Widget _buildHead(BuildContext context, double height, Thread thread) {
             Expanded(
                 child: Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: _headIconTextPadding),
+                    EdgeInsets.symmetric(horizontal: _headIconTextPadding),
                     child: Text.rich(
                       TextSpan(
                         children: [
@@ -269,7 +271,7 @@ Widget _buildComment(PostData? data) {
   ));
 }
 
-Widget _buildBody(ScrollController? controller, PostModel? model) {
+Widget _buildBody(ScrollController? controller, PostModel model) {
   // 评论前面有多少个部件, 为了充分利用 ListView，将帖子内容也塞到里面
   // 没有评论时应该加一个空评论
   return Consumer<PostModel>(
@@ -342,10 +344,10 @@ Widget _buildFAB() {
       StringConstant.edit,
       StringConstant.delete,
     ], [
-      () {
+          () {
         Fluttertoast.showToast(msg: StringConstant.notImpl);
       },
-      () {
+          () {
         Fluttertoast.showToast(msg: StringConstant.notImpl);
       },
     ]),
@@ -372,7 +374,7 @@ Widget _buildIconWithNumber(String url, int count) {
   );
 }
 
-Widget _buildBottom(BuildContext context, PostModel? model) {
+Widget _buildBottom(BuildContext context, PostModel model) {
   return Container(
     height: _bottomHeight,
     width: double.infinity,
@@ -381,7 +383,7 @@ Widget _buildBottom(BuildContext context, PostModel? model) {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
-          onTap: () => _tryComment(context, model!),
+          onTap: () => _tryComment(context, model),
           child: Container(
             width: _bottomCommentWidth,
             height: _bottomCommentHeight,
@@ -407,7 +409,7 @@ Widget _buildBottom(BuildContext context, PostModel? model) {
 class PostDetailWidget extends StatefulWidget {
   final Thread thread;
 
-  PostDetailWidget(this.thread) : assert(thread != null);
+  PostDetailWidget(this.thread);
 
   @override
   State createState() => _PostDetailState();
@@ -417,7 +419,7 @@ class _PostDetailState extends State<PostDetailWidget> {
   static const _TAG = "PostDetailWidget";
   ScrollController? _controller;
   double _headHeight = _maxHeadHeight;
-  PostModel? model;
+  late PostModel model ;
 
   void _initParas() {
     double offset = 0;
@@ -433,20 +435,22 @@ class _PostDetailState extends State<PostDetailWidget> {
   @override
   Widget build(BuildContext context) {
     _initParas();
-    return ChangeNotifierProvider(
+    return ChangeNotifierProvider<PostModel>(
       create: (_) => model,
-      child: Scaffold(
-        appBar: _buildHead(context, _headHeight, widget.thread) as PreferredSizeWidget?,
-        // 这里使用 stack 是为了预防后面界面要改底部透明啥的
-        body: Stack(
-          alignment: Alignment.bottomRight,
-          children: [
-            _buildBody(_controller, model),
-            _buildFAB(),
-            _buildBottom(context, model),
-          ],
-        ),
-      ),
+      builder:  (context,child){
+        return Scaffold(
+          appBar: _buildHead(context, _headHeight, widget.thread) as PreferredSize,
+          // 这里使用 stack 是为了预防后面界面要改底部透明啥的
+          body: Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              _buildBody(_controller, model),
+              _buildFAB(),
+              _buildBottom(context, model),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -459,7 +463,7 @@ class _PostDetailState extends State<PostDetailWidget> {
 
       /// 优化: 超过范围后就不要再触发重新 build 了
       if ((_controller!.offset > (_maxHeadHeight - _minHeadHeight) &&
-              _headHeight == _minHeadHeight) ||
+          _headHeight == _minHeadHeight) ||
           (_controller!.offset < 0 && _headHeight == _maxHeadHeight)) {
         return;
       }

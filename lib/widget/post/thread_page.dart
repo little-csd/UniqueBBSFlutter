@@ -5,6 +5,9 @@ import 'package:UniqueBBS/widget/post/thread_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../data/model/thread_model.dart';
+import '../../data/model/thread_model.dart';
+
 const _titleTextStyle = TextStyle(
   color: Colors.black,
   fontWeight: FontWeight.bold,
@@ -21,7 +24,7 @@ class ThreadPageWidget extends StatefulWidget {
 }
 
 class ThreadPageState extends State<ThreadPageWidget> {
-  ThreadModel? model;
+  late ThreadModel model;
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -42,7 +45,7 @@ class ThreadPageState extends State<ThreadPageWidget> {
   }
 
   _fetchData() {
-    model!.fetch();
+    model.fetch();
   }
 
   @override
@@ -57,7 +60,7 @@ class ThreadPageState extends State<ThreadPageWidget> {
           ),
           backgroundColor: ColorConstant.backgroundLightGrey,
           title: Text(
-            widget.forum != null ? widget.forum!.name! : StringConstant.myThreads,
+            (widget.forum != null ? widget.forum!.name : StringConstant.myThreads)!,
             style: _titleTextStyle,
           ),
           centerTitle: true,

@@ -566,13 +566,11 @@ class _LoggingInterceptors extends Interceptor {
   @override
   Future<dynamic> onRequest(RequestOptions options,handler) async {
     Logger.d(_TAG,
-        "--> ${options.method != null ? options.method.toUpperCase() : 'METHOD'} ${"" + (options.baseUrl ?? "") + (options.path ?? "")}");
+        "--> ${ options.method.toUpperCase()} ${"" +(options.baseUrl ) + (options.path)}");
     Logger.d(_TAG, "Headers:");
     options.headers.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
-    if (options.queryParameters != null) {
-      Logger.d(_TAG, "queryParameters:");
-      options.queryParameters.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
-    }
+    Logger.d(_TAG, "queryParameters:");
+    options.queryParameters.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
     if (options.data != null) {
       Logger.d(_TAG, "Body: ${options.data}");
     }
@@ -597,7 +595,7 @@ class _LoggingInterceptors extends Interceptor {
     Logger.d(_TAG,
         "<-- ${response.statusCode} ${(response.requestOptions != null ? (response.requestOptions.baseUrl + response.requestOptions.path) : 'URL')}");
     Logger.d(_TAG, "Headers:");
-    response.headers?.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
+    response.headers.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
     Logger.d(_TAG, "Response: ${response.data}");
     Logger.d(_TAG, "<-- END HTTP");
     return super.onResponse(response, handler);
