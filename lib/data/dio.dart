@@ -561,9 +561,10 @@ class Server {
 
 class _LoggingInterceptors extends Interceptor {
   static const _TAG = "LoggingInterceptors";
-
+  /// dio 5.0方法添加handler处理，需要return给上一层拦截器
+  /// request --> requestOptions (rename)
   @override
-  Future<dynamic> onRequest(RequestOptions options) async {
+  Future<dynamic> onRequest(RequestOptions options,handler) async {
     Logger.d(_TAG,
         "--> ${options.method != null ? options.method.toUpperCase() : 'METHOD'} ${"" + (options.baseUrl ?? "") + (options.path ?? "")}");
     Logger.d(_TAG, "Headers:");
@@ -578,25 +579,27 @@ class _LoggingInterceptors extends Interceptor {
     Logger.d(_TAG,
         "--> END ${options.method != null ? options.method.toUpperCase() : 'METHOD'}");
 
-    return options;
+    return super.onRequest(options, handler);
   }
 
   @override
-  Future<dynamic> onError(DioError dioError) async {
+  Future<dynamic> onError(DioError dioError,handler) async {
     Logger.d(_TAG,
-        "<-- ${dioError.message} ${(dioError.response?.request != null ? (dioError.response.request.baseUrl + dioError.response.request.path) : 'URL')}");
+        "<-- ${dioError.message} ${(dioError.response?.requestOptions != null ? (dioError.response.requestOptions.baseUrl + dioError.response.requestOptions.path) : 'URL')}");
     Logger.d(_TAG,
         "${dioError.response != null ? dioError.response.data : 'Unknown Error'}");
     Logger.d(_TAG, "<-- End error");
+    return super.onError(dioError, handler);
   }
 
   @override
-  Future<dynamic> onResponse(Response response) async {
+  Future<dynamic> onResponse(Response response,handler) async {
     Logger.d(_TAG,
-        "<-- ${response.statusCode} ${(response.request != null ? (response.request.baseUrl + response.request.path) : 'URL')}");
+        "<-- ${response.statusCode} ${(response.requestOptions != null ? (response.requestOptions.baseUrl + response.requestOptions.path) : 'URL')}");
     Logger.d(_TAG, "Headers:");
     response.headers?.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
     Logger.d(_TAG, "Response: ${response.data}");
     Logger.d(_TAG, "<-- END HTTP");
+    return super.onResponse(response, handler);
   }
 }
