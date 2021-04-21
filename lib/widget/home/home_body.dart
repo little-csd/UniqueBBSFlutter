@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../config/route.dart';
+
 const _tabHeight = 90.0;
 const _tabBarWidth = 140.0;
 const _indicatorPadding = 5.0;
@@ -65,7 +67,7 @@ class _HomeBodyState extends State<HomeBodyWidget>
                     IconButton(
                       icon: SvgPicture.asset(SvgIcon.search),
                       onPressed: () {
-                        Fluttertoast.showToast(msg: StringConstant.notImpl);
+                        Navigator.pushNamed(context, BBSRoute.search);
                       },
                     ),
                     IconButton(

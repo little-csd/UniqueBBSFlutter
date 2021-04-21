@@ -4,6 +4,7 @@ import 'package:UniqueBBS/data/bean/report/report.dart';
 import 'package:UniqueBBS/widget/home/check/update_user.dart';
 import 'package:UniqueBBS/widget/home/home.dart';
 import 'package:UniqueBBS/widget/home/home_select.dart';
+import 'package:UniqueBBS/widget/home/search/search.dart';
 import 'package:UniqueBBS/widget/login/info_set.dart';
 import 'package:UniqueBBS/widget/login/login.dart';
 import 'package:UniqueBBS/widget/login/pw_set.dart';
@@ -45,6 +46,7 @@ class BBSRoute {
     infoSet: InfoSetWidget(),
     reportPage: ReportPageWidget(),
     userInfoUpdate: UserUpdateWidget(),
+    search: SearchPage(),
   };
 
   // 用来给给所有 route 添加特性
