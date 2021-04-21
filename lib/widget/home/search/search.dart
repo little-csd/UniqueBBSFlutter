@@ -1,4 +1,3 @@
-
 import 'package:UniqueBBS/config/constant.dart';
 import 'package:UniqueBBS/data/bean/forum/post_list.dart';
 import 'package:UniqueBBS/data/bean/forum/post_search.dart';
@@ -20,6 +19,7 @@ const _perPageCount = 20;
 const _noDataSize = 200.0;
 const _noDataPadding = 200.0;
 const _userImgSize = 50.0;
+const _dividerEnd = 20.0;
 // card
 const _listCardContainerPadding = 20.0;
 const _listCardContainerBorderRadius = 20.0;
@@ -76,9 +76,7 @@ class _SearchPageState extends State<SearchPage> {
   _buildSearchPage() {
     return Column(
       children: [
-        SizedBox(
-          height: 20,
-        ),
+        SizedBox(height: 20),
         _buildSearchHead(),
         _buildSearchBody(),
       ],
@@ -150,41 +148,41 @@ class _SearchPageState extends State<SearchPage> {
       });
     });
   }
-  
+
   _buildSingleItem(PostSearchData data) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         _requestSingleSearch(data);
       },
       child: ListTile(
-          title: Text(
-            data.subject!,
-            style: _titleStyle,
-          ),
-          leading: ClipOval(
-              child: Image.network(
-            data.user!.avatar!,
-            height: _userImgSize,
-            width: _userImgSize,
-          )),
-          subtitle: Text(
-            '${data.user!.username} ${data.createDate!.substring(0, 10)} 发布',
-            style: _subtitleStyle,
-          ),
+        title: Text(
+          data.subject!,
+          style: _titleStyle,
+        ),
+        leading: ClipOval(
+            child: Image.network(
+          data.user!.avatar!,
+          height: _userImgSize,
+          width: _userImgSize,
+        )),
+        subtitle: Text(
+          '${data.user!.username} ${data.createDate!.substring(0, 10)} 发布',
+          style: _subtitleStyle,
+        ),
       ),
     );
   }
 
   void _requestSingleSearch(PostSearchData data) {
     Future<NetRsp<PostList>> npl = Server.instance!.postsInThread(data.tid, 1);
-    npl.then((value)  {
-      if(!value.success){
+    npl.then((value) {
+      if (!value.success) {
         Fluttertoast.showToast(msg: StringConstant.networkError);
-        return ;
+        return;
       }
       PostList pl = value.data!;
-      Thread thread = new Thread(pl.threadInfo,pl.threadAuthor,[]);
-      Navigator.pushNamed(context, BBSRoute.postDetail,arguments: thread);
+      Thread thread = new Thread(pl.threadInfo, pl.threadAuthor, []);
+      Navigator.pushNamed(context, BBSRoute.postDetail, arguments: thread);
     });
   }
 
@@ -195,37 +193,42 @@ class _SearchPageState extends State<SearchPage> {
       child: Expanded(
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: ColorConstant.borderLightPink,
-              ),
-              borderRadius:
-                  BorderRadius.circular(_listCardContainerBorderRadius),
-              boxShadow: [
-                BoxShadow(
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            controller: scrollController,
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: ColorConstant.borderLightPink,
-                  blurRadius: _listCardContainerShadowRadius,
                 ),
-              ],
-              color: Colors.white,
-            ),
-            child: ListView.separated(
-              itemBuilder: (context, index) {
-                return _buildListViewItem(index);
-              },
-              controller: scrollController,
-              itemCount: res!.length + 1,
-              shrinkWrap: true,
-              cacheExtent: _listCacheField,
-              physics: BouncingScrollPhysics(),
-              separatorBuilder: (BuildContext context, int index) {
-                return Divider(
-                  height: 1.0,
-                  color: ColorConstant.backgroundGrey,
-                );
-              },
+                borderRadius:
+                    BorderRadius.circular(_listCardContainerBorderRadius),
+                boxShadow: [
+                  BoxShadow(
+                    color: ColorConstant.borderLightPink,
+                    blurRadius: _listCardContainerShadowRadius,
+                  ),
+                ],
+                color: Colors.white,
+              ),
+              child: ListView.separated(
+                itemBuilder: (context, index) {
+                  return _buildListViewItem(index);
+                },
+                itemCount: res!.length + 1,
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                cacheExtent: _listCacheField,
+                separatorBuilder: (BuildContext context, int index) {
+                  return Divider(
+                    indent: _dividerEnd,
+                    endIndent: _dividerEnd,
+                    height: 2.0,
+                    color: ColorConstant.backgroundGrey,
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -271,6 +274,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
+
   _buildBottomText() {
     return Center(
       child: Container(
