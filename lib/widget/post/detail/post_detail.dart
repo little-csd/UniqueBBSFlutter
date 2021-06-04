@@ -106,13 +106,14 @@ final _bottomCommentTextStyle = TextStyle(
 double _getOpacityByProgress(double progress) =>
     (1 - progress) * (1 - progress);
 
-Widget _buildHead(BuildContext context, double height, Thread thread) {
+PreferredSizeWidget? _buildHead(
+    BuildContext context, double height, Thread thread) {
   ThreadInfo threadInfo = thread.thread;
   UserInfo userInfo = thread.user;
-  String title = threadInfo?.subject == null ? "" : threadInfo.subject;
-  String date = threadInfo?.createDate == null ? "" : threadInfo.createDate;
-  String author = userInfo?.username == null ? "" : userInfo.username;
-  String avatar = userInfo?.avatar == null ? "" : userInfo.avatar;
+  String title = threadInfo.subject;
+  String date = threadInfo.createDate;
+  String author = userInfo.username;
+  String avatar = userInfo.avatar;
   double progress =
       (height - _minHeadHeight) / (_maxHeadHeight - _minHeadHeight);
   final bar = AppBar(
@@ -135,7 +136,7 @@ Widget _buildHead(BuildContext context, double height, Thread thread) {
         padding: _headDataPadding,
         child: Row(
           children: <Widget>[
-            BBSAvatar(avatar, radius: _headAvatarRadius),
+            BBSAvatar(url: avatar, radius: _headAvatarRadius),
             Expanded(
                 child: Padding(
                     padding:
@@ -206,7 +207,7 @@ Widget _wrapCommentBox(Widget child) {
 Widget _buildEmptyComment(BuildContext context, PostModel model) {
   final widget = Row(
     children: [
-      BBSAvatar(null, radius: _commentAvatarRadius),
+      BBSAvatar(radius: _commentAvatarRadius),
       Expanded(
         child: GestureDetector(
           onTap: () => _tryComment(context, model),
@@ -231,7 +232,7 @@ Widget _buildEmptyComment(BuildContext context, PostModel model) {
   return _wrapCommentBox(widget);
 }
 
-Widget _buildComment(PostData data) {
+Widget _buildComment(PostData? data) {
   // 暂时找不到数据或者 post 被删除
   if (data == null || !data.post.active) {
     return Container();
@@ -240,7 +241,7 @@ Widget _buildComment(PostData data) {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       BBSAvatar(
-        data.user.avatar,
+        url: data.user.avatar,
         radius: _commentAvatarRadius,
       ),
       Expanded(
@@ -283,9 +284,9 @@ Widget _buildBody(ScrollController controller, PostModel model) {
           final lastIndex = 2 + max(model.postCount(), 1);
           if (index == 0) {
             // 帖子主体
-            String text = model.getFirstPost()?.post?.message;
+            String text = model.getFirstPost()?.post.message ?? '';
             return Markdown(
-              data: text ?? '',
+              data: text,
               imageBuilder: (uri, title, alt) {
                 if (uri.scheme == StringConstant.uniqueScheme) {
                   /// TODO: 这里后面还是新起一个 AttachModel 处理比较好
@@ -293,7 +294,7 @@ Widget _buildBody(ScrollController controller, PostModel model) {
                     final file = model.getAttachData(uri.host);
                     if (file != null) {
                       final image = Image.file(file);
-                      if (image != null) return image;
+                      return image;
                     }
                     return Text(uri.toString());
                   });
@@ -312,7 +313,7 @@ Widget _buildBody(ScrollController controller, PostModel model) {
             );
           } else if (index == 1) {
             // 最新评论这一部分，因为不会变化所以放到 child
-            return child;
+            return child!;
           } else if (index == lastIndex) {
             // 最后一个位置空出一个底部栏高度
             return Container(height: _bottomHeight + _commentMargin);
@@ -407,7 +408,7 @@ Widget _buildBottom(BuildContext context, PostModel model) {
 class PostDetailWidget extends StatefulWidget {
   final Thread thread;
 
-  PostDetailWidget(this.thread) : assert(thread != null);
+  PostDetailWidget(this.thread);
 
   @override
   State createState() => _PostDetailState();
@@ -415,9 +416,9 @@ class PostDetailWidget extends StatefulWidget {
 
 class _PostDetailState extends State<PostDetailWidget> {
   static const _TAG = "PostDetailWidget";
-  ScrollController _controller;
+  late ScrollController _controller = _createScrollController();
+  late PostModel model = PostModel(widget.thread.thread);
   double _headHeight = _maxHeadHeight;
-  PostModel model;
 
   void _initParas() {
     double offset = 0;
@@ -450,11 +451,9 @@ class _PostDetailState extends State<PostDetailWidget> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = ScrollController();
-    _controller.addListener(() {
+  ScrollController _createScrollController() {
+    final controller = ScrollController();
+    controller.addListener(() {
       Logger.v(_TAG, 'offset ${_controller.offset}');
 
       /// 优化: 超过范围后就不要再触发重新 build 了
@@ -465,7 +464,7 @@ class _PostDetailState extends State<PostDetailWidget> {
       }
       setState(() {});
     });
-    model = PostModel(widget.thread.thread);
+    return controller;
   }
 
   @override

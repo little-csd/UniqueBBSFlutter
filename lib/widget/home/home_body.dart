@@ -18,16 +18,10 @@ class HomeBodyWidget extends StatefulWidget {
 
 class _HomeBodyState extends State<HomeBodyWidget>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(
-      length: 2,
-      vsync: this,
-    );
-  }
+  late TabController _tabController = TabController(
+    length: 2,
+    vsync: this,
+  );
 
   @override
   Widget build(BuildContext context) {

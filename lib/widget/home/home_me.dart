@@ -102,14 +102,14 @@ Widget _buildNotification() {
   );
 }
 
-Widget _buildHeadPortrait(User user) {
+Widget _buildHeadPortrait(User? user) {
   return BBSAvatar(
-    user?.user?.avatar,
+    url: user?.user.avatar,
     radius: _portraitRadius,
   );
 }
 
-Widget _buildName(User me) {
+Widget _buildName(User? me) {
   final name = me == null ? StringConstant.noData : me.user.username;
   return Container(
     alignment: Alignment.center,
@@ -134,7 +134,7 @@ Widget _buildActivePoint() {
 }
 
 /// 此处如果一个人同时位于很多个组，有可能会溢出
-Widget _buildCards(User me) {
+Widget _buildCards(User? me) {
   if (me == null) {
     return Container();
   }
@@ -176,7 +176,7 @@ Widget _wrapBoxShadow(Widget child, double verticalPadding) {
   );
 }
 
-Widget _buildSignature(User me, bool isOpen, VoidCallback callback) {
+Widget _buildSignature(User? me, bool isOpen, VoidCallback callback) {
   final signature = me == null ? StringConstant.noData : me.user.signature;
   final widget = Row(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,7 +239,7 @@ Widget _wrapPersonalDataLine(String iconSrc, String type, String data) {
   );
 }
 
-Widget _buildPersonalData(User me) {
+Widget _buildPersonalData(User? me) {
   // 这里将构建一行 UI 所需要的字符串都封装在一起, 后面直接传递给 _wrapPersonalDataLine
   final mobile = me == null ? StringConstant.noData : me.user.mobile;
   final weChat = me == null ? StringConstant.noData : me.user.wechat;
@@ -259,7 +259,7 @@ Widget _buildPersonalData(User me) {
   );
 }
 
-Widget _buildShowMyPost(BuildContext context, User user) {
+Widget _buildShowMyPost(BuildContext context, User? user) {
   return FlatButton(
     minWidth: double.infinity,
     onPressed: () {
@@ -343,8 +343,7 @@ class _HomeMeState extends State<HomeMeWidget> {
         });
     return Consumer<UserModel>(
       builder: (context, userModel, child) {
-        User me = userModel.find(Repo.instance.uid);
-        Repo.instance.me = me;
+        User? me = userModel.find(Repo.instance.uid);
         return Column(
           children: [
             _buildNotification(),

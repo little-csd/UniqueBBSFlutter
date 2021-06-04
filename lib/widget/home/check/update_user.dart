@@ -63,7 +63,7 @@ class _UserUpdateWidgetState extends State<UserUpdateWidget> {
           Padding(
             padding: EdgeInsets.only(right: _textFieldEdge),
             child: Consumer<UserModel>(builder: (context, userModel, child) {
-              User me = userModel.find(Repo.instance.uid);
+              User? me = userModel.find(Repo.instance.uid);
               return TextButton(
                 child: Text(
                   StringConstant.saveString,
@@ -88,7 +88,10 @@ class _UserUpdateWidgetState extends State<UserUpdateWidget> {
 
   _buildUpdateList(BuildContext context) => Consumer<UserModel>(
         builder: (context, userModel, child) {
-          User me = userModel.find(Repo.instance.uid);
+          User? me = userModel.find(Repo.instance.uid);
+          if (me == null) {
+            return Column();
+          }
           return Column(
             children: [
               _buildTextField(

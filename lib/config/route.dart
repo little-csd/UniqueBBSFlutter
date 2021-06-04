@@ -70,10 +70,10 @@ class BBSRoute {
             builder: generateBuilder(PostDetailWidget(arg as Thread)));
       case postList:
         return MaterialPageRoute(
-            builder: generateBuilder(ThreadPageWidget(arg as FullForum)));
+            builder: generateBuilder(ThreadPageWidget(arg as FullForum?)));
       case postReport:
         return MaterialPageRoute(
-            builder: generateBuilder(ReportPostPageWidget(arg as Report)));
+            builder: generateBuilder(ReportPostPageWidget(arg as Report?)));
     }
     throw Exception("Route $path not found!");
   }

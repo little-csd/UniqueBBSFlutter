@@ -102,7 +102,19 @@ class PostModel extends ChangeNotifier {
           msg: rsp.success
               ? StringConstant.sendPostSuccess
               : '${StringConstant.sendPostError}${rsp.msg}');
+      _reset();
     });
+  }
+
+  void _reset() {
+    _fetching = false;
+    _fetchComplete = false;
+    _fetchedPage = 0;
+
+    _postData = [];
+    _attachArr = [];
+    _firstPost = null;
+    notifyListeners();
   }
 
   void _fetch() async {
@@ -114,6 +126,9 @@ class PostModel extends ChangeNotifier {
         .postsInThread(_threadInfo.tid, _fetchedPage + 1)
         .then((rsp) {
       if (rsp.success) {
+        if (!_fetching) {
+          return;
+        }
         _fetchedPage++;
         _fetching = false;
         PostList data = rsp.data as PostList;

@@ -136,15 +136,9 @@ class HomeSelectWidget extends StatefulWidget {
 
 class _HomeSelectState extends State<HomeSelectWidget>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-        vsync: this, duration: Duration(milliseconds: _animationDuration))
-      ..forward();
-  }
+  late AnimationController _controller = AnimationController(
+      vsync: this, duration: Duration(milliseconds: _animationDuration))
+    ..forward();
 
   @override
   void dispose() {

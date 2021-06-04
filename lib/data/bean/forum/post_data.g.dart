@@ -13,7 +13,9 @@ PostData _$PostDataFromJson(Map<String, dynamic> json) {
     (json['group'] as List<dynamic>)
         .map((e) => GroupInfo.fromJson(e as Map<String, dynamic>))
         .toList(),
-    PostInfo.fromJson(json['quote'] as Map<String, dynamic>),
+    json['quote'] == null
+        ? null
+        : PostInfo.fromJson(json['quote'] as Map<String, dynamic>),
   );
 }
 

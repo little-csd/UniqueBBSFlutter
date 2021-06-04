@@ -57,7 +57,7 @@ class _LoginState extends State<LoginWidget> {
     /// 'ssski', 'Conceited67'
     Server.instance.login(_username, _password).then((rsp) {
       if (!rsp.success) {
-        Fluttertoast.showToast(msg: rsp.msg);
+        Fluttertoast.showToast(msg: rsp.msg!);
       } else {
         Fluttertoast.showToast(msg: StringConstant.loginSuccess);
         Navigator.of(context).popAndPushNamed(BBSRoute.home);

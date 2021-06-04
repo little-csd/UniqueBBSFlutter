@@ -89,7 +89,7 @@ class ThreadItem extends StatelessWidget {
       },
       child: Row(
         children: <Widget>[
-          BBSAvatar(creator.avatar),
+          BBSAvatar(url: creator.avatar),
           Container(
             margin: EdgeInsets.only(left: _avatarTextPadding),
             child: Column(

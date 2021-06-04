@@ -28,8 +28,7 @@ class ThreadModel extends ChangeNotifier {
 
   final bool isMe;
 
-  ThreadModel(this._forum, {this.isMe = false})
-      : assert(_forum != null || isMe);
+  ThreadModel(this._forum, {this.isMe = false});
 
   get threadCount => _threadList.length;
 

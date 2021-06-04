@@ -514,7 +514,9 @@ class Server {
   Future<String> _post(
       String url, dynamic data, Map<String, dynamic> json) async {
     try {
+      Logger.d(_TAG, "before $url");
       Response response = await dio.post(url, data: data);
+      Logger.d(_TAG, "after $url");
       Map<String, dynamic> res = response.data;
       int code = res['code'];
       if (code == 1) {
@@ -587,17 +589,21 @@ class _LoggingInterceptors extends Interceptor {
       Logger.d(_TAG, "Body: ${options.data}");
     }
     Logger.d(_TAG, "--> END ${options.method.toUpperCase()}");
+
+    handler.next(options);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     final String url =
-        response.requestOptions.data + response.requestOptions.path;
+        response.requestOptions.baseUrl + response.requestOptions.path;
     Logger.d(_TAG, "<-- ${response.statusCode} $url");
     Logger.d(_TAG, "Headers:");
     response.headers.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
     Logger.d(_TAG, "Response: ${response.data}");
     Logger.d(_TAG, "<-- END HTTP");
+
+    handler.next(response);
   }
 
   @override
@@ -613,5 +619,7 @@ class _LoggingInterceptors extends Interceptor {
     }
 
     Logger.d(_TAG, "<-- End error");
+
+    handler.next(err);
   }
 }

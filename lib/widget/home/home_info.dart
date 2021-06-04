@@ -85,13 +85,13 @@ Widget _buildBroadcastHead() {
 Widget _buildBroadcastBodyWithData(FullForum forum) {
   final user = forum.lastPostInfo.user;
   final thread = forum.lastPostInfo.thread;
-  final subject = thread?.subject == null ? "" : thread.subject;
-  final date = getDayString(thread?.createDate);
-  final userName = user?.username == null ? "" : user.username;
+  final subject = thread.subject;
+  final date = getDayString(thread.createDate);
+  final userName = user.username;
   return Row(
     children: [
       BBSAvatar(
-        user?.avatar,
+        url: user.avatar,
         radius: _broadcastAvatarRadius,
       ),
       Container(width: 10),
