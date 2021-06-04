@@ -1,6 +1,6 @@
-import 'package:UniqueBBS/config/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:unique_bbs/config/constant.dart';
 
 const _inputFieldBorderRadius = 16.0;
 const _inputFieldTextOffsetH = 10.0;
@@ -16,7 +16,7 @@ Widget _buildInputField(
   String hint,
   int maxLines,
   ValueChanged<String> onChanged,
-  ValueChanged<String> onSubmitted,
+  ValueChanged<String>? onSubmitted,
 ) {
   final maxHeight = _heightForOneLine * maxLines + _inputFieldTextOffsetV * 2;
   return Container(
@@ -54,7 +54,7 @@ Widget _buildInputField(
       onChanged: onChanged,
       onSubmitted: (str) {
         Navigator.of(context).pop();
-        onSubmitted(str);
+        onSubmitted?.call(str);
       },
     ),
   );
@@ -97,14 +97,14 @@ class CommonPopupInputWidget extends StatefulWidget {
 
   final String hint;
   final int maxLines;
-  final ValueChanged<String> onSubmitted;
+  final ValueChanged<String>? onSubmitted;
 
   @override
   State createState() => CommonPopupInputWidgetState();
 }
 
 class CommonPopupInputWidgetState extends State<CommonPopupInputWidget> {
-  String msg;
+  String msg = '';
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +131,7 @@ class CommonPopupInputWidgetState extends State<CommonPopupInputWidget> {
                 ),
                 Container(width: _textIconPadding),
                 _buildSubmitBtn(context, () {
-                  if (widget.onSubmitted != null) widget.onSubmitted(msg);
+                  widget.onSubmitted?.call(msg);
                   Navigator.of(context).pop();
                 }),
               ],

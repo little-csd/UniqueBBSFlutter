@@ -89,7 +89,8 @@ class StringConstant {
   static const comments = '最新评论';
   static const noComment = '快来评论吧';
   static const sendPostSuccess = '发帖成功';
-  static const sendPostFail = '发帖失败: ';
+  static const sendPostError = '发帖错误: ';
+  static const sendPostFail = '发帖失败: 没有权限或内容为空';
   // 网络异常页
   static const networkError = '你的网络好像走丢了\n请试试重新连接吧？';
   // 登陆页
@@ -142,6 +143,7 @@ class StringConstant {
   // hero tag
   static const selectPlateHero = "select plate";
   // 其他
+  static const globalFont = "PingFang";
   static const noQuote = "-1";
   static const threadClosed = "帖子已关闭!";
   static const jwtExpired = "jwt expired";
@@ -149,6 +151,7 @@ class StringConstant {
   static const notImpl = "此功能尚待开发";
   static const uniqueScheme = 'unique';
   static const networkProtocol = 'https';
+  static const unknown = "未知错误";
 }
 
 // 存放资源的一些常量

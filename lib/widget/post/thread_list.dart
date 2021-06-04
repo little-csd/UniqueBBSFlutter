@@ -1,7 +1,7 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/data/model/thread_model.dart';
-import 'package:UniqueBBS/widget/post/thread_item.dart';
 import 'package:flutter/material.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/model/thread_model.dart';
+import 'package:unique_bbs/widget/post/thread_item.dart';
 
 // card
 const _listCardContainerPadding = 20.0;
@@ -28,17 +28,10 @@ class ThreadListCard extends StatefulWidget {
 }
 
 class ThreadListCardState extends State<ThreadListCard> {
-  ThreadModel model;
-
-  @override
-  void initState() {
-    model = widget.model;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final children = List<Widget>();
+    final children = <Widget>[];
+    final model = widget.model;
     for (int i = 0; i < model.threadCount; i++) {
       final thread = model.getThreadInfo(i);
       final user = model.getUserInfo(i);

@@ -1,16 +1,16 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/data/bean/report/report.dart';
-import 'package:UniqueBBS/data/dio.dart';
-import 'package:UniqueBBS/widget/common/network_error_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/bean/report/report.dart';
+import 'package:unique_bbs/data/dio.dart';
+import 'package:unique_bbs/widget/common/network_error_bottom_sheet.dart';
 
 const _weeklyTag = "weekly report";
 const _dailyTag = "daily report";
 
 class ReportPostPageWidget extends StatefulWidget {
-  Report report;
+  final Report? report;
 
   ReportPostPageWidget(this.report);
 
@@ -21,50 +21,52 @@ class ReportPostPageWidget extends StatefulWidget {
 class ReportPostPageState extends State<ReportPostPageWidget> {
   bool _isWeekly = true;
   bool _isUpdating = false;
-  String _content;
-  TextEditingController _textEditingController;
+  late TextEditingController _textEditingController = _createTextController();
 
   _createReport() {
-    _content = _textEditingController.text;
-    if (_content == null || _content.isEmpty) {
+    String content = _textEditingController.text;
+    if (content.isEmpty) {
       Fluttertoast.showToast(msg: StringConstant.noPostEmpty);
       return;
     }
     if (_isUpdating) {
-      Server.instance.updateReport(widget.report.rid, _content).then((value) {
-        if (value.success) {
+      Report report = widget.report as Report;
+      Server.instance.updateReport(report.rid, content).then((rsp) {
+        if (rsp.success) {
           Fluttertoast.showToast(msg: StringConstant.updateReportSuccess);
           Navigator.pop(context);
         } else {
-          buildErrorBottomSheet(context, value.msg);
+          buildErrorBottomSheet(context, rsp.msg!);
         }
       });
     } else {
-      Server.instance.createReport(_isWeekly, _content).then((value) {
-        if (value.success) {
+      Server.instance.createReport(_isWeekly, content).then((rsp) {
+        if (rsp.success) {
           Fluttertoast.showToast(msg: StringConstant.postReportSuccess);
           Navigator.pop(context);
         } else {
-          buildErrorBottomSheet(context, value.msg);
+          buildErrorBottomSheet(context, rsp.msg!);
         }
       });
     }
   }
 
-  @override
-  void initState() {
-    if (widget.report != null) {
-      _textEditingController = TextEditingController.fromValue(TextEditingValue(
-          text: widget.report.message,
+  TextEditingController _createTextController() {
+    final report = widget.report;
+    if (report != null) {
+      _isWeekly = report.isWeek;
+      _isUpdating = true;
+      return TextEditingController.fromValue(
+        TextEditingValue(
+          text: report.message,
           selection: TextSelection.fromPosition(TextPosition(
               affinity: TextAffinity.downstream,
-              offset: widget.report.message.length))));
-      _isWeekly == widget.report.isWeek;
-      _isUpdating = true;
+              offset: report.message.length)),
+        ),
+      );
     } else {
-      _textEditingController = TextEditingController();
+      return TextEditingController();
     }
-    super.initState();
   }
 
   @override

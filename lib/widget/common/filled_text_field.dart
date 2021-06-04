@@ -1,20 +1,21 @@
-import 'package:UniqueBBS/config/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:unique_bbs/config/constant.dart';
 
 class FilledTextField extends TextField {
-  const FilledTextField(
-      {this.radius,
-      this.hint,
-      this.filledColor,
-      this.hintColor,
-      this.onChanged,
-      this.obscureText});
+  const FilledTextField({
+    required this.radius,
+    required this.hint,
+    required this.filledColor,
+    required this.hintColor,
+    this.onChanged,
+    this.obscureText = false,
+  });
 
   final Radius radius;
   final String hint;
   final Color filledColor;
   final Color hintColor;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
   final bool obscureText;
 
   @override

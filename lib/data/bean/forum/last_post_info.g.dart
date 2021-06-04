@@ -8,12 +8,8 @@ part of 'last_post_info.dart';
 
 LastPostInfo _$LastPostInfoFromJson(Map<String, dynamic> json) {
   return LastPostInfo(
-    json['user'] == null
-        ? null
-        : UserInfo.fromJson(json['user'] as Map<String, dynamic>),
-    json['thread'] == null
-        ? null
-        : ThreadInfo.fromJson(json['thread'] as Map<String, dynamic>),
+    UserInfo.fromJson(json['user'] as Map<String, dynamic>),
+    ThreadInfo.fromJson(json['thread'] as Map<String, dynamic>),
   );
 }
 

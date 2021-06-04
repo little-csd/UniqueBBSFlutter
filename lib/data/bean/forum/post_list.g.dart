@@ -8,26 +8,16 @@ part of 'post_list.dart';
 
 PostList _$PostListFromJson(Map<String, dynamic> json) {
   return PostList(
-    json['threadInfo'] == null
-        ? null
-        : ThreadInfo.fromJson(json['threadInfo'] as Map<String, dynamic>),
-    json['threadAuthor'] == null
-        ? null
-        : UserInfo.fromJson(json['threadAuthor'] as Map<String, dynamic>),
-    json['firstPost'] == null
-        ? null
-        : PostInfo.fromJson(json['firstPost'] as Map<String, dynamic>),
-    (json['postArr'] as List)
-        ?.map((e) =>
-            e == null ? null : PostData.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    (json['attachArr'] as List)
-        ?.map((e) =>
-            e == null ? null : AttachData.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    json['forumInfo'] == null
-        ? null
-        : BasicForum.fromJson(json['forumInfo'] as Map<String, dynamic>),
+    ThreadInfo.fromJson(json['threadInfo'] as Map<String, dynamic>),
+    UserInfo.fromJson(json['threadAuthor'] as Map<String, dynamic>),
+    PostInfo.fromJson(json['firstPost'] as Map<String, dynamic>),
+    (json['postArr'] as List<dynamic>)
+        .map((e) => PostData.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    (json['attachArr'] as List<dynamic>)
+        .map((e) => AttachData.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    BasicForum.fromJson(json['forumInfo'] as Map<String, dynamic>),
   );
 }
 

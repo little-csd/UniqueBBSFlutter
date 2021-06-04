@@ -13,12 +13,8 @@ FullForum _$FullForumFromJson(Map<String, dynamic> json) {
     json['threads'] as int,
     json['icon'] as String,
     json['description'] as String,
-    json['lastPost'] == null
-        ? null
-        : PostInfo.fromJson(json['lastPost'] as Map<String, dynamic>),
-    json['lastPostInfo'] == null
-        ? null
-        : LastPostInfo.fromJson(json['lastPostInfo'] as Map<String, dynamic>),
+    PostInfo.fromJson(json['lastPost'] as Map<String, dynamic>),
+    LastPostInfo.fromJson(json['lastPostInfo'] as Map<String, dynamic>),
   );
 }
 

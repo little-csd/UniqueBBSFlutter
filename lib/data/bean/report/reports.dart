@@ -1,5 +1,5 @@
-import 'package:UniqueBBS/data/bean/report/report.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unique_bbs/data/bean/report/report.dart';
 
 part 'reports.g.dart';
 

@@ -8,12 +8,8 @@ part of 'mentor.dart';
 
 Mentor _$MentorFromJson(Map<String, dynamic> json) {
   return Mentor(
-    json['user'] == null
-        ? null
-        : UserInfo.fromJson(json['user'] as Map<String, dynamic>),
-    json['mentor'] == null
-        ? null
-        : UserInfo.fromJson(json['mentor'] as Map<String, dynamic>),
+    UserInfo.fromJson(json['user'] as Map<String, dynamic>),
+    UserInfo.fromJson(json['mentor'] as Map<String, dynamic>),
   );
 }
 

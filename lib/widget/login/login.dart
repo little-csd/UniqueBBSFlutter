@@ -1,12 +1,12 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/dio.dart';
-import 'package:UniqueBBS/widget/common/filled_text_field.dart';
-import 'package:UniqueBBS/widget/common/network_error_bottom_sheet.dart';
-import 'package:UniqueBBS/widget/common/normal_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/dio.dart';
+import 'package:unique_bbs/widget/common/filled_text_field.dart';
+import 'package:unique_bbs/widget/common/network_error_bottom_sheet.dart';
+import 'package:unique_bbs/widget/common/normal_bottom_sheet.dart';
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -57,7 +57,7 @@ class _LoginState extends State<LoginWidget> {
     /// 'ssski', 'Conceited67'
     Server.instance.login(_username, _password).then((rsp) {
       if (!rsp.success) {
-        Fluttertoast.showToast(msg: rsp.msg);
+        Fluttertoast.showToast(msg: rsp.msg!);
       } else {
         Fluttertoast.showToast(msg: StringConstant.loginSuccess);
         Navigator.of(context).popAndPushNamed(BBSRoute.home);

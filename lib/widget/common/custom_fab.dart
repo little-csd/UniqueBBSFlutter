@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:UniqueBBS/config/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:unique_bbs/config/constant.dart';
 
 // 动画相关参数
 const _maxDist = 70.0;
@@ -19,9 +19,7 @@ final _childTextStyle =
 
 class CustomFAB extends StatefulWidget {
   CustomFAB(this.children, this.callbacks)
-      : assert(children != null),
-        assert(callbacks != null),
-        assert(children.length == callbacks.length);
+      : assert(children.length == callbacks.length);
 
   final List<String> children;
   final List<VoidCallback> callbacks;
@@ -33,29 +31,23 @@ class CustomFAB extends StatefulWidget {
 class _CustomFABState extends State<CustomFAB>
     with SingleTickerProviderStateMixin {
   bool isOpened = false;
-  AnimationController _animationController;
-  Animation<double> _translateButton;
+  late AnimationController _animationController = AnimationController(
+      vsync: this, duration: Duration(milliseconds: _animationDuration))
+    ..addListener(() {
+      setState(() {});
+    });
+  late Animation<double> _translateButton =
+      Tween<double>(begin: 0, end: _maxDist).animate(CurvedAnimation(
+    parent: _animationController,
+    curve: Interval(
+      0.0,
+      0.75,
+      curve: Curves.easeOut,
+    ),
+  ));
+
   double _deltaAngle = 0;
   double _anglePadding = pi / 18;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: _animationDuration))
-      ..addListener(() {
-        setState(() {});
-      });
-    _translateButton =
-        Tween<double>(begin: 0, end: _maxDist).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Interval(
-        0.0,
-        0.75,
-        curve: Curves.easeOut,
-      ),
-    ));
-  }
 
   _animate() {
     if (!isOpened) {

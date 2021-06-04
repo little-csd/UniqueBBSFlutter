@@ -1,13 +1,13 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBS/data/model/forum_model.dart';
-import 'package:UniqueBBS/data/model/thread_model.dart';
-import 'package:UniqueBBS/data/repo.dart';
-import 'package:UniqueBBS/widget/post/thread_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/bean/forum/full_forum.dart';
+import 'package:unique_bbs/data/model/forum_model.dart';
+import 'package:unique_bbs/data/model/thread_model.dart';
+import 'package:unique_bbs/data/repo.dart';
+import 'package:unique_bbs/widget/post/thread_item.dart';
 
 const _maxPreviewCount = 3;
 
@@ -73,7 +73,6 @@ _buildForumCardHead(String name, String iconUrl) => Row(
 
 _buildLoadMore(FullForum forum, BuildContext context) => GestureDetector(
       onTap: () {
-        if (forum == null) return;
         Navigator.of(context).pushNamed(BBSRoute.postList, arguments: forum);
       },
       child: Container(
@@ -91,7 +90,7 @@ _buildLoadMore(FullForum forum, BuildContext context) => GestureDetector(
     );
 
 _buildCardItems() => Consumer<ThreadModel>(builder: (context, model, child) {
-      final items = List<Widget>();
+      final items = <Widget>[];
 
       /// TODO: 这里如果出现前 _maxPreviewCount 中有被删除的，那么会出现问题
       for (int i = 0; i < _maxPreviewCount; i++) {
@@ -108,9 +107,9 @@ _buildCardItems() => Consumer<ThreadModel>(builder: (context, model, child) {
     });
 
 Widget _buildForumCard(
-    String name, String iconUrl, FullForum forum, BuildContext context) {
+    String name, String iconUrl, FullForum? forum, BuildContext context) {
   if (forum == null) return Container();
-  ThreadModel model = Repo.instance.cacheThreadModels[name];
+  ThreadModel? model = Repo.instance.cacheThreadModels[name];
   if (model == null) {
     model = ThreadModel(forum);
     Repo.instance.cacheThreadModels[name] = model;

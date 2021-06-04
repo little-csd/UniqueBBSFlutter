@@ -1,9 +1,9 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/widget/home/home_forum.dart';
-import 'package:UniqueBBS/widget/home/home_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/widget/home/home_forum.dart';
+import 'package:unique_bbs/widget/home/home_info.dart';
 
 const _tabHeight = 90.0;
 const _tabBarWidth = 140.0;
@@ -18,16 +18,10 @@ class HomeBodyWidget extends StatefulWidget {
 
 class _HomeBodyState extends State<HomeBodyWidget>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(
-      length: 2,
-      vsync: this,
-    );
-  }
+  late TabController _tabController = TabController(
+    length: 2,
+    vsync: this,
+  );
 
   @override
   Widget build(BuildContext context) {

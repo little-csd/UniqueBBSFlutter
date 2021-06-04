@@ -1,9 +1,10 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
-import 'package:UniqueBBS/data/bean/user/user_info.dart';
-import 'package:UniqueBBS/tool/logger.dart';
 import 'package:flutter/material.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/bean/forum/full_forum.dart';
+import 'package:unique_bbs/data/bean/forum/thread_info.dart';
+import 'package:unique_bbs/data/bean/forum/thread_list.dart';
+import 'package:unique_bbs/data/bean/user/user_info.dart';
+import 'package:unique_bbs/tool/logger.dart';
 
 import '../dio.dart';
 import '../repo.dart';
@@ -16,32 +17,33 @@ import '../repo.dart';
 /// TODO: 后续添加数据库层缓存
 class ThreadModel extends ChangeNotifier {
   static const _TAG = "ThreadModel";
-  List<ThreadInfo> _threadList = List();
-  List<UserInfo> _userList = List();
+  List<ThreadInfo> _threadList = [];
+  List<UserInfo> _userList = [];
 
   int _fetchedPage = 0;
   bool _fetching = false;
   bool _fetchComplete = false;
-  FullForum _forum;
+  FullForum? _forum;
   bool _killed = false;
 
-  // 不要在外部修改这个变量
-  bool isMe;
+  final bool isMe;
 
-  ThreadModel(this._forum, {this.isMe = false})
-      : assert(_forum != null || isMe);
+  ThreadModel(this._forum, {this.isMe = false});
 
   get threadCount => _threadList.length;
 
   // 第几个 item(从零开始计)
   // "我的"帖子信息不要调用此接口!
-  UserInfo getUserInfo(int index) {
-    if (isMe) return Repo.instance.me?.user;
+  UserInfo? getUserInfo(int index) {
+    if (isMe) {
+      final uid = Repo.instance.uid;
+      return Repo.instance.userModel.find(uid)?.user;
+    }
     if (index >= _userList.length) return null;
     return _userList[index];
   }
 
-  ThreadInfo getThreadInfo(int index) {
+  ThreadInfo? getThreadInfo(int index) {
     if (index >= _threadList.length) return null;
     return _threadList[index];
   }
@@ -62,8 +64,9 @@ class ThreadModel extends ChangeNotifier {
     final uid = Repo.instance.uid;
     Server.instance.threadsForUser(uid, _fetchedPage + 1).then((rsp) {
       if (rsp.success) {
-        _threadList.addAll(rsp.data.threads);
-        if (rsp.data.threads.length < HyperParam.pageSize) {
+        final threads = rsp.data?.threads as List<ThreadInfo>;
+        _threadList.addAll(threads);
+        if (threads.length < HyperParam.pageSize) {
           _fetchComplete = true;
         }
         _onFetchedSuccess();
@@ -75,14 +78,17 @@ class ThreadModel extends ChangeNotifier {
   }
 
   void _fetchForumThreads() {
-    Server.instance.threadsInForum(_forum.fid, _fetchedPage + 1).then((rsp) {
+    final forum = _forum;
+    if (forum == null) return;
+    Server.instance.threadsInForum(forum.fid, _fetchedPage + 1).then((rsp) {
       if (rsp.success) {
-        final threads = List<ThreadInfo>(), users = List<UserInfo>();
-        rsp.data.threads.forEach((data) {
+        final threads = <ThreadInfo>[], users = <UserInfo>[];
+        ThreadList data = rsp.data as ThreadList;
+        data.threads.forEach((data) {
           threads.add(data.thread);
           users.add(data.user);
         });
-        if (rsp.data.threads.length < HyperParam.pageSize) {
+        if (data.threads.length < HyperParam.pageSize) {
           _fetchComplete = true;
         }
         _threadList.addAll(threads);

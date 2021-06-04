@@ -1,17 +1,17 @@
-import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBS/data/bean/forum/thread.dart';
-import 'package:UniqueBBS/data/bean/report/report.dart';
-import 'package:UniqueBBS/widget/home/check/update_user.dart';
-import 'package:UniqueBBS/widget/home/home.dart';
-import 'package:UniqueBBS/widget/home/home_select.dart';
-import 'package:UniqueBBS/widget/login/info_set.dart';
-import 'package:UniqueBBS/widget/login/login.dart';
-import 'package:UniqueBBS/widget/login/pw_set.dart';
-import 'package:UniqueBBS/widget/post/detail/post_detail.dart';
-import 'package:UniqueBBS/widget/post/thread_page.dart';
-import 'package:UniqueBBS/widget/report/report_page.dart';
-import 'package:UniqueBBS/widget/report/report_post_page.dart';
 import 'package:flutter/material.dart';
+import 'package:unique_bbs/data/bean/forum/full_forum.dart';
+import 'package:unique_bbs/data/bean/forum/thread.dart';
+import 'package:unique_bbs/data/bean/report/report.dart';
+import 'package:unique_bbs/widget/home/check/update_user.dart';
+import 'package:unique_bbs/widget/home/home.dart';
+import 'package:unique_bbs/widget/home/home_select.dart';
+import 'package:unique_bbs/widget/login/info_set.dart';
+import 'package:unique_bbs/widget/login/login.dart';
+import 'package:unique_bbs/widget/login/pw_set.dart';
+import 'package:unique_bbs/widget/post/detail/post_detail.dart';
+import 'package:unique_bbs/widget/post/thread_page.dart';
+import 'package:unique_bbs/widget/report/report_page.dart';
+import 'package:unique_bbs/widget/report/report_post_page.dart';
 
 class BBSRoute {
   static const main = '/'; // 主页
@@ -61,7 +61,7 @@ class BBSRoute {
 
   static Route buildPage(String path, dynamic arg) {
     if (routes.containsKey(path)) {
-      return MaterialPageRoute(builder: generateBuilder(routes[path]));
+      return MaterialPageRoute(builder: generateBuilder(routes[path]!));
     }
     // used for build page with arguments
     switch (path) {
@@ -70,10 +70,10 @@ class BBSRoute {
             builder: generateBuilder(PostDetailWidget(arg as Thread)));
       case postList:
         return MaterialPageRoute(
-            builder: generateBuilder(ThreadPageWidget(arg as FullForum)));
+            builder: generateBuilder(ThreadPageWidget(arg as FullForum?)));
       case postReport:
         return MaterialPageRoute(
-            builder: generateBuilder(ReportPostPageWidget(arg as Report)));
+            builder: generateBuilder(ReportPostPageWidget(arg as Report?)));
     }
     throw Exception("Route $path not found!");
   }

@@ -1,10 +1,10 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/dio.dart';
-import 'package:UniqueBBS/widget/home/home_body.dart';
-import 'package:UniqueBBS/widget/home/home_me.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/dio.dart';
+import 'package:unique_bbs/widget/home/home_body.dart';
+import 'package:unique_bbs/widget/home/home_me.dart';
 
 const _bottomHeight = 50.0;
 const _bottomMaskHeight = 120.0;
@@ -104,37 +104,34 @@ class _HomeState extends State<HomeWidget> {
     };
     return Container(
       color: Colors.white,
-      child: SafeArea(
-        top: false,
-        child: Scaffold(
-          body: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                child: _pages[_index],
+      child: Scaffold(
+        body: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Container(
+              height: double.infinity,
+              width: double.infinity,
+              child: _pages[_index],
+            ),
+            _buildMask(),
+            Container(
+              height: _bottomHeight,
+              width: double.infinity,
+              child: SvgPicture.asset(
+                SvgIcon.homeBottomBg,
+                fit: BoxFit.fill,
               ),
-              _buildMask(),
-              Container(
-                height: _bottomHeight,
-                width: double.infinity,
-                child: SvgPicture.asset(
-                  SvgIcon.homeBottomBg,
-                  fit: BoxFit.fill,
-                ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildBottomItem(SvgIcon.message, 0, _index, tapIconCallback),
-                  _buildBottomButton(context),
-                  _buildBottomItem(SvgIcon.person, 1, _index, tapIconCallback),
-                ],
-              ),
-            ],
-          ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildBottomItem(SvgIcon.message, 0, _index, tapIconCallback),
+                _buildBottomButton(context),
+                _buildBottomItem(SvgIcon.person, 1, _index, tapIconCallback),
+              ],
+            ),
+          ],
         ),
       ),
     );

@@ -28,20 +28,20 @@ String generateMD5(String input) {
 }
 
 String getDayString(String str) {
-  if (str == null) return "";
   final date = DateTime.parse(str);
-  if (date == null) return "";
   return "${date.year}.${date.month}.${date.day}";
 }
 
 // 用于自动处理 x 小时前这样的数据
 String getDeltaTime(String time) {
-  if (time == null) return "";
   final date = DateTime.parse(time);
-  if (date == null) return "";
   final delta = DateTime.now().difference(date);
   if (delta.isNegative)
     return "刚刚";
+  else if (delta.inDays >= 365)
+    return "${delta.inDays ~/ 365}年前";
+  else if (delta.inDays >= 30)
+    return "${delta.inDays ~/ 30}个月前";
   else if (delta.inDays > 0)
     return "${delta.inDays}天前";
   else if (delta.inHours > 0)
@@ -52,7 +52,8 @@ String getDeltaTime(String time) {
     return "刚刚";
 }
 
-launchBrowser(String url) async {
+launchBrowser(String? url) async {
+  if (url == null) return;
   if (await canLaunch(url)) {
     await launch(url);
   } else {

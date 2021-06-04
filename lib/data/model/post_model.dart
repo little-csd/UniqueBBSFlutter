@@ -1,14 +1,15 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/data/bean/forum/post_data.dart';
-import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
-import 'package:UniqueBBS/data/bean/other/attach_data.dart';
-import 'package:UniqueBBS/data/repo.dart';
-import 'package:UniqueBBS/tool/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/bean/forum/post_data.dart';
+import 'package:unique_bbs/data/bean/forum/post_list.dart';
+import 'package:unique_bbs/data/bean/forum/thread_info.dart';
+import 'package:unique_bbs/data/bean/other/attach_data.dart';
+import 'package:unique_bbs/data/repo.dart';
+import 'package:unique_bbs/tool/logger.dart';
 
 import '../dio.dart';
 
@@ -23,9 +24,9 @@ class PostModel extends ChangeNotifier {
   static const _TAG = "PostModel";
   static const _attachType = "attach";
   ThreadInfo _threadInfo;
-  PostData _firstPost;
-  List<AttachData> _attachArr;
-  List<PostData> _postData = List();
+  PostData? _firstPost;
+  List<AttachData> _attachArr = [];
+  List<PostData> _postData = [];
 
   bool _fetching = false;
   int _fetchedPage = 0;
@@ -34,22 +35,22 @@ class PostModel extends ChangeNotifier {
 
   Set<String> _attachFetchingSet = HashSet(); // attach id 对应的文件是否正在拉取
 
-  PostModel(this._threadInfo) : assert(_threadInfo != null);
+  PostModel(this._threadInfo);
 
   // 目前 post model 里面存在多少个 post 信息
   int postCount() {
     return _postData.length;
   }
 
-  PostData getFirstPost() {
-    if (_firstPost == null) {
+  PostData? getFirstPost() {
+    if (_fetchedPage == 0) {
       _fetch();
     }
     return _firstPost;
   }
 
   List<AttachData> getAllAttach() {
-    if (_attachArr == null) {
+    if (_fetchedPage == 0) {
       _fetch();
     }
     return _attachArr;
@@ -57,7 +58,7 @@ class PostModel extends ChangeNotifier {
 
   // 第几个 item(从零开始计)
   // "我的"帖子信息不要调用此接口!
-  PostData getPostData(int index) {
+  PostData? getPostData(int index) {
     // 拉取超过范围，正常情况下不会出现
     if (index >= _postData.length) return null;
     // 拿最后一个并且还能拉取，则拉取下一页
@@ -67,10 +68,8 @@ class PostModel extends ChangeNotifier {
     return _postData[index];
   }
 
-  /// TODO: 后续有时间的话, 这里下载的逻辑还是要改下
-  File getAttachData(String aid) {
+  File? getAttachData(String aid) {
     var attaches = getAllAttach();
-    if (attaches == null) return null;
     if (_attachFetchingSet.contains(aid)) return null;
 
     for (AttachData attach in attaches) {
@@ -94,15 +93,28 @@ class PostModel extends ChangeNotifier {
   }
 
   void sendPost(String msg, String quote) {
-    if (msg == null || msg.isEmpty || !canPost()) {
+    if (msg.isEmpty || !canPost()) {
+      Fluttertoast.showToast(msg: StringConstant.sendPostFail);
       return;
     }
     Server.instance.threadReply(_threadInfo.tid, msg, quote).then((rsp) {
       Fluttertoast.showToast(
           msg: rsp.success
               ? StringConstant.sendPostSuccess
-              : '${StringConstant.sendPostFail}${rsp.msg}');
+              : '${StringConstant.sendPostError}${rsp.msg}');
+      _reset();
     });
+  }
+
+  void _reset() {
+    _fetching = false;
+    _fetchComplete = false;
+    _fetchedPage = 0;
+
+    _postData = [];
+    _attachArr = [];
+    _firstPost = null;
+    notifyListeners();
   }
 
   void _fetch() async {
@@ -114,9 +126,12 @@ class PostModel extends ChangeNotifier {
         .postsInThread(_threadInfo.tid, _fetchedPage + 1)
         .then((rsp) {
       if (rsp.success) {
+        if (!_fetching) {
+          return;
+        }
         _fetchedPage++;
         _fetching = false;
-        final data = rsp.data;
+        PostList data = rsp.data as PostList;
         // 此处 group 传的是空值，可能会有影响
         _firstPost = PostData(data.firstPost, data.threadAuthor, [], null);
         _attachArr = data.attachArr;

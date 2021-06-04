@@ -8,10 +8,9 @@ part of 'user_post.dart';
 
 UserPost _$UserPostFromJson(Map<String, dynamic> json) {
   return UserPost(
-    (json['list'] as List)
-        ?.map((e) =>
-            e == null ? null : PostThread.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['list'] as List<dynamic>)
+        .map((e) => PostThread.fromJson(e as Map<String, dynamic>))
+        .toList(),
     json['count'] as int,
   );
 }

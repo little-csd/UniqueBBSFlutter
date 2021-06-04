@@ -8,10 +8,9 @@ part of 'user_thread.dart';
 
 UserThread _$UserThreadFromJson(Map<String, dynamic> json) {
   return UserThread(
-    (json['list'] as List)
-        ?.map((e) =>
-            e == null ? null : ThreadInfo.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['list'] as List<dynamic>)
+        .map((e) => ThreadInfo.fromJson(e as Map<String, dynamic>))
+        .toList(),
     json['count'] as int,
   );
 }

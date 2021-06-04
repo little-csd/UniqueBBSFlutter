@@ -1,9 +1,9 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBS/data/model/thread_model.dart';
-import 'package:UniqueBBS/widget/post/thread_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/bean/forum/full_forum.dart';
+import 'package:unique_bbs/data/model/thread_model.dart';
+import 'package:unique_bbs/widget/post/thread_list.dart';
 
 const _titleTextStyle = TextStyle(
   color: Colors.black,
@@ -12,7 +12,7 @@ const _titleTextStyle = TextStyle(
 );
 
 class ThreadPageWidget extends StatefulWidget {
-  final FullForum forum;
+  final FullForum? forum;
 
   ThreadPageWidget(this.forum);
 
@@ -21,14 +21,14 @@ class ThreadPageWidget extends StatefulWidget {
 }
 
 class ThreadPageState extends State<ThreadPageWidget> {
-  ThreadModel model;
+  late ThreadModel model =
+      ThreadModel(widget.forum, isMe: widget.forum == null);
   ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _initScrollController();
-    model = ThreadModel(widget.forum, isMe: widget.forum == null);
     _fetchData();
   }
 
@@ -57,7 +57,7 @@ class ThreadPageState extends State<ThreadPageWidget> {
           ),
           backgroundColor: ColorConstant.backgroundLightGrey,
           title: Text(
-            widget.forum != null ? widget.forum.name : StringConstant.myThreads,
+            widget.forum?.name ?? StringConstant.myThreads,
             style: _titleTextStyle,
           ),
           centerTitle: true,

@@ -8,12 +8,8 @@ part of 'message.dart';
 
 Message _$MessageFromJson(Map<String, dynamic> json) {
   return Message(
-    json['messageItem'] == null
-        ? null
-        : MessageItem.fromJson(json['messageItem'] as Map<String, dynamic>),
-    json['fromUser'] == null
-        ? null
-        : UserInfo.fromJson(json['fromUser'] as Map<String, dynamic>),
+    MessageItem.fromJson(json['messageItem'] as Map<String, dynamic>),
+    UserInfo.fromJson(json['fromUser'] as Map<String, dynamic>),
   );
 }
 

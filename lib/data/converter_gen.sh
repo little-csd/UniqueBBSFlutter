@@ -26,6 +26,10 @@ do
 done
 
 {
+
+} >> $target
+
+{
   printf "\t\t}\n"
   printf "\t\tprint('Type error! You probably forgot to run converter_gen.sh');\n"
   printf "\t\treturn null;\n"

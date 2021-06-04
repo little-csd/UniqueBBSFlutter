@@ -1,11 +1,11 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/bean/report/report.dart';
-import 'package:UniqueBBS/tool/helper.dart';
-import 'package:UniqueBBS/widget/common/filled_background_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/bean/report/report.dart';
+import 'package:unique_bbs/tool/helper.dart';
+import 'package:unique_bbs/widget/common/filled_background_text.dart';
 
 var _tagWeekly = "WEEKLY";
 var _tagDaily = "DAILY";
@@ -119,7 +119,7 @@ class ReportItem extends StatelessWidget {
           ),
           Expanded(
             child: Markdown(
-              data: _reportContent ?? '',
+              data: _reportContent,
               imageBuilder: (uri, title, alt) {
                 if (uri.scheme == StringConstant.networkProtocol) {
                   return Image.network(uri.toString());
