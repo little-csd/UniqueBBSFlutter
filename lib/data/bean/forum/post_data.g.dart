@@ -8,19 +8,12 @@ part of 'post_data.dart';
 
 PostData _$PostDataFromJson(Map<String, dynamic> json) {
   return PostData(
-    json['post'] == null
-        ? null
-        : PostInfo.fromJson(json['post'] as Map<String, dynamic>),
-    json['user'] == null
-        ? null
-        : UserInfo.fromJson(json['user'] as Map<String, dynamic>),
-    (json['group'] as List)
-        ?.map((e) =>
-            e == null ? null : GroupInfo.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    json['quote'] == null
-        ? null
-        : PostInfo.fromJson(json['quote'] as Map<String, dynamic>),
+    PostInfo.fromJson(json['post'] as Map<String, dynamic>),
+    UserInfo.fromJson(json['user'] as Map<String, dynamic>),
+    (json['group'] as List<dynamic>)
+        .map((e) => GroupInfo.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    PostInfo.fromJson(json['quote'] as Map<String, dynamic>),
   );
 }
 

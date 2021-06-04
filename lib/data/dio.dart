@@ -39,8 +39,8 @@ Dio dio = Dio(BaseOptions(baseUrl: _baseUrl))
 /// 注意 msg 和 data 有一个会是 null
 class NetRsp<T> {
   bool success;
-  String msg;
-  T data;
+  String? msg;
+  T? data;
 
   NetRsp(this.success, {this.msg, this.data});
 }
@@ -49,28 +49,34 @@ class Server {
   static const _TAG = "Server";
   static const _LoginUrl = '/user/login/pwd';
   static const _UpdateJwt = '/user/update/jwt';
+
   // user url
   static const _UserUrl = '/user/info';
   static const _MentorUrl = '/user/mentor/info';
+
   // static const MyMentor = '/user/mentor/my';
   static const _MyMentee = '/user/mentor/students';
   static const _UpdateUser = '/user/update/normal';
   static const _UpdatePwd = '/user/update/pwd';
   static const _UserThreads = '/user/threads';
   static const _UserPosts = '/user/posts';
+
   // group url
   static const _GroupList = '/group/list';
   static const _GroupUserList = '/group/users';
   static const _UserGroupInfo = '/group/user';
+
   // report url
   static const _CanPostReport = '/report/can';
   static const _ReportInfo = '/report/info';
   static const _ReportList = '/report/list';
   static const _ReportCreate = '/report/create';
   static const _ReportUpdate = '/report/update';
+
   // forum url
   static const _ForumList = '/forum/list';
   static const _MiniForumList = '/forum/listSimple';
+
   // thread / post operation url
   static const _ThreadCreate = '/thread/create';
   static const _ThreadList = '/thread/list';
@@ -78,20 +84,24 @@ class Server {
   static const _ThreadReply = '/thread/reply';
   static const _PostUpdate = '/post/update';
   static const _PostSearch = '/post/search';
+
   // notification url
   static const _MessageList = '/message/list';
+
   // static const _MessageCount = '/message/count';
   // static const _MessagePush = '/message/push';
   static const _MessageRead = '/message/read';
   static const _MessageDelete = '/message/delete';
   static const _MessageReadAll = '/message/all/read';
   static const _MessageDeleteAll = '/message/all/delete';
+
   // attach url
   static const _AttachDownload = '/attach/download';
 
   static const NetworkError = '你的网络好像走丢了\n请试试重新连接吧？';
-  static const UidError = '找不到用户信息!';
+  static const UserNotFound = '找不到用户信息!';
   static const TokenExpired = 'Token 已过期!';
+  static const FormatError = '消息格式错误!';
   static const EmptyMsg = '收到空消息!';
   static const UnknownError = '未知异常';
   static const CodeNotValid = '服务器执行失败';
@@ -100,31 +110,31 @@ class Server {
   static const _UidKeyInSp = 'uid';
   static const _TokenKeyInSp = 'token';
 
-  VoidCallback tokenErrCallback = () => {};
+  VoidCallback? tokenErrCallback = () => {};
 
   Future<String> init() async {
     // token 过期统一在 _get 和 _post 方法中处理
     final sp = await SharedPreferences.getInstance();
-    String uid = sp.getString(_UidKeyInSp);
-    String token = sp.getString(_TokenKeyInSp);
-    Logger.d(_TAG, 'token = $token, uid = $uid');
-    if (uid == null || token == null) {
-      return UidError;
+    try {
+      String uid = sp.getString(_UidKeyInSp) as String;
+      String token = sp.getString(_TokenKeyInSp) as String;
+      dio.options.headers[HttpHeaders.authorizationHeader] = token;
+      // update token
+      Map<String, dynamic> json = HashMap();
+      String errno = await _post(_UpdateJwt, {}, json);
+      if (errno.isNotEmpty) return errno;
+      if (json["code"] != 1) return TokenExpired;
+      // save token
+      token = json["msg"];
+      dio.options.headers[HttpHeaders.authorizationHeader] = token;
+      sp
+          .setString(_TokenKeyInSp, token)
+          .then((value) => Logger.i(_TAG, 'save uid $token $value'));
+      Repo.instance.uid = uid;
+      return NoError;
+    } catch (e) {
+      return UserNotFound;
     }
-    dio.options.headers[HttpHeaders.authorizationHeader] = token;
-    // update token
-    Map<String, dynamic> json = HashMap();
-    String errno = await _post(_UpdateJwt, {}, json);
-    if (errno != null) return errno;
-    if (json["code"] != 1) return TokenExpired;
-    // save token
-    token = json["msg"];
-    dio.options.headers[HttpHeaders.authorizationHeader] = token;
-    sp
-        .setString(_TokenKeyInSp, token)
-        .then((value) => Logger.i(_TAG, 'save uid $token $value'));
-    Repo.instance.uid = uid;
-    return NoError;
   }
 
   Future<NetRsp<String>> login(String nickname, String password) async {
@@ -134,26 +144,28 @@ class Server {
     };
     Map<String, dynamic> json = HashMap();
     String errno = await _post(_LoginUrl, data, json);
-    if (errno != null) {
+    if (errno.isNotEmpty) {
       return NetRsp(false, msg: errno);
     }
-    Map<String, dynamic> msg = json['msg'];
-    if (msg == null) {
-      return NetRsp(false, msg: EmptyMsg);
+    try {
+      Map<String, dynamic> msg = json['msg'];
+      String token = msg['token'], uid = msg['uid'];
+      dio.options.headers[HttpHeaders.authorizationHeader] = token;
+      Repo.instance.uid = uid;
+      Logger.d(_TAG, 'token = $token, uid = $uid');
+      final sp = await SharedPreferences.getInstance();
+      // 此处异步保存
+      sp
+          .setString(_UidKeyInSp, uid)
+          .then((ok) => Logger.i(_TAG, 'save uid $uid $ok'));
+      sp
+          .setString(_TokenKeyInSp, token)
+          .then((value) => Logger.i(_TAG, 'save uid $token $value'));
+      return NetRsp(true, data: NoError);
+    } catch (e) {
+      Logger.e(_TAG, e.toString());
+      return NetRsp(false, msg: FormatError);
     }
-    String token = msg['token'], uid = msg['uid'];
-    dio.options.headers[HttpHeaders.authorizationHeader] = token;
-    Repo.instance.uid = uid;
-    Logger.d(_TAG, 'token = $token, uid = $uid');
-    final sp = await SharedPreferences.getInstance();
-    // 此处异步保存
-    sp
-        .setString(_UidKeyInSp, uid)
-        .then((ok) => Logger.i(_TAG, 'save uid $uid $ok'));
-    sp
-        .setString(_TokenKeyInSp, token)
-        .then((value) => Logger.i(_TAG, 'save uid $token $value'));
-    return NetRsp(true, data: NoError);
   }
 
   void logout() async {
@@ -173,11 +185,12 @@ class Server {
     // should not happen here
     String uid = Repo.instance.uid;
     if (uid.isEmpty) {
-      return NetRsp(false, msg: UidError);
+      return NetRsp(false, msg: UserNotFound);
     }
     return user(uid);
   }
 
+  /// TODO: 这里会有个问题，恰好下载到一半后退出的话，下次调用时会拿到一个损坏的图像
   Future<NetRsp<Image>> avatar(String path, String savePath) async {
     try {
       path = path.replaceAll(_baseUrl, '');
@@ -186,9 +199,6 @@ class Server {
         return NetRsp(false, msg: NetworkError);
       }
       final img = Image.file(File(savePath));
-      if (img == null) {
-        return NetRsp(false, msg: UnknownError);
-      }
       return NetRsp(true, data: img);
     } catch (e) {
       String msg = e.toString();
@@ -221,7 +231,7 @@ class Server {
   Future<NetRsp<Mentor>> myMentor() async {
     String uid = Repo.instance.uid;
     if (uid.isEmpty) {
-      return NetRsp(false, msg: UidError);
+      return NetRsp(false, msg: UserNotFound);
     }
     return mentor(uid);
   }
@@ -230,7 +240,7 @@ class Server {
     return _process(_MyMentee, Mentee);
   }
 
-  Future<NetRsp<bool>> updateUser(UserInfo user) async {
+  Future<NetRsp<void>> updateUser(UserInfo user) {
     final req = {
       'studentID': user.studentID,
       'dormitory': user.dormitory,
@@ -241,15 +251,15 @@ class Server {
       'nickname': user.username,
       'signature': user.signature
     };
-    return _simplePost(_UpdateUser, req);
+    return _processRaw(_UpdateUser, Null, req: req);
   }
 
-  Future<NetRsp<bool>> updatePwd(String oldPwd, String newPwd) async {
+  Future<NetRsp<void>> updatePwd(String oldPwd, String newPwd) {
     final req = {
       'previousPwd': generateMD5(oldPwd),
       'newPwd': generateMD5(newPwd),
     };
-    return _simplePost(_UpdatePwd, req);
+    return _processRaw(_UpdatePwd, Null, req: req);
   }
 
   Future<NetRsp<UserThread>> threadsForUser(String uid, int page) {
@@ -283,28 +293,23 @@ class Server {
   Future<NetRsp<List<bool>>> canReport() async {
     Map<String, dynamic> json = HashMap();
     final errno = await _get(_CanPostReport, json);
-    if (errno != null) {
+    if (errno.isNotEmpty) {
       return NetRsp(false, msg: errno);
     }
-    Map<String, dynamic> msg = json['msg'];
-    if (msg == null) {
-      return NetRsp(false, msg: EmptyMsg);
+    try {
+      Map<String, dynamic> msg = json['msg'];
+      bool weekly = msg['weekly'];
+      bool daily = msg['daily'];
+      return NetRsp(true, data: [weekly, daily]);
+    } catch (e) {
+      Logger.e(_TAG, e.toString());
+      return NetRsp(false, msg: FormatError);
     }
-    return NetRsp(true, data: [msg['weekly'] as bool, msg['daily'] as bool]);
   }
 
-  Future<NetRsp<String>> reportInfo(String rid) async {
+  Future<NetRsp<String>> reportInfo(String rid) {
     final url = '$_ReportInfo/$rid';
-    Map<String, dynamic> json = HashMap();
-    final errno = await _get(url, json);
-    if (errno != null) {
-      return NetRsp(false, msg: errno);
-    }
-    String msg = json['msg'];
-    if (msg == null) {
-      return NetRsp(false, msg: EmptyMsg);
-    }
-    return NetRsp(true, data: msg);
+    return _processRaw(url, String, req: {});
   }
 
   Future<NetRsp<Reports>> reports(String uid, int page) {
@@ -312,24 +317,19 @@ class Server {
     return _process(url, Reports);
   }
 
-  Future<NetRsp<String>> createReport(bool weekly, String msg) async {
+  Future<NetRsp<String>> createReport(bool weekly, String msg) {
     final req = {
       'isWeekReport': weekly ? "1" : "0",
       'message': msg,
     };
-    Map<String, dynamic> json = HashMap();
-    final errno = await _post(_ReportCreate, req, json);
-    if (errno != null) {
-      return NetRsp(false, msg: errno);
-    }
-    return NetRsp(true, data: json["msg"] as String);
+    return _processRaw(_ReportCreate, String, req: req);
   }
 
-  Future<NetRsp<bool>> updateReport(String rid, String msg) async {
+  Future<NetRsp<void>> updateReport(String rid, String msg) {
     final req = {
       'message': msg,
     };
-    return _simplePost('$_ReportUpdate/$rid', req);
+    return _processRaw('$_ReportUpdate/$rid', Null, req: req);
   }
 
   /// 下面部分为论坛/帖子/回复相关的 api
@@ -343,23 +343,14 @@ class Server {
   }
 
   Future<NetRsp<String>> threadCreate(
-      String fid, String subject, String msg, List<String> fileListArr) async {
+      String fid, String subject, String msg, List<String> fileListArr) {
     final req = {
       'fid': fid,
       'subject': subject,
       'message': msg,
       'fileListArr': fileListArr,
     };
-    Map<String, dynamic> json = HashMap();
-    final errno = await _post(_ThreadCreate, req, json);
-    if (errno != null) {
-      return NetRsp(false, msg: errno);
-    }
-    String tid = json["msg"];
-    if (null == tid) {
-      return NetRsp(false, msg: UnknownError);
-    }
-    return NetRsp(true, data: tid);
+    return _processRaw(_ThreadCreate, String, req: req);
   }
 
   Future<NetRsp<ThreadList>> threadsInForum(String fid, int page) {
@@ -372,38 +363,28 @@ class Server {
     return _process(url, PostList);
   }
 
-  Future<NetRsp<bool>> replyUpdate(String pid, String msg) {
+  Future<NetRsp<void>> replyUpdate(String pid, String msg) {
     final req = {
       'message': msg,
     };
-    return _simplePost('$_PostUpdate/$pid', req);
+    return _processRaw('$_PostUpdate/$pid', Null, req: req);
   }
 
-  Future<NetRsp<bool>> threadReply(String tid, String msg, String quote) {
+  Future<NetRsp<void>> threadReply(String tid, String msg, String quote) {
     final req = {
       'tid': tid,
       'message': msg,
       'quote': quote,
     };
-    return _simplePost('$_ThreadReply', req);
+    return _processRaw(_ThreadReply, Null, req: req);
   }
 
-  Future<NetRsp<PostSearch>> postSearch(String keyword, int page) async {
+  Future<NetRsp<PostSearch>> postSearch(String keyword, int page) {
     final req = {
       'keyword': keyword,
     };
     final url = '$_PostSearch/$page';
-    Map<String, dynamic> json = HashMap();
-    final errno = await _post(url, req, json);
-    if (errno != null) {
-      return NetRsp(false, msg: errno);
-    }
-    Map<String, dynamic> msg = json['msg'];
-    if (msg == null) {
-      return NetRsp(false, msg: EmptyMsg);
-    }
-    final data = Converter.getFromJson(PostSearch, msg);
-    return NetRsp(true, data: data);
+    return _process(url, PostSearch, req: req);
   }
 
   /// 下面是通知相关的 api
@@ -412,73 +393,120 @@ class Server {
     return _processArray(url, Message);
   }
 
-  Future<NetRsp<bool>> read(String mid) {
+  Future<NetRsp<void>> read(String mid) {
     final url = '$_MessageRead/$mid';
-    return _simplePost(url, {});
+    return _processRaw(url, Null, req: {});
   }
 
-  Future<NetRsp<bool>> delete(String mid) {
+  Future<NetRsp<void>> delete(String mid) {
     final url = '$_MessageDelete/$mid';
-    return _simplePost(url, {});
+    return _processRaw(url, Null, req: {});
   }
 
-  Future<NetRsp<bool>> readAll() {
-    return _simplePost(_MessageReadAll, {});
+  Future<NetRsp<void>> readAll() {
+    return _processRaw(_MessageReadAll, Null, req: {});
   }
 
-  Future<NetRsp<bool>> deleteAll() {
-    return _simplePost(_MessageDeleteAll, {});
+  Future<NetRsp<void>> deleteAll() {
+    return _processRaw(_MessageDeleteAll, Null, req: {});
   }
 
   /// 下面开始是内部使用的辅助方法
 
-  // 处理一个 get 请求, 返回带有类型为 type 的 NetRsp, 存于 data 字段
+  // 处理请求, 返回带有原始类型(int, string 等)的 NetRsp, 存于 data 字段
   // 若请求失败, 则错误信息存放在 msg 字段
-  Future<NetRsp<T>> _process<T>(String url, Type type) async {
+  Future<NetRsp<T>> _processRaw<T>(
+    String url,
+    Type type, {
+    Map<String, dynamic>? req,
+  }) async {
     Map<String, dynamic> json = HashMap();
-    final errno = await _get(url, json);
-    if (errno != null) {
+    // validate for network request
+    String errno;
+    if (req == null) {
+      errno = await _get(url, json);
+    } else {
+      errno = await _post(url, req, json);
+    }
+    if (errno.isNotEmpty) {
       return NetRsp(false, msg: errno);
     }
-    Map<String, dynamic> msg = json['msg'];
-    if (msg == null) {
-      return NetRsp(false, msg: EmptyMsg);
+    // validate for 'msg' field
+    try {
+      T msg = json['msg'];
+      return NetRsp(true, data: msg);
+    } catch (e) {
+      Logger.e(_TAG, e.toString());
+      return NetRsp(false, msg: FormatError);
     }
-    final data = Converter.getFromJson(type, msg);
-    return NetRsp(true, data: data);
   }
 
-  // 处理一个 get 请求, 返回带有类型为 type 的 List 的 NetRsp, 存于 data 字段
+  // 处理请求, 返回带有类型为 type 的 NetRsp, 存于 data 字段
   // 若请求失败, 则错误信息存放在 msg 字段
-  Future<NetRsp<List<T>>> _processArray<T>(String url, Type type) async {
+  Future<NetRsp<T>> _process<T>(
+    String url,
+    Type type, {
+    Map<String, dynamic>? req,
+  }) async {
     Map<String, dynamic> json = HashMap();
-    final errno = await _get(url, json);
-    if (errno != null) {
+    // validate for network request
+    String errno;
+    if (req == null) {
+      errno = await _get(url, json);
+    } else {
+      errno = await _post(url, req, json);
+    }
+    if (errno.isNotEmpty) {
       return NetRsp(false, msg: errno);
     }
-    List msg = json['msg'];
+    // validate for 'msg' field & converter
+    try {
+      final data = Converter.getFromJson(type, json['msg']);
+      return NetRsp(true, data: data);
+    } catch (e) {
+      Logger.e(_TAG, e.toString());
+      return NetRsp(false, msg: FormatError);
+    }
+  }
+
+  // 处理请求, 返回带有类型为 type 的 List 的 NetRsp, 存于 data 字段
+  // 若请求失败, 则错误信息存放在 msg 字段
+  Future<NetRsp<List<T>>> _processArray<T>(
+    String url,
+    Type type, {
+    Map<String, dynamic>? req,
+  }) async {
+    Map<String, dynamic> json = HashMap();
+    // validate for network request
+    String errno;
+    if (req == null) {
+      errno = await _get(url, json);
+    } else {
+      errno = await _post(url, req, json);
+    }
+    if (errno.isNotEmpty) {
+      return NetRsp(false, msg: errno);
+    }
+    // validate for 'msg' field
+    List? msg = json['msg'];
     if (msg == null) {
       return NetRsp(false, msg: EmptyMsg);
     }
     if (msg.length == 0) {
       return NetRsp(true, data: []);
     } else {
-      final data = List<T>();
-      for (var value in msg) {
-        data.add(Converter.getFromJson(type, value as Map));
+      // validate for converter
+      try {
+        final data = <T>[];
+        for (var value in msg) {
+          data.add(Converter.getFromJson(type, value as Map<String, dynamic>));
+        }
+        return NetRsp(true, data: data);
+      } catch (e) {
+        Logger.e(_TAG, e.toString());
+        return NetRsp(false, msg: FormatError);
       }
-      return NetRsp(true, data: data);
     }
-  }
-
-  // 发送仅返回一个 code 的 post 请求
-  Future<NetRsp<bool>> _simplePost(String url, Map<String, dynamic> req) async {
-    Map<String, dynamic> json = HashMap();
-    final errno = await _post(url, req, json);
-    if (errno != null) {
-      return NetRsp(false, msg: errno);
-    }
-    return NetRsp(true, data: json['code'] == 1);
   }
 
   // 发送 Post 请求, 没有错误则返回 null, 并将数据填充到 json 这个 map 中
@@ -491,14 +519,12 @@ class Server {
       int code = res['code'];
       if (code == 1) {
         json.addAll(res);
-        return null;
+        return '';
       } else {
-        String msg = res['msg'] != null ? res['msg'] : "";
-        Logger.d(_TAG, msg);
-        if ((msg == StringConstant.jwtExpired ||
-                msg == StringConstant.jwtMalformed) &&
-            tokenErrCallback != null) {
-          tokenErrCallback();
+        String msg = res['msg'] ?? "";
+        if (msg == StringConstant.jwtExpired ||
+            msg == StringConstant.jwtMalformed) {
+          tokenErrCallback?.call();
         }
         return msg;
       }
@@ -510,7 +536,7 @@ class Server {
     }
   }
 
-  // 发送 Get 请求, 没有错误则返回 null, 并将结果填充到 json 这个 map 中
+  // 发送 Get 请求, 没有错误则返回空字符串, 并将结果填充到 json 这个 map 中
   // 若有错误则返回错误信息
   Future<String> _get(String url, Map<String, dynamic> json) async {
     try {
@@ -519,14 +545,12 @@ class Server {
       int code = res['code'];
       if (code == 1) {
         json.addAll(res);
-        return null;
+        return '';
       } else {
-        String msg = res['msg'] != null ? res['msg'] : "";
-        Logger.d(_TAG, msg);
-        if ((msg == StringConstant.jwtExpired ||
-                msg == StringConstant.jwtMalformed) &&
-            tokenErrCallback != null) {
-          tokenErrCallback();
+        String msg = res['msg'] ?? "";
+        if (msg == StringConstant.jwtExpired ||
+            msg == StringConstant.jwtMalformed) {
+          tokenErrCallback?.call();
         }
         return msg;
       }
@@ -539,63 +563,55 @@ class Server {
   }
 
   /// 下面部分为单例的构造
-
-  factory Server() => _getInstance();
-
-  static Server get instance => _getInstance();
-
   Server._internal() {
     Logger.i(_TAG, 'initialized');
   }
 
-  static Server _instance;
-
-  static Server _getInstance() {
-    if (_instance == null) {
-      _instance = Server._internal();
-    }
-    return _instance;
-  }
+  static Server instance = Server._internal();
 }
 
 class _LoggingInterceptors extends Interceptor {
   static const _TAG = "LoggingInterceptors";
 
   @override
-  Future<dynamic> onRequest(RequestOptions options) async {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     Logger.d(_TAG,
-        "--> ${options.method != null ? options.method.toUpperCase() : 'METHOD'} ${"" + (options.baseUrl ?? "") + (options.path ?? "")}");
+        "--> ${options.method.toUpperCase()} ${options.baseUrl + options.path}");
     Logger.d(_TAG, "Headers:");
     options.headers.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
-    if (options.queryParameters != null) {
-      Logger.d(_TAG, "queryParameters:");
-      options.queryParameters.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
-    }
+
+    Logger.d(_TAG, "queryParameters:");
+    options.queryParameters.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
+
     if (options.data != null) {
       Logger.d(_TAG, "Body: ${options.data}");
     }
-    Logger.d(_TAG,
-        "--> END ${options.method != null ? options.method.toUpperCase() : 'METHOD'}");
-
-    return options;
+    Logger.d(_TAG, "--> END ${options.method.toUpperCase()}");
   }
 
   @override
-  Future<dynamic> onError(DioError dioError) async {
-    Logger.d(_TAG,
-        "<-- ${dioError.message} ${(dioError.response?.request != null ? (dioError.response.request.baseUrl + dioError.response.request.path) : 'URL')}");
-    Logger.d(_TAG,
-        "${dioError.response != null ? dioError.response.data : 'Unknown Error'}");
-    Logger.d(_TAG, "<-- End error");
-  }
-
-  @override
-  Future<dynamic> onResponse(Response response) async {
-    Logger.d(_TAG,
-        "<-- ${response.statusCode} ${(response.request != null ? (response.request.baseUrl + response.request.path) : 'URL')}");
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    final String url =
+        response.requestOptions.data + response.requestOptions.path;
+    Logger.d(_TAG, "<-- ${response.statusCode} $url");
     Logger.d(_TAG, "Headers:");
-    response.headers?.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
+    response.headers.forEach((k, v) => Logger.d(_TAG, '$k: $v'));
     Logger.d(_TAG, "Response: ${response.data}");
     Logger.d(_TAG, "<-- END HTTP");
+  }
+
+  @override
+  void onError(DioError err, ErrorInterceptorHandler handler) {
+    var response = err.response;
+    if (response != null) {
+      String url =
+          response.requestOptions.baseUrl + response.requestOptions.path;
+      Logger.d(_TAG, "<-- ${err.message} $url");
+      Logger.d(_TAG, "Error Response: ${response.data}");
+    } else {
+      Logger.d(_TAG, "<-- ${err.message}");
+    }
+
+    Logger.d(_TAG, "<-- End error");
   }
 }

@@ -43,11 +43,11 @@ class UniqueStudioApp extends StatelessWidget {
         primaryColor: ColorConstant.primaryColor,
         primaryColorLight: ColorConstant.primaryColorLight,
         unselectedWidgetColor: ColorConstant.textGrey,
-        fontFamily: 'PingFang',
+        fontFamily: StringConstant.globalFont,
       ),
       home: AppSplashWidget(),
       onGenerateRoute: (setting) =>
-          BBSRoute.buildPage(setting.name, setting.arguments),
+          BBSRoute.buildPage(setting.name ?? "", setting.arguments),
     );
   }
 }

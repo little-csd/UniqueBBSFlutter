@@ -8,12 +8,8 @@ part of 'group.dart';
 
 Group _$GroupFromJson(Map<String, dynamic> json) {
   return Group(
-    json['group'] == null
-        ? null
-        : GroupInfo.fromJson(json['group'] as Map<String, dynamic>),
-    json['master'] == null
-        ? null
-        : UserInfo.fromJson(json['master'] as Map<String, dynamic>),
+    GroupInfo.fromJson(json['group'] as Map<String, dynamic>),
+    UserInfo.fromJson(json['master'] as Map<String, dynamic>),
     json['count'] as int,
   );
 }

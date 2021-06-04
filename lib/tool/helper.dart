@@ -52,7 +52,8 @@ String getDeltaTime(String time) {
     return "刚刚";
 }
 
-launchBrowser(String url) async {
+launchBrowser(String? url) async {
+  if (url == null) return;
   if (await canLaunch(url)) {
     await launch(url);
   } else {

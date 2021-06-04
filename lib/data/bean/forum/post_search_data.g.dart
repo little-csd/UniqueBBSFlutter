@@ -11,9 +11,7 @@ PostSearchData _$PostSearchDataFromJson(Map<String, dynamic> json) {
     json['id'] as String,
     json['key'] as String,
     json['subject'] as String,
-    json['user'] == null
-        ? null
-        : UserInfo.fromJson(json['user'] as Map<String, dynamic>),
+    UserInfo.fromJson(json['user'] as Map<String, dynamic>),
     json['message'] as String,
     json['postCount'] as int,
     json['createDate'] as String,

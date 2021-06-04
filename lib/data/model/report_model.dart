@@ -2,52 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unique_bbs/config/constant.dart';
 import 'package:unique_bbs/data/bean/report/report.dart';
+import 'package:unique_bbs/data/bean/report/reports.dart';
 import 'package:unique_bbs/data/dio.dart';
 import 'package:unique_bbs/data/repo.dart';
 
 class ReportModel extends ChangeNotifier {
   Map<int, List> _yearList = Map<int, List>();
-  int _pageNum = 1;
   bool _fetching = false;
-  int _maxCount;
-  int _fetchedCount = 0;
-  List<int> _sortedYears;
+  bool _fetchComplete = false;
+  int _fetchedPage = 0;
+  List<int> _sortedYears = [];
 
-  isNoReport() => _sortedYears == null || _sortedYears.length == 0;
+  isNoReport() => _sortedYears.length == 0;
 
   getYear(int index) => _sortedYears[index];
 
   keysCount() => _yearList.keys.length;
 
-  keysFirst() => _yearList.keys.first;
+  singleYearListLength(int year) => _yearList[year]!.length;
 
-  singleYearListLength(int year) => _yearList[year].length;
-
-  getItemData(int year, int index) => _yearList[year][index];
+  getItemData(int year, int index) => _yearList[year]![index];
 
   fetchData() {
-    if (_fetching || (_maxCount != null && _fetchedCount >= _maxCount)) {
+    if (_fetching || _fetchComplete) {
       return;
     }
     _fetching = true;
-    Server.instance.reports(Repo.instance.uid, _pageNum).then((rsp) {
+    Server.instance.reports(Repo.instance.uid, _fetchedPage + 1).then((rsp) {
       if (!rsp.success) {
-        Fluttertoast.showToast(msg: rsp.msg);
+        Fluttertoast.showToast(msg: rsp.msg!);
         Future.delayed(Duration(seconds: HyperParam.requestInterval))
             .then((_) => fetchData());
         return;
       }
-      int tot = rsp.data.reports.length;
-      _fetchedCount += rsp.data.reports.length;
-      _maxCount = rsp.data.count;
+      Reports data = rsp.data!;
+      int tot = data.reports.length;
       for (int i = 0; i < tot; i++) {
-        var data = rsp.data.reports[i];
-        int year = _generateYearNum(data);
-        if (_yearList.keys.contains(year)) {
-          _yearList[year].insert(_yearList[year].length, data);
+        final report = data.reports[i];
+        int year = _generateYearNum(report);
+        List? reportsInYear = _yearList[year];
+        if (reportsInYear == null) {
+          reportsInYear = [];
+          reportsInYear.add(report);
+          _yearList[year] = reportsInYear;
         } else {
-          _yearList[year] = List();
-          _yearList[year].insert(_yearList[year].length, data);
+          reportsInYear.add(report);
         }
       }
       _onFetchFinished();
@@ -55,7 +54,7 @@ class ReportModel extends ChangeNotifier {
   }
 
   _onFetchFinished() {
-    _pageNum++;
+    _fetchedPage++;
     _fetching = false;
     _generateAndSortYears();
     notifyListeners();

@@ -61,7 +61,7 @@ class BBSRoute {
 
   static Route buildPage(String path, dynamic arg) {
     if (routes.containsKey(path)) {
-      return MaterialPageRoute(builder: generateBuilder(routes[path]));
+      return MaterialPageRoute(builder: generateBuilder(routes[path]!));
     }
     // used for build page with arguments
     switch (path) {

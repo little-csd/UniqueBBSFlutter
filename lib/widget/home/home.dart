@@ -104,37 +104,34 @@ class _HomeState extends State<HomeWidget> {
     };
     return Container(
       color: Colors.white,
-      child: SafeArea(
-        top: false,
-        child: Scaffold(
-          body: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-                child: _pages[_index],
+      child: Scaffold(
+        body: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Container(
+              height: double.infinity,
+              width: double.infinity,
+              child: _pages[_index],
+            ),
+            _buildMask(),
+            Container(
+              height: _bottomHeight,
+              width: double.infinity,
+              child: SvgPicture.asset(
+                SvgIcon.homeBottomBg,
+                fit: BoxFit.fill,
               ),
-              _buildMask(),
-              Container(
-                height: _bottomHeight,
-                width: double.infinity,
-                child: SvgPicture.asset(
-                  SvgIcon.homeBottomBg,
-                  fit: BoxFit.fill,
-                ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildBottomItem(SvgIcon.message, 0, _index, tapIconCallback),
-                  _buildBottomButton(context),
-                  _buildBottomItem(SvgIcon.person, 1, _index, tapIconCallback),
-                ],
-              ),
-            ],
-          ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildBottomItem(SvgIcon.message, 0, _index, tapIconCallback),
+                _buildBottomButton(context),
+                _buildBottomItem(SvgIcon.person, 1, _index, tapIconCallback),
+              ],
+            ),
+          ],
         ),
       ),
     );

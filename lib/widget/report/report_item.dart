@@ -119,7 +119,7 @@ class ReportItem extends StatelessWidget {
           ),
           Expanded(
             child: Markdown(
-              data: _reportContent ?? '',
+              data: _reportContent,
               imageBuilder: (uri, title, alt) {
                 if (uri.scheme == StringConstant.networkProtocol) {
                   return Image.network(uri.toString());

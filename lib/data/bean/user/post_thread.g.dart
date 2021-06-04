@@ -8,12 +8,8 @@ part of 'post_thread.dart';
 
 PostThread _$PostThreadFromJson(Map<String, dynamic> json) {
   return PostThread(
-    json['post'] == null
-        ? null
-        : PostInfo.fromJson(json['post'] as Map<String, dynamic>),
-    json['thread'] == null
-        ? null
-        : ThreadInfo.fromJson(json['thread'] as Map<String, dynamic>),
+    PostInfo.fromJson(json['post'] as Map<String, dynamic>),
+    ThreadInfo.fromJson(json['thread'] as Map<String, dynamic>),
   );
 }
 

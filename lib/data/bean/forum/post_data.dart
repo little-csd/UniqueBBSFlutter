@@ -10,7 +10,7 @@ class PostData {
   PostInfo post;
   UserInfo user;
   List<GroupInfo> group;
-  PostInfo quote;
+  PostInfo? quote;
 
   factory PostData.fromJson(Map<String, dynamic> json) =>
       _$PostDataFromJson(json);

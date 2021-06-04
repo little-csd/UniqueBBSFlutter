@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:unique_bbs/data/bean/user/user.dart';
-import 'package:unique_bbs/tool/logger.dart';
 
 import '../dio.dart';
 
@@ -15,10 +14,6 @@ class UserModel extends ChangeNotifier {
   Map<String, User> _userMap = HashMap();
 
   void put(String uid, User user) {
-    if (user == null) {
-      Logger.w(_TAG, 'Put a null user for uid: $uid');
-      return;
-    }
     _userMap[uid] = user;
     notifyListeners();
   }
@@ -28,8 +23,8 @@ class UserModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  User find(String uid) {
-    final User user = _userMap[uid];
+  User? find(String uid) {
+    final User? user = _userMap[uid];
     if (user == null) {
       pull(uid);
     }
@@ -42,7 +37,10 @@ class UserModel extends ChangeNotifier {
     }
     Server.instance.user(uid).then((rsp) {
       if (rsp.success) {
-        put(uid, rsp.data);
+        final data = rsp.data;
+        if (data != null) {
+          put(uid, data);
+        }
       } else {
         Future.delayed(Duration(seconds: _reqInterval)).then((_) => pull(uid));
       }
