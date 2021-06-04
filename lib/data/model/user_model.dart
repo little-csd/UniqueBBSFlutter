@@ -1,8 +1,8 @@
 import 'dart:collection';
 
-import 'package:UniqueBBS/data/bean/user/user.dart';
-import 'package:UniqueBBS/tool/logger.dart';
 import 'package:flutter/material.dart';
+import 'package:unique_bbs/data/bean/user/user.dart';
+import 'package:unique_bbs/tool/logger.dart';
 
 import '../dio.dart';
 

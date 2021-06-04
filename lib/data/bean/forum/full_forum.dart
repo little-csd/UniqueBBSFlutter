@@ -1,5 +1,5 @@
-import 'package:UniqueBBS/data/bean/forum/post_info.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unique_bbs/data/bean/forum/post_info.dart';
 
 import 'last_post_info.dart';
 

@@ -1,11 +1,11 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/bean/forum/thread.dart';
-import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
-import 'package:UniqueBBS/data/bean/user/user_info.dart';
-import 'package:UniqueBBS/tool/helper.dart';
-import 'package:UniqueBBS/widget/common/common_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/bean/forum/thread.dart';
+import 'package:unique_bbs/data/bean/forum/thread_info.dart';
+import 'package:unique_bbs/data/bean/user/user_info.dart';
+import 'package:unique_bbs/tool/helper.dart';
+import 'package:unique_bbs/widget/common/common_avatar.dart';
 
 const _topText = "TOP";
 const _hotText = "HOT";

@@ -1,16 +1,12 @@
-import 'dart:developer';
-
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/bean/user/user.dart';
-import 'package:UniqueBBS/data/dio.dart';
-import 'package:UniqueBBS/data/model/user_model.dart';
-import 'package:UniqueBBS/data/repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/bean/user/user.dart';
+import 'package:unique_bbs/data/dio.dart';
+import 'package:unique_bbs/data/model/user_model.dart';
+import 'package:unique_bbs/data/repo.dart';
 
 // 更新用户信息界面
 const _textFieldEdge = 16.0;
@@ -28,9 +24,9 @@ const _regPhone = r'^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$';
 
 // 字体样式
 const _inputTextStyle = TextStyle(
-    fontSize: 15.0,
-    fontWeight: FontWeight.bold,
-    color: ColorConstant.textGreyForUpdate,
+  fontSize: 15.0,
+  fontWeight: FontWeight.bold,
+  color: ColorConstant.textGreyForUpdate,
 );
 const _barTitleTextStyle = TextStyle(
   fontSize: 18.0,
@@ -96,28 +92,28 @@ class _UserUpdateWidgetState extends State<UserUpdateWidget> {
           return Column(
             children: [
               _buildTextField(
-                  controller: _signTextController,
-                  length: _maxSignaLength,
-                  str: me.user.signature,
+                controller: _signTextController,
+                length: _maxSignaLength,
+                str: me.user.signature,
               ),
               Container(height: 11),
               _buildTextField(
-                  controller: _userMobileController,
-                  length: _maxPhoneLength,
-                  str: me.user.mobile,
-                  inputType: TextInputType.phone,
+                controller: _userMobileController,
+                length: _maxPhoneLength,
+                str: me.user.mobile,
+                inputType: TextInputType.phone,
               ),
               Container(height: 11),
               _buildTextField(
-                  controller: _weChatTextController,
-                  length: _maxWechatLength,
-                  str: me.user.wechat,
+                controller: _weChatTextController,
+                length: _maxWechatLength,
+                str: me.user.wechat,
               ),
               Container(height: 11),
               _buildTextField(
-                  controller: _emailTextController,
-                  length: _maxEmailLength,
-                  str: me.user.email,
+                controller: _emailTextController,
+                length: _maxEmailLength,
+                str: me.user.email,
               ),
             ],
           );

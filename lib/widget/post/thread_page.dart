@@ -1,9 +1,9 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBS/data/model/thread_model.dart';
-import 'package:UniqueBBS/widget/post/thread_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/bean/forum/full_forum.dart';
+import 'package:unique_bbs/data/model/thread_model.dart';
+import 'package:unique_bbs/widget/post/thread_list.dart';
 
 const _titleTextStyle = TextStyle(
   color: Colors.black,

@@ -1,7 +1,7 @@
-import 'package:UniqueBBS/data/model/avatar_model.dart';
-import 'package:UniqueBBS/data/model/forum_model.dart';
-import 'package:UniqueBBS/data/model/thread_model.dart';
-import 'package:UniqueBBS/tool/logger.dart';
+import 'package:unique_bbs/data/model/avatar_model.dart';
+import 'package:unique_bbs/data/model/forum_model.dart';
+import 'package:unique_bbs/data/model/thread_model.dart';
+import 'package:unique_bbs/tool/logger.dart';
 
 import 'bean/user/user.dart';
 import 'model/user_model.dart';

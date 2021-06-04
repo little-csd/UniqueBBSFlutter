@@ -1,7 +1,7 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/widget/app_splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/widget/app_splash.dart';
 
 import 'config/route.dart';
 import 'data/repo.dart';

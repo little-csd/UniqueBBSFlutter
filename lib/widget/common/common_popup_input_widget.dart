@@ -1,6 +1,6 @@
-import 'package:UniqueBBS/config/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:unique_bbs/config/constant.dart';
 
 const _inputFieldBorderRadius = 16.0;
 const _inputFieldTextOffsetH = 10.0;

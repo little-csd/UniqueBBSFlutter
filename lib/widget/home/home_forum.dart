@@ -1,13 +1,13 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBS/data/model/forum_model.dart';
-import 'package:UniqueBBS/data/model/thread_model.dart';
-import 'package:UniqueBBS/data/repo.dart';
-import 'package:UniqueBBS/widget/post/thread_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/bean/forum/full_forum.dart';
+import 'package:unique_bbs/data/model/forum_model.dart';
+import 'package:unique_bbs/data/model/thread_model.dart';
+import 'package:unique_bbs/data/repo.dart';
+import 'package:unique_bbs/widget/post/thread_item.dart';
 
 const _maxPreviewCount = 3;
 

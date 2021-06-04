@@ -1,10 +1,10 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/data/bean/report/report.dart';
-import 'package:UniqueBBS/data/dio.dart';
-import 'package:UniqueBBS/widget/common/network_error_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/bean/report/report.dart';
+import 'package:unique_bbs/data/dio.dart';
+import 'package:unique_bbs/widget/common/network_error_bottom_sheet.dart';
 
 const _weeklyTag = "weekly report";
 const _dailyTag = "daily report";

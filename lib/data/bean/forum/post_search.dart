@@ -1,5 +1,5 @@
-import 'package:UniqueBBS/data/bean/forum/post_search_data.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unique_bbs/data/bean/forum/post_search_data.dart';
 
 part 'post_search.g.dart';
 

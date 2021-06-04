@@ -1,10 +1,10 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/dio.dart';
-import 'package:UniqueBBS/widget/home/home_body.dart';
-import 'package:UniqueBBS/widget/home/home_me.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/dio.dart';
+import 'package:unique_bbs/widget/home/home_body.dart';
+import 'package:unique_bbs/widget/home/home_me.dart';
 
 const _bottomHeight = 50.0;
 const _bottomMaskHeight = 120.0;

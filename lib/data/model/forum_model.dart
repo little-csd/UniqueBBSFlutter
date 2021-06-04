@@ -1,6 +1,6 @@
-import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBS/tool/logger.dart';
 import 'package:flutter/material.dart';
+import 'package:unique_bbs/data/bean/forum/full_forum.dart';
+import 'package:unique_bbs/tool/logger.dart';
 
 import '../dio.dart';
 

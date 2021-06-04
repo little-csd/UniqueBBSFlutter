@@ -1,7 +1,7 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/model/report_model.dart';
-import 'package:UniqueBBS/widget/report/report_item.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/model/report_model.dart';
+import 'package:unique_bbs/widget/report/report_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';

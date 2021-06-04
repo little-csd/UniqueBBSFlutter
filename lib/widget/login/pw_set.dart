@@ -1,8 +1,8 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/widget/common/filled_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/widget/common/filled_text_field.dart';
 
 class PasswordSetWidget extends StatefulWidget {
   @override

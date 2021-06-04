@@ -1,5 +1,5 @@
-import 'package:UniqueBBS/config/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:unique_bbs/config/constant.dart';
 
 buildFilledBackgroundText(String text, double width) {
   return Container(

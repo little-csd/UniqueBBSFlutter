@@ -1,6 +1,6 @@
-import 'package:UniqueBBS/data/bean/forum/post_info.dart';
-import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unique_bbs/data/bean/forum/post_info.dart';
+import 'package:unique_bbs/data/bean/forum/thread_info.dart';
 
 part 'post_thread.g.dart';
 

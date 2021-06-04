@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:UniqueBBS/config/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:unique_bbs/config/constant.dart';
 
 // 动画相关参数
 const _maxDist = 70.0;

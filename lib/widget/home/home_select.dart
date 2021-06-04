@@ -1,12 +1,12 @@
 import 'dart:math';
 
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/model/forum_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/model/forum_model.dart';
 
 // TODO: 这里大小最好是根据屏幕长宽去计算，可能会 overflow
 const _cancelButtonSize = 40.0;
@@ -55,7 +55,8 @@ Widget _wrapData(
     child: MaterialButton(
       onPressed: () {
         if (name == StringConstant.report) {
-          Navigator.of(context).popAndPushNamed(BBSRoute.postReport, arguments: null);
+          Navigator.of(context)
+              .popAndPushNamed(BBSRoute.postReport, arguments: null);
           return;
         }
         Fluttertoast.showToast(msg: StringConstant.notImpl);

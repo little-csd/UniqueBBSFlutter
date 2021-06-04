@@ -1,10 +1,10 @@
-import 'package:UniqueBBS/data/bean/forum/basic_forum.dart';
-import 'package:UniqueBBS/data/bean/forum/post_data.dart';
-import 'package:UniqueBBS/data/bean/forum/post_info.dart';
-import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
-import 'package:UniqueBBS/data/bean/other/attach_data.dart';
-import 'package:UniqueBBS/data/bean/user/user_info.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unique_bbs/data/bean/forum/basic_forum.dart';
+import 'package:unique_bbs/data/bean/forum/post_data.dart';
+import 'package:unique_bbs/data/bean/forum/post_info.dart';
+import 'package:unique_bbs/data/bean/forum/thread_info.dart';
+import 'package:unique_bbs/data/bean/other/attach_data.dart';
+import 'package:unique_bbs/data/bean/user/user_info.dart';
 
 part 'post_list.g.dart';
 

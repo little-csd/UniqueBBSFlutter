@@ -1,16 +1,16 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBS/data/model/forum_model.dart';
-import 'package:UniqueBBS/tool/helper.dart';
-import 'package:UniqueBBS/tool/ui_helper.dart';
-import 'package:UniqueBBS/widget/common/common_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/bean/forum/full_forum.dart';
+import 'package:unique_bbs/data/model/forum_model.dart';
+import 'package:unique_bbs/tool/helper.dart';
+import 'package:unique_bbs/tool/ui_helper.dart';
+import 'package:unique_bbs/widget/common/common_avatar.dart';
 
 const _mainHorizontalPadding = 20.0;
 const _mainVerticalPadding = 10.0;

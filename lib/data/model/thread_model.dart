@@ -1,9 +1,9 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/data/bean/forum/full_forum.dart';
-import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
-import 'package:UniqueBBS/data/bean/user/user_info.dart';
-import 'package:UniqueBBS/tool/logger.dart';
 import 'package:flutter/material.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/bean/forum/full_forum.dart';
+import 'package:unique_bbs/data/bean/forum/thread_info.dart';
+import 'package:unique_bbs/data/bean/user/user_info.dart';
+import 'package:unique_bbs/tool/logger.dart';
 
 import '../dio.dart';
 import '../repo.dart';

@@ -1,7 +1,7 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/data/model/thread_model.dart';
-import 'package:UniqueBBS/widget/post/thread_item.dart';
 import 'package:flutter/material.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/model/thread_model.dart';
+import 'package:unique_bbs/widget/post/thread_item.dart';
 
 // card
 const _listCardContainerPadding = 20.0;

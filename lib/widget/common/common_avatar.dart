@@ -1,9 +1,9 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/data/model/avatar_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/model/avatar_model.dart';
 
 class BBSAvatar extends StatelessWidget {
   final String url;

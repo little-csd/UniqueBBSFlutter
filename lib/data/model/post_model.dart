@@ -1,14 +1,14 @@
 import 'dart:collection';
 import 'dart:io';
 
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/data/bean/forum/post_data.dart';
-import 'package:UniqueBBS/data/bean/forum/thread_info.dart';
-import 'package:UniqueBBS/data/bean/other/attach_data.dart';
-import 'package:UniqueBBS/data/repo.dart';
-import 'package:UniqueBBS/tool/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/data/bean/forum/post_data.dart';
+import 'package:unique_bbs/data/bean/forum/thread_info.dart';
+import 'package:unique_bbs/data/bean/other/attach_data.dart';
+import 'package:unique_bbs/data/repo.dart';
+import 'package:unique_bbs/tool/logger.dart';
 
 import '../dio.dart';
 

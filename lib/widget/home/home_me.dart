@@ -1,14 +1,14 @@
-import 'package:UniqueBBS/config/constant.dart';
-import 'package:UniqueBBS/config/route.dart';
-import 'package:UniqueBBS/data/bean/user/user.dart';
-import 'package:UniqueBBS/data/dio.dart';
-import 'package:UniqueBBS/data/model/user_model.dart';
-import 'package:UniqueBBS/data/repo.dart';
-import 'package:UniqueBBS/widget/common/common_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:unique_bbs/config/constant.dart';
+import 'package:unique_bbs/config/route.dart';
+import 'package:unique_bbs/data/bean/user/user.dart';
+import 'package:unique_bbs/data/dio.dart';
+import 'package:unique_bbs/data/model/user_model.dart';
+import 'package:unique_bbs/data/repo.dart';
+import 'package:unique_bbs/widget/common/common_avatar.dart';
 
 /// '我的'界面从上到下依次是:
 /// notification 图标

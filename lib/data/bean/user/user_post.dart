@@ -1,5 +1,5 @@
-import 'package:UniqueBBS/data/bean/user/post_thread.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:unique_bbs/data/bean/user/post_thread.dart';
 
 part 'user_post.g.dart';
 
