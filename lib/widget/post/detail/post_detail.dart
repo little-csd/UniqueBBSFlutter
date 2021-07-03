@@ -17,6 +17,7 @@ import 'package:unique_bbs/tool/logger.dart';
 import 'package:unique_bbs/widget/common/common_avatar.dart';
 import 'package:unique_bbs/widget/common/common_popup_input_widget.dart';
 import 'package:unique_bbs/widget/common/custom_fab.dart';
+import 'package:unique_bbs/data/repo.dart';
 
 const _mainHorizontalPadding = 17.0;
 // 头部相关
@@ -335,7 +336,11 @@ Widget _buildBody(ScrollController controller, PostModel model) {
   );
 }
 
-Widget _buildFAB() {
+Widget _buildFAB(Thread thread) {
+  UserInfo user = thread.user;
+  if (user.id != Repo.instance.uid) {
+    return SizedBox.shrink();
+  }
   return Padding(
     padding: EdgeInsets.only(
         bottom: _bottomHeight + _fabPadding, right: _fabPadding),
@@ -443,7 +448,7 @@ class _PostDetailState extends State<PostDetailWidget> {
           alignment: Alignment.bottomRight,
           children: [
             _buildBody(_controller, model),
-            _buildFAB(),
+            _buildFAB(widget.thread),
             _buildBottom(context, model),
           ],
         ),
